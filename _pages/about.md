@@ -19,7 +19,7 @@ Im my personal life, I have been a travel and fitness freak. Some exotic locatio
 - Fasting for 7.5 Days on just salt and water
 - 1000 days streak logging calorie intake on my MyFitnessPal
 - Conquering the highest bungee jump in the world.
-- 
+- Shooting a time lapse on the Milky Way Galaxy from the only Dark Sky reserve in India on a new Moon Day.
 
 Things that are on my bucket list: Going to South Pole, The Moon, and beyond!
 
