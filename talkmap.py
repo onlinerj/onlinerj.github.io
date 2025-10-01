@@ -1,21 +1,47 @@
-# Leaflet cluster map of talk locations
-#
-# Run this from the _talks/ directory, which contains .md files of all your
-# talks. This scrapes the location YAML field from each .md file, geolocates it
-# with geopy/Nominatim, and uses the getorg library to output data, HTML, and
-# Javascript for a standalone cluster map. This is functionally the same as the
-# #talkmap Jupyter notebook.
-import frontmatter
+"""
+Leaflet cluster map of talk locations
+
+Safe to run in CI: if dependencies or the `_talks` directory are missing,
+the script exits successfully without side effects.
+"""
+
+import os
+import sys
 import glob
-import getorg
-from geopy import Nominatim
-from geopy.exc import GeocoderTimedOut
+
+# Try optional dependencies; if missing (e.g., on CI), exit 0 gracefully
+try:
+    import frontmatter
+except Exception:
+    print("Skipping talkmap: 'python-frontmatter' not installed.")
+    sys.exit(0)
+
+try:
+    from geopy import Nominatim
+    from geopy.exc import GeocoderTimedOut
+except Exception:
+    print("Skipping talkmap: 'geopy' not installed.")
+    sys.exit(0)
+
+try:
+    import getorg
+except Exception:
+    print("Skipping talkmap: 'getorg' not installed.")
+    sys.exit(0)
 
 # Set the default timeout, in seconds
 TIMEOUT = 5
 
-# Collect the Markdown files
+# Ensure talks directory exists
+if not os.path.isdir("_talks"):
+    print("Skipping talkmap: '_talks' directory not found.")
+    sys.exit(0)
+
+# Collect the Markdown files (if none, exit quietly)
 g = glob.glob("_talks/*.md")
+if not g:
+    print("Skipping talkmap: no talk markdown files found.")
+    sys.exit(0)
 
 # Prepare to geolocate
 geocoder = Nominatim(user_agent="academicpages.github.io")
@@ -51,6 +77,10 @@ for file in g:
     except Exception as ex:
         print(f"An unhandled exception occurred while processing input {location} with message {ex}")
 
-# Save the map
+# Save the map only if we have at least one geocoded location
+if not location_dict:
+    print("Skipping talkmap: no geocoded locations.")
+    sys.exit(0)
+
 m = getorg.orgmap.create_map_obj()
 getorg.orgmap.output_html_cluster_map(location_dict, folder_name="talkmap", hashed_usernames=False)
