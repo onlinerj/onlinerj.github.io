@@ -9,20 +9,12 @@ redirect_from:
 
 Hi stranger, thank you for visiting!
 
-This is Rajat (a.k.a Roger), an AI researcher / engineer. I am an avid traveller. Right now I am pursuing MS AI + Software Engg. at Stevens Institute of Technology, NJ.
+This is Rajat (a.k.a Roger), an AI researcher and engineer. I am currently pursuing MS AI + Software Engineering at Stevens Institute of Technology, NJ.
 
-My interests lie in the field of AI research and engineering. SOme research areas I have recently wokred on include: RL / LLM Alignment, GPU Acceleration, Federated Learning (Distributed Machine Learning), Multi-Modal AI, Dissecting and Editing LLM architectures, Distributed LLM Training and LLM Security.
+My interests lie in the field of AI research and engineering. Some research areas I have recently worked on include: RL / LLM Alignment, GPU Acceleration, Federated Learning (Distributed Machine Learning), Multi-Modal AI, Dissecting and Editing LLM architectures, Distributed LLM Training and LLM Security.
 
-Im my personal life, I have been a travel and fitness freak. Some exotic locations I have travelled to include: 
-- Mount Everest
-- Trekking 50km on a Frozen River in the middle of nowhere at -40 deg C / 4000 metre altitiude with a 20kg backpack
-- Fasting for 7.5 Days on just salt and water
-- 1000 days streak logging calorie intake on my MyFitnessPal
-- Conquering the highest bungee jump in the world.
-- Shooting a time lapse on the Milky Way Galaxy from the only Dark Sky reserve in India on a new Moon Day.
+I am a positive-minded and highly optimistic person. In my personal life, I have been a travel and fitness enthusiast—you can learn more about my adventures and personal challenges in the [Extracurricular Activities](/extracurricular/) section.
 
-Things that are on my bucket list: Going to South Pole, The Moon, and beyond!
-
-I am a positive minded and highly optimistic person. I encourage you reach out to me via mail, I love to talk to people!
+I encourage you to reach out to me via email—I love to talk to people!
 
 Please visit the other sections of this website to learn more about me.
