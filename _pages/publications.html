@@ -11,6 +11,49 @@ author_profile: true
 
 {% include base_path %}
 
+## Research Positions
+
+### AI Research Fellow – Stevens Institute for Artificial Intelligence (SIAI)
+_May '25 – Aug '25_
+
+- Co-pioneered SOTA Dynamic Hyperparameter Optimization Algorithm for EBLC retaining Federated Learning performance.
+- **Skills:** FedSZ, Flower, NLTK, DeepSpeed, Optuna | CNN, LSTM, ViT, LLM, VLM, VLA, MoE | PEFT, SFT, LoRA, QLoRA, DoRA, IA3
+- **Under Review:** Adaptive Error Bounds for Lossy Compressors in Federated Learning (IEEE InfoCom-2026, first author) [PDF]
+
+---
+
+### AI Researcher + Team Lead – IntelliSys Lab
+_May '25 – Dec '25_
+
+- Optimized AI system using NDIF + nnsight for trace analysis, leading to 25% enhanced compute utilization, saved 1k USD/GPU/month.
+- Critical data for Caching Algorithm for accelerated MoE Inference using LLM dissection: architecture editing, probing, DAS, RSA.
+
+---
+
+### AI Researcher – Cypress Lab
+_Sep '25 – Dec '25_
+
+Image Reconstruction from Deep Gradient Leakage induced Side Channels for very highly compressed gradients in privacy-preserving distributed LLM training (Federated Learning).
+
+---
+
+### AI Researcher – APECS Lab
+_Sep '25 – Dec '25_
+
+Side channel attacks in distributed GPU assisted image compression [IWBDR 2025]
+
+---
+
+### Capstone Project – Visual Information Environments Lab
+_May '25 – Dec '25_
+
+- RL+Eval for Reasoning over Vision-Language Models.
+- **Skills:** RLHF, RLAIF, DPO, GRPO, VLM-EvalKit, Flash Attention, Multi-Modal AI
+
+---
+
+## Publications
+
 <!-- New style rendering if publication categories are defined -->
 {% if site.publication_category %}
   {% for category in site.publication_category  %}
@@ -20,7 +63,7 @@ author_profile: true
         {% continue %}
       {% endif %}
       {% unless title_shown %}
-        <h2>{{ category[1].title }}</h2><hr />
+        <h3>{{ category[1].title }}</h3>
         {% assign title_shown = true %}
       {% endunless %}
       {% include archive-single.html %}
