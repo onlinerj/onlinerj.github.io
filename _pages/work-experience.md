@@ -15,7 +15,8 @@ _Jan ‘24 – Dec ‘24_
 _Oct ‘23 – Dec ‘24_
 
 
-## Software Engineer, Data Scientist: Middle East Asia, North Africa, India and SEA
+### Halliburton Big Data Centre of Excellence, Landmark Software and Services
+### Software Engineer, Data Scientist: Middle East Asia, North Africa, India and SEA
 _Sep’20 – Sep’23_
 
 
