@@ -27,7 +27,6 @@ author_profile: true
 
 *May 2025 – December 2025*
 
-- Optimized AI system using **NDIF + nnsight** for trace analysis, achieving **25% enhanced compute utilization** and saving **$1K USD/GPU/month**
 - Generated critical data for **Caching Algorithm** for accelerated MoE Inference using LLM dissection: architecture editing, probing, DAS, RSA
 
 ---
