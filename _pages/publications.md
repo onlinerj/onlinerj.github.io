@@ -14,8 +14,8 @@ author_profile: true
 ## Research Positions
 
 ### **AI Research Fellow** – Stevens Institute for Artificial Intelligence (SIAI)
-<br>
-<span style="color: #7a8288; font-style: italic;">May 2025 – August 2025</span>
+
+*May 2025 – August 2025*
 
 - Co-pioneered **SOTA Dynamic Hyperparameter Optimization Algorithm** for EBLC retaining Federated Learning performance
 - **Skills:** FedSZ, Flower, NLTK, DeepSpeed, Optuna | CNN, LSTM, ViT, LLM, VLM, VLA, MoE | PEFT, SFT, LoRA, QLoRA, DoRA, IA3
@@ -24,8 +24,8 @@ author_profile: true
 ---
 
 ### **AI Researcher + Team Lead** – IntelliSys Lab
-<br>
-<span style="color: #7a8288; font-style: italic;">May 2025 – December 2025</span>
+
+*May 2025 – December 2025*
 
 - Optimized AI system using **NDIF + nnsight** for trace analysis, achieving **25% enhanced compute utilization** and saving **$1K USD/GPU/month**
 - Generated critical data for **Caching Algorithm** for accelerated MoE Inference using LLM dissection: architecture editing, probing, DAS, RSA
@@ -33,24 +33,24 @@ author_profile: true
 ---
 
 ### **AI Researcher** – Cypress Lab
-<br>
-<span style="color: #7a8288; font-style: italic;">September 2025 – December 2025</span>
+
+*September 2025 – December 2025*
 
 **Research Focus:** Image Reconstruction from Deep Gradient Leakage induced Side Channels for very highly compressed gradients in privacy-preserving distributed LLM training (Federated Learning)
 
 ---
 
 ### **AI Researcher** – APECS Lab
-<br>
-<span style="color: #7a8288; font-style: italic;">September 2025 – December 2025</span>
+
+*September 2025 – December 2025*
 
 **Research Focus:** Side channel attacks in distributed GPU assisted image compression [[IWBDR 2025](#)]
 
 ---
 
 ### **Capstone Project** – Visual Information Environments Lab
-<br>
-<span style="color: #7a8288; font-style: italic;">May 2025 – December 2025</span>
+
+*May 2025 – December 2025*
 
 - **RL+Eval for Reasoning over Vision-Language Models**
 - **Skills:** RLHF, RLAIF, DPO, GRPO, VLM-EvalKit, Flash Attention, Multi-Modal AI
@@ -79,6 +79,4 @@ author_profile: true
     {% include archive-single.html %}
   {% endfor %}
 {% endif %}
-
-
 
