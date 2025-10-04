@@ -11,7 +11,7 @@ Hi stranger, thank you for visiting!
 
 This is Rajat (a.k.a Roger), an AI researcher and engineer. I am currently pursuing MS AI + Software Engineering at Stevens Institute of Technology, NJ.
 
-My interests lie in the field of AI research and engineering. Some research areas I have recently worked on include: RL / LLM Alignment, GPU Acceleration, Federated Learning (Distributed Machine Learning), Multi-Modal AI, Dissecting and Editing LLM architectures, Distributed LLM Training and LLM Security.
+My interests lie in the field of AI research and engineering. Some research areas I have recently worked on include: LLM privacy and Security, Federated Learning (Distributed Machine Learning), RL / LLM Alignment, GPU Acceleration, Multi-Modal AI, Dissecting and Editing LLM architectures, Distributed LLM Training and LLM Security.
 
 I am a positive-minded and highly optimistic person. In my personal life, I have been a travel and fitness enthusiast—you can learn more about my adventures and personal challenges in the [Extracurricular Activities](/extracurricular/) section.
 
