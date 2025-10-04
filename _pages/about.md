@@ -7,7 +7,7 @@ redirect_from:
   - /about.html
 ---
 
-Hi stranger, thank you for visiting!
+Hi, thank you for visiting!
 
 This is Rajat (a.k.a Roger), an AI researcher and engineer. I am currently pursuing MS AI + Software Engineering at Stevens Institute of Technology, NJ.
 
