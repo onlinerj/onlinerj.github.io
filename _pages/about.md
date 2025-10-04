@@ -9,7 +9,7 @@ redirect_from:
 
 Hi, thank you for visiting!
 
-This is Rajat (a.k.a Roger), an AI researcher and engineer. I am currently pursuing MS AI + Software Engineering at Stevens Institute of Technology, NJ.
+This is Rajat. I am an AI research fellow and Generative AI lead. I am currently pursuing MS AI + Software Engineering at Stevens Institute of Technology, NJ.
 
 My interests lie in the field of AI research and engineering. Some research areas I have recently worked on include: LLM privacy and Security, Federated Learning (Distributed Machine Learning), RL / LLM Alignment, GPU Acceleration, Multi-Modal AI, Dissecting and Editing LLM architectures, Distributed LLM Training and LLM Security.
 
