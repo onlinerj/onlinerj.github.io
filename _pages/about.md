@@ -9,7 +9,7 @@ redirect_from:
 
 Hi, thank you for visiting!
 
-This is **Rajat**. I am an ***AI research fellow*** and ***Generative AI lead***. I am currently pursuing **MS AI + Software Engineering** at **Stevens Institute of Technology**, NJ.
+This is **Rajat**. I am an ***AI research fellow*** and ***Generative AI lead*** with > 6.5 Years of Experience in AI Research + MLOps. 5x Azure Certified.. I am currently pursuing **MS AI + Software Engineering** at **Stevens Institute of Technology**, NJ.
 
 My interests lie in the field of **AI research and engineering**. Some research areas I have recently worked on include: **LLM Privacy and Security**, **Federated Learning** (Distributed Machine Learning), **RL / LLM Alignment**, **GPU Acceleration**, **Multi-Modal AI**, **Dissecting and Editing LLM architectures**, **Distributed LLM Training** and **LLM Security**.
 
