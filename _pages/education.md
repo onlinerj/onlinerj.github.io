@@ -10,7 +10,7 @@ author_profile: true
 
 **Jan 2025 - Dec 2025**
 
-**Major Subjects:** Deep Learning, Applied Machine Learning, Accelerated Computing on GPU Clustes and SuperComputers, Big Data Analytics, Special Problems in Artificial Intelligence, Programming Languages, Algorithms.
+**Major Subjects:** Deep Learning, Applied Machine Learning, Accelerated Computing on GPU Clusters and SuperComputers, Big Data Analytics, Special Problems in Artificial Intelligence, Programming Languages, Algorithms.
 
 ## Indian Institute Of Technology (ISM), Dhanbad
 ### Bachelor of Technology [Hons.], Computer Science and Engineering [Minor]
