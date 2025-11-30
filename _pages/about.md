@@ -16,8 +16,6 @@ My interests lie in the field of **AI research and engineering**. Some research 
 During my **MS in Artificial Intelligence**, I have worked extensively with Research Labs, Professors, PhD students on multiple research areas in AI.
 Before that, I led a team of people in the GenAI.
 
-I overloaded my course credits and finished a 2 MS year course in 11 months all while maintining a perfect 4 GPA and also doing tons of publishable research!
-
 I am a *positive-minded* and *highly optimistic* person. In my personal life, I have been a **travel and fitness enthusiast**—you can learn more about my adventures and personal challenges in the [Extracurricular Activities](/extracurricular/) section.
 
 I encourage you to reach out to me via email—I love to talk to people!
