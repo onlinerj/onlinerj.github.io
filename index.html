@@ -302,9 +302,13 @@
         </section>
 
         <footer>
-            <p>© 2024 Rajat Jaiswal</p>
+            <p>© <span id="year"></span> Rajat Jaiswal</p>
         </footer>
     </div>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
 </body>
 </html>
 
