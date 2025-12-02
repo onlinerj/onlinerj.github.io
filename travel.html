@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Blog | Rajat Jaiswal</title>
+    <meta name="description" content="Travel stories and adventures from around the world by Rajat Jaiswal.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0b;
+            --bg-card: #141417;
+            --text: #e8e8ed;
+            --text-muted: #8b8b97;
+            --accent: #6366f1;
+            --accent-glow: rgba(99, 102, 241, 0.15);
+            --border: #252530;
+            --travel-accent: #10b981;
+            --travel-glow: rgba(16, 185, 129, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            font-weight: 400;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 80px 24px;
+        }
+
+        /* Header */
+        header {
+            margin-bottom: 64px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 32px;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: var(--travel-accent);
+        }
+
+        .back-link svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .page-title {
+            font-size: 14px;
+            color: var(--travel-accent);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            font-weight: 500;
+        }
+
+        h1 {
+            font-family: 'DM Serif Display', Georgia, serif;
+            font-size: clamp(2.5rem, 8vw, 3.5rem);
+            font-weight: 400;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, var(--text) 0%, var(--text-muted) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .intro {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+
+        h2 {
+            font-family: 'DM Serif Display', Georgia, serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 24px;
+            color: var(--text);
+        }
+
+        p {
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        /* Blog Grid */
+        .blog-section {
+            margin-top: 56px;
+        }
+
+        .blog-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .blog-card {
+            padding: 28px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+        }
+
+        .blog-card:hover {
+            border-color: var(--travel-accent);
+            box-shadow: 0 8px 32px var(--travel-glow);
+            transform: translateY(-2px);
+        }
+
+        .blog-card .date {
+            font-size: 12px;
+            color: var(--travel-accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .blog-card h3 {
+            font-family: 'DM Serif Display', Georgia, serif;
+            font-size: 1.25rem;
+            font-weight: 400;
+            color: var(--text);
+            margin-bottom: 12px;
+        }
+
+        .blog-card p {
+            font-size: 15px;
+            color: var(--text-muted);
+            margin-bottom: 0;
+            line-height: 1.6;
+        }
+
+        .blog-card .location {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 16px;
+            font-size: 13px;
+            color: var(--text-muted);
+            padding: 6px 12px;
+            background: rgba(16, 185, 129, 0.1);
+            border-radius: 100px;
+        }
+
+        .blog-card .location svg {
+            width: 14px;
+            height: 14px;
+            color: var(--travel-accent);
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 80px;
+            padding-top: 32px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        footer p {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* Decorative */
+        .glow-orb {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--travel-glow) 0%, transparent 70%);
+            pointer-events: none;
+            top: -200px;
+            right: -200px;
+            z-index: -1;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container {
+                padding: 48px 20px;
+            }
+
+            header {
+                margin-bottom: 48px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="glow-orb"></div>
+    
+    <div class="container">
+        <header>
+            <a href="index.html" class="back-link">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="M12 19l-7-7 7-7"></path></svg>
+                Back to Home
+            </a>
+            <p class="page-title">Travel Blog</p>
+            <h1>Adventures & Stories</h1>
+            <p class="intro">Exploring the world one destination at a time. Here I share stories from my travels, fitness journeys, and life experiences.</p>
+        </header>
+
+        <section class="blog-section">
+            <h2>Recent Stories</h2>
+            <div class="blog-grid">
+                <div class="blog-card">
+                    <span class="date">Coming Soon</span>
+                    <h3>Adventures Await</h3>
+                    <p>Stay tuned for stories from my travels around the world. I'll be sharing experiences, tips, and memorable moments from my journeys.</p>
+                    <span class="location">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                        Worldwide
+                    </span>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>© <span id="year"></span> Rajat Jaiswal</p>
+        </footer>
+    </div>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
+
