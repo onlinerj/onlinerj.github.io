@@ -254,6 +254,24 @@
             height: 18px;
         }
 
+        .btn-amber {
+            background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+            box-shadow: 0 4px 16px rgba(245, 158, 11, 0.2);
+        }
+
+        .btn-amber:hover {
+            box-shadow: 0 8px 24px rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-green {
+            background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.2);
+        }
+
+        .btn-green:hover {
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
+        }
+
         /* Blog Cards */
         .blog-grid {
             display: grid;
@@ -407,10 +425,14 @@
             </div>
         </section>
 
-        <div style="text-align: center; margin-top: 40px;">
-            <a href="travel.html" class="btn">
+        <div style="text-align: center; margin-top: 40px; display: flex; flex-wrap: wrap; justify-content: center; gap: 16px;">
+            <a href="stories.html" class="btn btn-amber">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                Research & Work Stories
+            </a>
+            <a href="travel.html" class="btn btn-green">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20"></path><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
-                Explore My Travel Stories
+                Travel Adventures
             </a>
         </div>
 
