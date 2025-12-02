@@ -25,6 +25,10 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--bg);
@@ -223,6 +227,90 @@
             transform: scale(1.02);
         }
 
+        /* Button */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, var(--accent) 0%, #818cf8 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 100px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-top: 8px;
+            box-shadow: 0 4px 16px var(--accent-glow);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Blog Cards */
+        .blog-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .blog-card {
+            padding: 24px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+        }
+
+        .blog-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 8px 32px var(--accent-glow);
+            transform: translateY(-2px);
+        }
+
+        .blog-card .date {
+            font-size: 12px;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .blog-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .blog-card p {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 0;
+        }
+
+        .blog-card .location {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 12px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .blog-card .location svg {
+            width: 14px;
+            height: 14px;
+        }
+
         /* Responsive */
         @media (max-width: 600px) {
             .container {
@@ -277,6 +365,10 @@
             <p>
                 In my personal life, I have been a <strong>travel and fitness enthusiast</strong>.
             </p>
+            <a href="#travel-blog" class="btn">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20"></path><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                Explore My Travel Stories
+            </a>
         </section>
 
         <section>
@@ -313,6 +405,22 @@
             <div class="experience-item">
                 <h3>Indian Institute of Technology, Dhanbad</h3>
                 <p>B.Tech [Hons.] in Computer Science and Engineering [Minor] - 2019</p>
+            </div>
+        </section>
+
+        <section id="travel-blog">
+            <h2>Travel Blog</h2>
+            <p>Stories and experiences from my adventures around the world.</p>
+            <div class="blog-grid">
+                <div class="blog-card">
+                    <span class="date">Coming Soon</span>
+                    <h3>Adventures Await</h3>
+                    <p>Stay tuned for stories from my travels, fitness journeys, and life experiences.</p>
+                    <span class="location">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                        Worldwide
+                    </span>
+                </div>
             </div>
         </section>
 
