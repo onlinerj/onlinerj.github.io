@@ -666,15 +666,15 @@
                 <canvas id="profile-canvas" width="280" height="280"></canvas>
                 <span class="cv-badge">Feeling Lucky?</span>
                 <div class="cv-tooltip" id="cv-tooltip">
-                    <div class="cv-tooltip-header">Computer Vision Filters</div>
+                    <div class="cv-tooltip-header">Computer Vision Kernels</div>
                     <h4 id="tooltip-title">Original Image</h4>
-                    <p id="tooltip-desc">No filter applied. Select a computer vision filter to see it in action.</p>
+                    <p id="tooltip-desc">No kernel applied. Select a computer vision kernel to see it in action.</p>
                     <div class="kernel-display" id="tooltip-kernel"></div>
                 </div>
                 <div class="cv-filter-container">
                     <div class="cv-filter-header">
-                        <label>Select a Computer Vision Filter</label>
-                        <button class="cv-info-btn" id="cv-info-btn" title="Show filter info">?</button>
+                        <label>Select a Computer Vision Kernel</label>
+                        <button class="cv-info-btn" id="cv-info-btn" title="Show kernel info">?</button>
                     </div>
                     <select id="cv-filter-select">
                         <option value="original">Original</option>
@@ -682,7 +682,7 @@
                         <option value="prewitt">Prewitt — Edge Detection</option>
                         <option value="laplacian">Laplacian — 2nd Derivative</option>
                         <option value="gaussian">Gaussian Blur — Smoothing</option>
-                        <option value="box">Box Blur — Mean Filter</option>
+                        <option value="box">Box Blur — Mean Kernel</option>
                         <option value="grayscale">Grayscale — Luminance</option>
                         <option value="threshold">Threshold — Binary</option>
                         <option value="sharpen">Sharpen — Enhancement</option>
@@ -1034,7 +1034,7 @@
         const filterInfo = {
             original: {
                 title: 'Original Image',
-                desc: 'No filter applied. The raw RGB image data as captured by the camera.',
+                desc: 'No kernel applied. The raw RGB image data as captured by the camera.',
                 kernel: ''
             },
             sobel: {
@@ -1048,7 +1048,7 @@
                 kernel: 'Gx:          Gy:\n[-1  0  1]   [-1 -1 -1]\n[-1  0  1]   [ 0  0  0]\n[-1  0  1]   [ 1  1  1]'
             },
             laplacian: {
-                title: 'Laplacian Filter',
+                title: 'Laplacian Kernel',
                 desc: 'Second-order derivative operator that detects edges in all directions. Sensitive to noise but finds fine edges.',
                 kernel: '[ 0 -1  0 ]\n[-1  4 -1 ]\n[ 0 -1  0 ]'
             },
@@ -1058,8 +1058,8 @@
                 kernel: '1/16 × [ 1  2  1 ]\n       [ 2  4  2 ]\n       [ 1  2  1 ]'
             },
             box: {
-                title: 'Box Blur (Mean Filter)',
-                desc: 'Simple averaging filter that replaces each pixel with the mean of its neighbors. Fast but can cause blocky artifacts.',
+                title: 'Box Blur (Mean Kernel)',
+                desc: 'Simple averaging kernel that replaces each pixel with the mean of its neighbors. Fast but can cause blocky artifacts.',
                 kernel: '1/9 × [ 1  1  1 ]\n      [ 1  1  1 ]\n      [ 1  1  1 ]'
             },
             grayscale: {
@@ -1073,8 +1073,8 @@
                 kernel: 'if (pixel > 128)\n  output = 255\nelse\n  output = 0'
             },
             sharpen: {
-                title: 'Sharpening Filter',
-                desc: 'Enhances edges by subtracting a blurred version from the original. Uses a high-pass filter kernel.',
+                title: 'Sharpening Kernel',
+                desc: 'Enhances edges by subtracting a blurred version from the original. Uses a high-pass kernel.',
                 kernel: '[ 0 -1  0 ]\n[-1  5 -1 ]\n[ 0 -1  0 ]'
             },
             emboss: {
