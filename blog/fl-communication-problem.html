@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Federated Learning Has a Communication Problem | Rajat Jaiswal</title>
+    <meta name="description" content="Exploring the communication bottleneck in federated learning and how adaptive lossy compression can reduce data transmission by up to 67%.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0b;
+            --bg-card: #141417;
+            --text: #e8e8ed;
+            --text-muted: #8b8b97;
+            --accent: #6366f1;
+            --accent-glow: rgba(99, 102, 241, 0.15);
+            --border: #252530;
+            --stories-accent: #f59e0b;
+            --stories-glow: rgba(245, 158, 11, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            font-weight: 400;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 80px 24px;
+        }
+
+        /* Header */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 48px;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: var(--stories-accent);
+        }
+
+        .back-link svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .article-meta {
+            margin-bottom: 32px;
+        }
+
+        .article-meta .category {
+            font-size: 12px;
+            color: var(--stories-accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+
+        .article-meta .date {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        h1 {
+            font-family: 'DM Serif Display', Georgia, serif;
+            font-size: clamp(2rem, 6vw, 2.75rem);
+            font-weight: 400;
+            line-height: 1.2;
+            margin-bottom: 24px;
+            color: var(--text);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            font-weight: 300;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .tag-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 48px;
+        }
+
+        .tag {
+            font-size: 12px;
+            padding: 6px 12px;
+            background: rgba(245, 158, 11, 0.1);
+            border-radius: 100px;
+            color: var(--stories-accent);
+        }
+
+        /* Article Content */
+        article {
+            border-top: 1px solid var(--border);
+            padding-top: 48px;
+        }
+
+        article h2 {
+            font-family: 'DM Serif Display', Georgia, serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-top: 48px;
+            margin-bottom: 20px;
+            color: var(--text);
+        }
+
+        article h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 32px;
+            margin-bottom: 16px;
+            color: var(--text);
+        }
+
+        article p {
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        article strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        article ul, article ol {
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            padding-left: 24px;
+        }
+
+        article li {
+            margin-bottom: 12px;
+        }
+
+        .highlight-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--stories-accent);
+            padding: 24px;
+            border-radius: 8px;
+            margin: 32px 0;
+        }
+
+        .highlight-box p {
+            margin-bottom: 0;
+            font-size: 15px;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin: 32px 0;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .stat-card .number {
+            font-family: 'DM Serif Display', Georgia, serif;
+            font-size: 2.5rem;
+            color: var(--stories-accent);
+            line-height: 1;
+        }
+
+        .stat-card .label {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        code {
+            background: var(--bg-card);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--stories-accent);
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 80px;
+            padding-top: 32px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        footer p {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* Decorative */
+        .glow-orb {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--stories-glow) 0%, transparent 70%);
+            pointer-events: none;
+            top: -200px;
+            right: -200px;
+            z-index: -1;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container {
+                padding: 48px 20px;
+            }
+
+            .stat-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="glow-orb"></div>
+    
+    <div class="container">
+        <a href="../blog.html" class="back-link">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="M12 19l-7-7 7-7"></path></svg>
+            Back to Blog
+        </a>
+
+        <div class="article-meta">
+            <span class="category">Federated Learning</span>
+            <p class="date">December 15, 2025</p>
+        </div>
+
+        <h1>Why Federated Learning Has a Communication Problem (And How We're Solving It)</h1>
+        
+        <p class="subtitle">Exploring the hidden bottleneck that limits scalability in distributed ML systems—and an adaptive compression approach that reduces communication by up to 67%.</p>
+
+        <div class="tag-row">
+            <span class="tag">Federated Learning</span>
+            <span class="tag">MLOps</span>
+            <span class="tag">Distributed Systems</span>
+            <span class="tag">Research</span>
+        </div>
+
+        <article>
+            <h2>The Hidden Bottleneck</h2>
+            
+            <p>Imagine this scenario: You're building an AI system for autonomous vehicles. Each car generates up to <strong>1GB of sensor data per second</strong>—camera feeds, LiDAR point clouds, radar signals. You want to train a shared model across thousands of vehicles without centralizing all that sensitive data.</p>
+            
+            <p>This is the promise of <strong>Federated Learning (FL)</strong>—a paradigm where multiple clients collaboratively train a model while keeping data decentralized and private. But here's the catch that nobody talks about enough:</p>
+
+            <div class="highlight-box">
+                <p><strong>The Problem:</strong> A single 10GB model update sent over a limited 10MB/s network connection takes over <strong>1.5 hours</strong> to transmit. In FL systems, you're only as fast as your slowest client.</p>
+            </div>
+
+            <p>This communication bottleneck fundamentally limits the scalability of federated learning systems. While much of the ML community focuses on model architecture and training algorithms, the unglamorous reality is that network bandwidth often determines what's actually deployable in the real world.</p>
+
+            <h2>The Current State: Fixed Compression</h2>
+
+            <p>The standard approach to this problem involves <strong>Error-Bounded Lossy Compressors (EBLCs)</strong>—algorithms that compress numerical data while guaranteeing the error stays within specified bounds. Popular options include:</p>
+
+            <ul>
+                <li><strong>SZ2</strong> — Prediction-based compression that adapts to local data patterns</li>
+                <li><strong>ZFP</strong> — Block-based compression optimized for floating-point arrays</li>
+                <li><strong>TTHRESH</strong> — Tensor decomposition for multidimensional data</li>
+                <li><strong>FPZIP</strong> — Fast, efficient floating-point compression</li>
+            </ul>
+
+            <p>Previous work (FedSZ) showed that using SZ2 with a fixed relative error bound of <code>10⁻²</code> provides a reasonable trade-off between compression and model accuracy. But this raises an important question:</p>
+
+            <p><strong>Is a fixed error bound really optimal when you have heterogeneous clients with different data distributions, network conditions, and hardware capabilities?</strong></p>
+
+            <h2>Our Approach: Adaptive Compression</h2>
+
+            <p>In our research, we investigated whether dynamically adjusting compression parameters could achieve better trade-offs. The key insight: <strong>distortion patterns during training are predictable and can guide compression decisions.</strong></p>
+
+            <h3>The Core Idea</h3>
+
+            <p>Instead of applying the same error bound to every client in every round, we:</p>
+
+            <ol>
+                <li><strong>Monitor distortion</strong> — Track how much compression error each client introduces</li>
+                <li><strong>Identify operational regions</strong> — Find the "sweet spots" where compression is aggressive but accuracy remains stable</li>
+                <li><strong>Adapt per-client</strong> — Adjust error bounds dynamically based on feedback signals</li>
+            </ol>
+
+            <p>Think of it like adaptive bitrate streaming for video—but for ML model updates. When network conditions allow and distortion is low, compress more aggressively. When approaching accuracy degradation thresholds, back off.</p>
+
+            <h2>Results: Significant Communication Reduction</h2>
+
+            <p>Our adaptive algorithm achieved substantial reductions compared to the fixed <code>10⁻²</code> baseline:</p>
+
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <div class="number">67%</div>
+                    <div class="label">Max reduction on CNNs</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number">20%</div>
+                    <div class="label">Reduction on ResNet-50</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number">19%</div>
+                    <div class="label">Reduction on Vision Transformers</div>
+                </div>
+            </div>
+
+            <p>Across different architectures and datasets:</p>
+
+            <ul>
+                <li><strong>CNNs</strong> (MNIST, CIFAR-10, Caltech-101): 20–67% reduction</li>
+                <li><strong>ResNet-50, AlexNet, MobileNetV2</strong>: 12–20% reduction</li>
+                <li><strong>Swin Transformer</strong>: 12–19% reduction</li>
+                <li><strong>LSTM models</strong>: Similar improvements</li>
+            </ul>
+
+            <p>The key finding: <strong>these reductions come with minimal impact on final model accuracy</strong>. We're not sacrificing quality—we're eliminating wasteful over-transmission.</p>
+
+            <h2>Why This Matters</h2>
+
+            <p>Communication efficiency in federated learning isn't just an academic concern. It directly impacts:</p>
+
+            <ul>
+                <li><strong>Scalability</strong> — More clients can participate without creating bottlenecks</li>
+                <li><strong>Cost</strong> — Less data transmission means lower bandwidth costs</li>
+                <li><strong>Latency</strong> — Faster rounds enable more training iterations</li>
+                <li><strong>Accessibility</strong> — Clients with poor network connections can meaningfully contribute</li>
+            </ul>
+
+            <p>As federated learning moves from research into production—healthcare, finance, IoT, autonomous systems—these practical constraints will determine what's actually deployable.</p>
+
+            <h2>Looking Forward</h2>
+
+            <p>This work opens several interesting directions:</p>
+
+            <ul>
+                <li><strong>Compressor-specific tuning</strong> — Different EBLCs have different optimal regions</li>
+                <li><strong>Layer-aware compression</strong> — Some layers (like BatchNorm) need special handling</li>
+                <li><strong>Integration with other optimizations</strong> — Combining with gradient sparsification, quantization</li>
+            </ul>
+
+            <p>The broader lesson: in distributed ML systems, understanding the full stack—from algorithms to networks—is essential for building systems that actually work at scale.</p>
+
+            <div class="highlight-box">
+                <p><strong>Paper:</strong> "Striking the Balance: Adaptive Error Bounds for Lossy Compressors in Federated Learning" — Submitted to ICDM 2025</p>
+            </div>
+        </article>
+
+        <footer>
+            <p>© <span id="year"></span> Rajat Jaiswal</p>
+        </footer>
+    </div>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
+
