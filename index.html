@@ -7,7 +7,7 @@
     <meta name="description" content="Machine Learning Engineer and AI Researcher specializing in LLMs, Federated Learning, and Distributed Systems.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=IBM+Plex+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #0a0a0b;
@@ -238,22 +238,204 @@
             opacity: 1;
         }
 
-        /* Profile Picture */
+        /* Profile Picture with CV Filters */
+        .profile-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 32px;
+        }
+
         .profile-pic {
             width: 140px;
             height: 140px;
             border-radius: 50%;
             object-fit: cover;
             border: 3px solid var(--border);
-            margin-bottom: 32px;
             transition: all 0.4s ease;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            display: none;
         }
 
-        .profile-pic:hover {
+        #profile-canvas {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            border: 3px solid var(--border);
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+        }
+
+        .profile-container:hover #profile-canvas {
             border-color: var(--accent);
             box-shadow: 0 12px 40px var(--accent-glow);
             transform: scale(1.02);
+        }
+
+        .cv-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: linear-gradient(135deg, var(--accent) 0%, #818cf8 100%);
+            color: white;
+            font-size: 9px;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 100px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 10px var(--accent-glow);
+            animation: pulse-badge 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-badge {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .cv-filter-container {
+            position: absolute;
+            bottom: -55px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-card);
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform: translateX(-50%) translateY(5px);
+            min-width: 180px;
+        }
+
+        .profile-container:hover .cv-filter-container {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .cv-filter-header {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            width: 100%;
+        }
+
+        .cv-filter-header label {
+            font-size: 10px;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .cv-info-btn {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--border);
+            color: var(--text-muted);
+            border: none;
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .cv-info-btn:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        #cv-filter-select {
+            width: 100%;
+            padding: 8px 12px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 13px;
+            font-family: inherit;
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        #cv-filter-select:hover,
+        #cv-filter-select:focus {
+            border-color: var(--accent);
+        }
+
+        #cv-filter-select option {
+            background: var(--bg-card);
+            color: var(--text);
+            padding: 8px;
+        }
+
+        /* Tooltip */
+        .cv-tooltip {
+            position: absolute;
+            bottom: calc(100% + 10px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg);
+            border: 1px solid var(--accent);
+            border-radius: 12px;
+            padding: 16px;
+            width: 280px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 100;
+            box-shadow: 0 8px 32px rgba(99, 102, 241, 0.2);
+        }
+
+        .cv-tooltip.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .cv-tooltip::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 8px solid var(--accent);
+        }
+
+        .cv-tooltip h4 {
+            font-size: 14px;
+            color: var(--accent);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .cv-tooltip p {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .cv-tooltip .kernel-display {
+            background: var(--bg-card);
+            border-radius: 8px;
+            padding: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--text);
+            white-space: pre;
+            line-height: 1.4;
+            text-align: center;
         }
 
         /* Button */
@@ -469,7 +651,30 @@
     
     <div class="container">
         <header>
-            <img src="assets/profile.jpg" alt="Rajat Jaiswal" class="profile-pic">
+            <div class="profile-container">
+                <img src="assets/profile.jpg" alt="Rajat Jaiswal" class="profile-pic" id="profile-img" crossorigin="anonymous">
+                <canvas id="profile-canvas" width="280" height="280"></canvas>
+                <span class="cv-badge">CV Demo</span>
+                <div class="cv-tooltip" id="cv-tooltip">
+                    <h4 id="tooltip-title">Original Image</h4>
+                    <p id="tooltip-desc">No filter applied. Select a computer vision filter to see it in action.</p>
+                    <div class="kernel-display" id="tooltip-kernel"></div>
+                </div>
+                <div class="cv-filter-container">
+                    <div class="cv-filter-header">
+                        <label>CV Filter</label>
+                        <button class="cv-info-btn" id="cv-info-btn" title="Show filter info">?</button>
+                    </div>
+                    <select id="cv-filter-select">
+                        <option value="original">Original</option>
+                        <option value="sobel">Sobel — Edge Detection</option>
+                        <option value="gaussian">Gaussian Blur — Noise Reduction</option>
+                        <option value="grayscale">Grayscale — Color Conversion</option>
+                        <option value="sharpen">Sharpen — Enhancement</option>
+                        <option value="emboss">Emboss — 3D Effect</option>
+                    </select>
+                </div>
+            </div>
             <p class="greeting">Welcome</p>
             <h1>Rajat Jaiswal</h1>
             <p class="tagline">Machine Learning Engineer & AI Researcher</p>
@@ -794,6 +999,250 @@
             cancelAnimationFrame(animationId);
             ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
+
+        // CV Filters for Profile Picture
+        const profileImg = document.getElementById('profile-img');
+        const profileCanvas = document.getElementById('profile-canvas');
+        const profileCtx = profileCanvas.getContext('2d');
+        const filterSelect = document.getElementById('cv-filter-select');
+        const cvInfoBtn = document.getElementById('cv-info-btn');
+        const cvTooltip = document.getElementById('cv-tooltip');
+        const tooltipTitle = document.getElementById('tooltip-title');
+        const tooltipDesc = document.getElementById('tooltip-desc');
+        const tooltipKernel = document.getElementById('tooltip-kernel');
+        
+        let originalImageData = null;
+
+        // Filter information for tooltips
+        const filterInfo = {
+            original: {
+                title: 'Original Image',
+                desc: 'No filter applied. The raw RGB image data as captured by the camera.',
+                kernel: ''
+            },
+            sobel: {
+                title: 'Sobel Edge Detection',
+                desc: 'Computes image gradients using convolution kernels to detect edges. Combines horizontal (Gx) and vertical (Gy) derivatives.',
+                kernel: 'Gx:          Gy:\n[-1  0  1]   [-1 -2 -1]\n[-2  0  2]   [ 0  0  0]\n[-1  0  1]   [ 1  2  1]'
+            },
+            gaussian: {
+                title: 'Gaussian Blur',
+                desc: 'Smooths the image using a weighted average kernel that approximates a Gaussian distribution. Reduces noise and detail.',
+                kernel: '1/16 × [ 1  2  1 ]\n       [ 2  4  2 ]\n       [ 1  2  1 ]'
+            },
+            grayscale: {
+                title: 'Grayscale Conversion',
+                desc: 'Converts RGB to luminance using perceptual weights based on human eye sensitivity to different wavelengths.',
+                kernel: 'Y = 0.299R + 0.587G + 0.114B\n\n(ITU-R BT.601 standard)'
+            },
+            sharpen: {
+                title: 'Sharpening Filter',
+                desc: 'Enhances edges by subtracting a blurred version from the original. Uses a high-pass filter kernel.',
+                kernel: '[ 0 -1  0 ]\n[-1  5 -1 ]\n[ 0 -1  0 ]'
+            },
+            emboss: {
+                title: 'Emboss Effect',
+                desc: 'Creates a 3D relief effect by computing directional gradients, making the image appear raised or stamped.',
+                kernel: '[-2 -1  0 ]\n[-1  1  1 ]\n[ 0  1  2 ]'
+            }
+        };
+
+        // Load and draw the original image
+        profileImg.onload = function() {
+            profileCtx.drawImage(profileImg, 0, 0, 280, 280);
+            originalImageData = profileCtx.getImageData(0, 0, 280, 280);
+        };
+
+        // If image is already cached
+        if (profileImg.complete) {
+            profileCtx.drawImage(profileImg, 0, 0, 280, 280);
+            originalImageData = profileCtx.getImageData(0, 0, 280, 280);
+        }
+
+        // Convolution helper function
+        function applyConvolution(kernel, divisor = 1, offset = 0) {
+            if (!originalImageData) return;
+
+            const width = 280;
+            const height = 280;
+            const src = originalImageData.data;
+            const output = profileCtx.createImageData(width, height);
+            const dst = output.data;
+            const kSize = kernel.length;
+            const kHalf = Math.floor(kSize / 2);
+
+            for (let y = 0; y < height; y++) {
+                for (let x = 0; x < width; x++) {
+                    let r = 0, g = 0, b = 0;
+
+                    for (let ky = 0; ky < kSize; ky++) {
+                        for (let kx = 0; kx < kSize; kx++) {
+                            const py = Math.min(height - 1, Math.max(0, y + ky - kHalf));
+                            const px = Math.min(width - 1, Math.max(0, x + kx - kHalf));
+                            const idx = (py * width + px) * 4;
+                            const weight = kernel[ky][kx];
+
+                            r += src[idx] * weight;
+                            g += src[idx + 1] * weight;
+                            b += src[idx + 2] * weight;
+                        }
+                    }
+
+                    const idx = (y * width + x) * 4;
+                    dst[idx] = Math.min(255, Math.max(0, r / divisor + offset));
+                    dst[idx + 1] = Math.min(255, Math.max(0, g / divisor + offset));
+                    dst[idx + 2] = Math.min(255, Math.max(0, b / divisor + offset));
+                    dst[idx + 3] = src[idx + 3];
+                }
+            }
+
+            profileCtx.putImageData(output, 0, 0);
+        }
+
+        // Sobel filter
+        function applySobel() {
+            if (!originalImageData) return;
+
+            const width = 280;
+            const height = 280;
+            const src = originalImageData.data;
+            const output = profileCtx.createImageData(width, height);
+            const dst = output.data;
+
+            const sobelX = [[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]];
+            const sobelY = [[-1, -2, -1], [0, 0, 0], [1, 2, 1]];
+
+            // Convert to grayscale
+            const gray = new Float32Array(width * height);
+            for (let i = 0; i < width * height; i++) {
+                gray[i] = 0.299 * src[i * 4] + 0.587 * src[i * 4 + 1] + 0.114 * src[i * 4 + 2];
+            }
+
+            for (let y = 1; y < height - 1; y++) {
+                for (let x = 1; x < width - 1; x++) {
+                    let gx = 0, gy = 0;
+
+                    for (let ky = -1; ky <= 1; ky++) {
+                        for (let kx = -1; kx <= 1; kx++) {
+                            const idx = (y + ky) * width + (x + kx);
+                            gx += gray[idx] * sobelX[ky + 1][kx + 1];
+                            gy += gray[idx] * sobelY[ky + 1][kx + 1];
+                        }
+                    }
+
+                    const magnitude = Math.min(255, Math.sqrt(gx * gx + gy * gy));
+                    const idx = (y * width + x) * 4;
+
+                    // Purple-tinted edges
+                    dst[idx] = Math.min(255, magnitude * 0.6 + 99 * (magnitude / 255));
+                    dst[idx + 1] = Math.min(255, magnitude * 0.3 + 50 * (magnitude / 255));
+                    dst[idx + 2] = Math.min(255, magnitude * 0.9 + 241 * (magnitude / 255));
+                    dst[idx + 3] = 255;
+                }
+            }
+
+            // Handle border pixels
+            for (let i = 0; i < width; i++) {
+                dst[(i) * 4 + 3] = 255;
+                dst[((height - 1) * width + i) * 4 + 3] = 255;
+            }
+            for (let i = 0; i < height; i++) {
+                dst[(i * width) * 4 + 3] = 255;
+                dst[(i * width + width - 1) * 4 + 3] = 255;
+            }
+
+            profileCtx.putImageData(output, 0, 0);
+        }
+
+        // Grayscale filter
+        function applyGrayscale() {
+            if (!originalImageData) return;
+
+            const width = 280;
+            const height = 280;
+            const src = originalImageData.data;
+            const output = profileCtx.createImageData(width, height);
+            const dst = output.data;
+
+            for (let i = 0; i < width * height; i++) {
+                const gray = 0.299 * src[i * 4] + 0.587 * src[i * 4 + 1] + 0.114 * src[i * 4 + 2];
+                dst[i * 4] = gray;
+                dst[i * 4 + 1] = gray;
+                dst[i * 4 + 2] = gray;
+                dst[i * 4 + 3] = src[i * 4 + 3];
+            }
+
+            profileCtx.putImageData(output, 0, 0);
+        }
+
+        // Apply selected filter
+        function applyFilter(filterName) {
+            if (!originalImageData) return;
+
+            switch (filterName) {
+                case 'original':
+                    profileCtx.putImageData(originalImageData, 0, 0);
+                    break;
+                case 'sobel':
+                    applySobel();
+                    break;
+                case 'gaussian':
+                    applyConvolution([
+                        [1, 2, 1],
+                        [2, 4, 2],
+                        [1, 2, 1]
+                    ], 16);
+                    break;
+                case 'grayscale':
+                    applyGrayscale();
+                    break;
+                case 'sharpen':
+                    applyConvolution([
+                        [0, -1, 0],
+                        [-1, 5, -1],
+                        [0, -1, 0]
+                    ]);
+                    break;
+                case 'emboss':
+                    applyConvolution([
+                        [-2, -1, 0],
+                        [-1, 1, 1],
+                        [0, 1, 2]
+                    ], 1, 128);
+                    break;
+            }
+
+            // Update tooltip content
+            const info = filterInfo[filterName];
+            tooltipTitle.textContent = info.title;
+            tooltipDesc.textContent = info.desc;
+            tooltipKernel.textContent = info.kernel;
+            tooltipKernel.style.display = info.kernel ? 'block' : 'none';
+        }
+
+        // Filter select event listener
+        filterSelect.addEventListener('change', function() {
+            applyFilter(this.value);
+        });
+
+        // Tooltip toggle
+        let tooltipVisible = false;
+        cvInfoBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            tooltipVisible = !tooltipVisible;
+            cvTooltip.classList.toggle('active', tooltipVisible);
+        });
+
+        // Close tooltip when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!cvTooltip.contains(e.target) && !cvInfoBtn.contains(e.target)) {
+                tooltipVisible = false;
+                cvTooltip.classList.remove('active');
+            }
+        });
+
+        // Initialize tooltip with original info
+        applyFilter('original');
     </script>
 </body>
 </html>
