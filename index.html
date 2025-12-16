@@ -238,7 +238,7 @@
             opacity: 1;
         }
 
-        /* Profile Picture with CV Filters */
+        /* Profile Picture with Computer Vision Filters */
         .profile-container {
             position: relative;
             display: inline-block;
@@ -654,7 +654,7 @@
             <div class="profile-container">
                 <img src="assets/profile.jpg" alt="Rajat Jaiswal" class="profile-pic" id="profile-img" crossorigin="anonymous">
                 <canvas id="profile-canvas" width="280" height="280"></canvas>
-                <span class="cv-badge">CV Demo</span>
+                <span class="cv-badge">Computer Vision</span>
                 <div class="cv-tooltip" id="cv-tooltip">
                     <h4 id="tooltip-title">Original Image</h4>
                     <p id="tooltip-desc">No filter applied. Select a computer vision filter to see it in action.</p>
@@ -662,7 +662,7 @@
                 </div>
                 <div class="cv-filter-container">
                     <div class="cv-filter-header">
-                        <label>CV Filter</label>
+                        <label>Filter</label>
                         <button class="cv-info-btn" id="cv-info-btn" title="Show filter info">?</button>
                     </div>
                     <select id="cv-filter-select">
@@ -1000,7 +1000,7 @@
             ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
 
-        // CV Filters for Profile Picture
+        // Computer Vision Filters for Profile Picture
         const profileImg = document.getElementById('profile-img');
         const profileCanvas = document.getElementById('profile-canvas');
         const profileCtx = profileCanvas.getContext('2d');
