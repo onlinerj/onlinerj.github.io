@@ -570,6 +570,292 @@
             color: var(--accent);
         }
 
+        /* NLP Demo Section */
+        .nlp-demo-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            position: relative;
+        }
+
+        .nlp-demo-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .nlp-badge {
+            background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+            color: white;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 100px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nlp-badge svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .nlp-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #nlp-filter-select {
+            padding: 8px 12px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 13px;
+            font-family: inherit;
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        #nlp-filter-select:hover,
+        #nlp-filter-select:focus {
+            border-color: #10b981;
+        }
+
+        #nlp-filter-select option {
+            background: var(--bg-card);
+            color: var(--text);
+        }
+
+        .nlp-info-btn {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--border);
+            color: var(--text-muted);
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .nlp-info-btn:hover {
+            background: #10b981;
+            color: white;
+        }
+
+        .nlp-input-area {
+            width: 100%;
+            min-height: 80px;
+            padding: 16px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text);
+            font-size: 14px;
+            font-family: inherit;
+            line-height: 1.6;
+            resize: vertical;
+            outline: none;
+            transition: border-color 0.2s ease;
+            margin-bottom: 16px;
+        }
+
+        .nlp-input-area:focus {
+            border-color: #10b981;
+        }
+
+        .nlp-input-area::placeholder {
+            color: var(--text-muted);
+        }
+
+        .nlp-output {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            min-height: 60px;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .nlp-output-label {
+            font-size: 11px;
+            color: #10b981;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        /* Token styling */
+        .token {
+            display: inline-block;
+            padding: 2px 8px;
+            margin: 2px;
+            border-radius: 4px;
+            font-size: 13px;
+            transition: transform 0.2s ease;
+        }
+
+        .token:hover {
+            transform: scale(1.05);
+        }
+
+        .token-word { background: rgba(99, 102, 241, 0.2); color: #a5b4fc; }
+        .token-punct { background: rgba(251, 191, 36, 0.2); color: #fbbf24; }
+        .token-number { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+
+        /* POS Tag colors */
+        .pos-noun { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+        .pos-verb { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+        .pos-adj { background: rgba(168, 85, 247, 0.2); color: #c084fc; }
+        .pos-adv { background: rgba(236, 72, 153, 0.2); color: #f472b6; }
+        .pos-prep { background: rgba(251, 191, 36, 0.2); color: #fbbf24; }
+        .pos-det { background: rgba(148, 163, 184, 0.2); color: #94a3b8; }
+        .pos-pron { background: rgba(20, 184, 166, 0.2); color: #2dd4bf; }
+        .pos-conj { background: rgba(251, 146, 60, 0.2); color: #fb923c; }
+
+        /* NER Entity colors */
+        .ner-person { background: rgba(59, 130, 246, 0.3); color: #60a5fa; border-bottom: 2px solid #3b82f6; }
+        .ner-org { background: rgba(168, 85, 247, 0.3); color: #c084fc; border-bottom: 2px solid #a855f7; }
+        .ner-loc { background: rgba(16, 185, 129, 0.3); color: #34d399; border-bottom: 2px solid #10b981; }
+        .ner-date { background: rgba(251, 191, 36, 0.3); color: #fbbf24; border-bottom: 2px solid #f59e0b; }
+        .ner-tech { background: rgba(239, 68, 68, 0.3); color: #f87171; border-bottom: 2px solid #ef4444; }
+
+        /* Sentiment display */
+        .sentiment-result {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .sentiment-meter {
+            flex: 1;
+            min-width: 200px;
+            height: 8px;
+            background: linear-gradient(90deg, #ef4444 0%, #fbbf24 50%, #10b981 100%);
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .sentiment-indicator {
+            position: absolute;
+            top: -4px;
+            width: 16px;
+            height: 16px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            transform: translateX(-50%);
+            transition: left 0.3s ease;
+        }
+
+        .sentiment-label {
+            font-size: 14px;
+            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: 100px;
+        }
+
+        .sentiment-positive { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+        .sentiment-negative { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+        .sentiment-neutral { background: rgba(251, 191, 36, 0.2); color: #fbbf24; }
+
+        /* Stats grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 12px;
+        }
+
+        .stat-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 600;
+            color: #10b981;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* NLP Tooltip */
+        .nlp-tooltip {
+            position: absolute;
+            top: 70px;
+            right: 24px;
+            background: var(--bg);
+            border: 1px solid #10b981;
+            border-radius: 12px;
+            padding: 16px;
+            width: 280px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 100;
+            box-shadow: 0 8px 32px rgba(16, 185, 129, 0.2);
+        }
+
+        .nlp-tooltip.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .nlp-tooltip h4 {
+            font-size: 14px;
+            color: #10b981;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .nlp-tooltip p {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 0;
+        }
+
+        .nlp-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+        }
+
+        .legend-item {
+            font-size: 10px;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
         /* Blog Cards */
         .blog-grid {
             display: grid;
@@ -734,6 +1020,40 @@
                 <span class="tag">Multi Agent Systems</span>
                 <span class="tag">RAG</span>
                 <span class="tag">GraphML</span>
+            </div>
+        </section>
+
+        <section>
+            <h2>Natural Language Processing Demo</h2>
+            <div class="nlp-demo-container">
+                <div class="nlp-tooltip" id="nlp-tooltip">
+                    <h4 id="nlp-tooltip-title">Select a Technique</h4>
+                    <p id="nlp-tooltip-desc">Choose an NLP technique from the dropdown to see it in action.</p>
+                    <div class="nlp-legend" id="nlp-legend"></div>
+                </div>
+                <div class="nlp-demo-header">
+                    <span class="nlp-badge">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        Natural Language Processing
+                    </span>
+                    <div class="nlp-controls">
+                        <select id="nlp-filter-select">
+                            <option value="tokenization">Tokenization</option>
+                            <option value="pos">Part-of-Speech Tagging</option>
+                            <option value="ner">Named Entity Recognition</option>
+                            <option value="sentiment">Sentiment Analysis</option>
+                            <option value="stats">Text Statistics</option>
+                        </select>
+                        <button class="nlp-info-btn" id="nlp-info-btn" title="Show technique info">?</button>
+                    </div>
+                </div>
+                <textarea class="nlp-input-area" id="nlp-input" placeholder="Type or paste text here to analyze... Try: 'Rajat Jaiswal works at Stevens Institute in New Jersey. He loves building AI systems with PyTorch and TensorFlow!'"></textarea>
+                <div class="nlp-output">
+                    <div class="nlp-output-label">Output</div>
+                    <div id="nlp-output-content">Enter text above and select a technique to see results.</div>
+                </div>
             </div>
         </section>
 
@@ -1243,6 +1563,362 @@
 
         // Initialize tooltip with original info
         applyFilter('original');
+
+        // ===== NLP Demo =====
+        const nlpInput = document.getElementById('nlp-input');
+        const nlpOutput = document.getElementById('nlp-output-content');
+        const nlpFilterSelect = document.getElementById('nlp-filter-select');
+        const nlpInfoBtn = document.getElementById('nlp-info-btn');
+        const nlpTooltip = document.getElementById('nlp-tooltip');
+        const nlpTooltipTitle = document.getElementById('nlp-tooltip-title');
+        const nlpTooltipDesc = document.getElementById('nlp-tooltip-desc');
+        const nlpLegend = document.getElementById('nlp-legend');
+
+        // NLP technique information
+        const nlpTechniqueInfo = {
+            tokenization: {
+                title: 'Tokenization',
+                desc: 'Breaks text into individual tokens (words, punctuation, numbers). Foundation step for all NLP pipelines.',
+                legend: [
+                    { class: 'token-word', label: 'Word' },
+                    { class: 'token-punct', label: 'Punctuation' },
+                    { class: 'token-number', label: 'Number' }
+                ]
+            },
+            pos: {
+                title: 'Part-of-Speech Tagging',
+                desc: 'Assigns grammatical categories to each word (noun, verb, adjective, etc.) using rule-based patterns.',
+                legend: [
+                    { class: 'pos-noun', label: 'Noun' },
+                    { class: 'pos-verb', label: 'Verb' },
+                    { class: 'pos-adj', label: 'Adjective' },
+                    { class: 'pos-adv', label: 'Adverb' },
+                    { class: 'pos-prep', label: 'Preposition' },
+                    { class: 'pos-pron', label: 'Pronoun' }
+                ]
+            },
+            ner: {
+                title: 'Named Entity Recognition',
+                desc: 'Identifies and classifies named entities in text into predefined categories like persons, organizations, and locations.',
+                legend: [
+                    { class: 'ner-person', label: 'Person' },
+                    { class: 'ner-org', label: 'Organization' },
+                    { class: 'ner-loc', label: 'Location' },
+                    { class: 'ner-tech', label: 'Technology' },
+                    { class: 'ner-date', label: 'Date' }
+                ]
+            },
+            sentiment: {
+                title: 'Sentiment Analysis',
+                desc: 'Determines the emotional tone of text by analyzing word polarity. Uses a lexicon-based approach with positive/negative word lists.',
+                legend: []
+            },
+            stats: {
+                title: 'Text Statistics',
+                desc: 'Computes various metrics including word count, character count, sentence count, and average word length.',
+                legend: []
+            }
+        };
+
+        // Simple word lists for NLP
+        const positiveWords = ['love', 'great', 'excellent', 'amazing', 'wonderful', 'fantastic', 'good', 'best', 'happy', 'joy', 'beautiful', 'awesome', 'brilliant', 'perfect', 'enjoy', 'excited', 'impressive', 'innovative', 'success', 'outstanding'];
+        const negativeWords = ['hate', 'bad', 'terrible', 'awful', 'horrible', 'worst', 'sad', 'angry', 'poor', 'fail', 'ugly', 'boring', 'disappointing', 'frustrating', 'difficult', 'problem', 'error', 'wrong', 'broken', 'slow'];
+        
+        const commonVerbs = ['is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'could', 'should', 'may', 'might', 'must', 'shall', 'can', 'need', 'dare', 'ought', 'used', 'go', 'goes', 'went', 'gone', 'going', 'get', 'gets', 'got', 'getting', 'make', 'makes', 'made', 'making', 'know', 'knows', 'knew', 'known', 'think', 'thinks', 'thought', 'take', 'takes', 'took', 'taken', 'see', 'sees', 'saw', 'seen', 'come', 'comes', 'came', 'coming', 'want', 'wants', 'wanted', 'give', 'gives', 'gave', 'given', 'use', 'uses', 'used', 'find', 'finds', 'found', 'tell', 'tells', 'told', 'work', 'works', 'worked', 'working', 'call', 'calls', 'called', 'try', 'tries', 'tried', 'ask', 'asks', 'asked', 'put', 'puts', 'keep', 'keeps', 'kept', 'let', 'lets', 'begin', 'begins', 'began', 'seem', 'seems', 'seemed', 'help', 'helps', 'helped', 'show', 'shows', 'showed', 'hear', 'hears', 'heard', 'play', 'plays', 'played', 'run', 'runs', 'ran', 'move', 'moves', 'moved', 'live', 'lives', 'lived', 'believe', 'believes', 'believed', 'hold', 'holds', 'held', 'bring', 'brings', 'brought', 'write', 'writes', 'wrote', 'written', 'stand', 'stands', 'stood', 'lose', 'loses', 'lost', 'pay', 'pays', 'paid', 'meet', 'meets', 'met', 'include', 'includes', 'included', 'continue', 'continues', 'continued', 'set', 'sets', 'learn', 'learns', 'learned', 'change', 'changes', 'changed', 'lead', 'leads', 'led', 'understand', 'understands', 'understood', 'watch', 'watches', 'watched', 'follow', 'follows', 'followed', 'stop', 'stops', 'stopped', 'create', 'creates', 'created', 'speak', 'speaks', 'spoke', 'spoken', 'read', 'reads', 'allow', 'allows', 'allowed', 'add', 'adds', 'added', 'spend', 'spends', 'spent', 'grow', 'grows', 'grew', 'grown', 'open', 'opens', 'opened', 'walk', 'walks', 'walked', 'win', 'wins', 'won', 'offer', 'offers', 'offered', 'remember', 'remembers', 'remembered', 'loves', 'building', 'build', 'builds', 'built'];
+        const commonAdj = ['good', 'new', 'first', 'last', 'long', 'great', 'little', 'own', 'other', 'old', 'right', 'big', 'high', 'different', 'small', 'large', 'next', 'early', 'young', 'important', 'few', 'public', 'bad', 'same', 'able', 'best', 'better', 'sure', 'free', 'true', 'whole', 'real', 'full', 'amazing', 'beautiful', 'wonderful', 'excellent', 'fantastic', 'incredible', 'awesome', 'brilliant'];
+        const commonAdv = ['very', 'also', 'just', 'only', 'now', 'then', 'more', 'here', 'well', 'even', 'still', 'already', 'always', 'never', 'often', 'really', 'almost', 'ever', 'quite', 'probably', 'certainly', 'perhaps', 'usually', 'actually', 'simply', 'quickly', 'slowly', 'finally', 'soon', 'recently', 'especially', 'exactly', 'easily'];
+        const commonPrep = ['of', 'in', 'to', 'for', 'with', 'on', 'at', 'from', 'by', 'about', 'as', 'into', 'through', 'during', 'before', 'after', 'above', 'below', 'between', 'under', 'again', 'further', 'once', 'over', 'near', 'around', 'behind', 'along', 'within', 'without', 'toward', 'towards', 'upon', 'across', 'against', 'among', 'throughout', 'despite', 'beyond'];
+        const commonDet = ['the', 'a', 'an', 'this', 'that', 'these', 'those', 'my', 'your', 'his', 'her', 'its', 'our', 'their', 'some', 'any', 'no', 'every', 'each', 'all', 'both', 'few', 'more', 'most', 'other', 'such', 'what', 'which', 'whose'];
+        const commonPron = ['i', 'you', 'he', 'she', 'it', 'we', 'they', 'me', 'him', 'her', 'us', 'them', 'myself', 'yourself', 'himself', 'herself', 'itself', 'ourselves', 'themselves', 'who', 'whom', 'whose', 'which', 'that', 'what', 'whoever', 'whatever', 'this', 'these', 'those'];
+        const commonConj = ['and', 'but', 'or', 'nor', 'for', 'yet', 'so', 'because', 'although', 'while', 'if', 'when', 'where', 'unless', 'until', 'since', 'before', 'after', 'though', 'whereas', 'whether'];
+        
+        // Named entities (simplified)
+        const knownPersons = ['rajat', 'jaiswal', 'john', 'mary', 'james', 'michael', 'david', 'sarah', 'emily', 'alex', 'sam', 'chris', 'jordan', 'taylor'];
+        const knownOrgs = ['google', 'microsoft', 'amazon', 'apple', 'meta', 'facebook', 'nvidia', 'openai', 'anthropic', 'tesla', 'aramco', 'stevens', 'mit', 'stanford', 'harvard', 'berkeley', 'cmu', 'nyu', 'columbia', 'princeton', 'yale', 'caltech', 'institute'];
+        const knownLocations = ['new york', 'jersey', 'california', 'texas', 'boston', 'seattle', 'san francisco', 'london', 'paris', 'tokyo', 'beijing', 'india', 'china', 'usa', 'uk', 'europe', 'asia', 'america', 'hoboken'];
+        const knownTech = ['pytorch', 'tensorflow', 'python', 'javascript', 'react', 'node', 'cuda', 'gpu', 'ai', 'ml', 'nlp', 'llm', 'transformer', 'bert', 'gpt', 'neural', 'deep learning', 'machine learning', 'langchain', 'huggingface'];
+
+        // Tokenization
+        function tokenize(text) {
+            const tokens = [];
+            const regex = /(\w+|\d+|[^\w\s])/g;
+            let match;
+            while ((match = regex.exec(text)) !== null) {
+                const token = match[1];
+                let type = 'word';
+                if (/^\d+$/.test(token)) type = 'number';
+                else if (/^[^\w\s]$/.test(token)) type = 'punct';
+                tokens.push({ text: token, type });
+            }
+            return tokens;
+        }
+
+        // POS Tagging (simplified rule-based)
+        function posTag(text) {
+            const tokens = tokenize(text);
+            return tokens.map(token => {
+                const word = token.text.toLowerCase();
+                let pos = 'noun'; // default
+                
+                if (token.type === 'punct') pos = 'punct';
+                else if (token.type === 'number') pos = 'num';
+                else if (commonVerbs.includes(word) || word.endsWith('ing') || word.endsWith('ed')) pos = 'verb';
+                else if (commonAdj.includes(word) || word.endsWith('ful') || word.endsWith('less') || word.endsWith('ous') || word.endsWith('ive')) pos = 'adj';
+                else if (commonAdv.includes(word) || word.endsWith('ly')) pos = 'adv';
+                else if (commonPrep.includes(word)) pos = 'prep';
+                else if (commonDet.includes(word)) pos = 'det';
+                else if (commonPron.includes(word)) pos = 'pron';
+                else if (commonConj.includes(word)) pos = 'conj';
+                
+                return { ...token, pos };
+            });
+        }
+
+        // NER (simplified pattern matching)
+        function nerTag(text) {
+            let result = text;
+            const entities = [];
+            
+            // Check for tech terms
+            knownTech.forEach(tech => {
+                const regex = new RegExp(`\\b${tech}\\b`, 'gi');
+                if (regex.test(result)) {
+                    entities.push({ text: tech, type: 'tech' });
+                }
+            });
+            
+            // Check for organizations
+            knownOrgs.forEach(org => {
+                const regex = new RegExp(`\\b${org}\\b`, 'gi');
+                if (regex.test(result)) {
+                    entities.push({ text: org, type: 'org' });
+                }
+            });
+            
+            // Check for locations
+            knownLocations.forEach(loc => {
+                const regex = new RegExp(`\\b${loc}\\b`, 'gi');
+                if (regex.test(result)) {
+                    entities.push({ text: loc, type: 'loc' });
+                }
+            });
+            
+            // Check for persons (capitalized words not in other categories)
+            knownPersons.forEach(person => {
+                const regex = new RegExp(`\\b${person}\\b`, 'gi');
+                if (regex.test(result)) {
+                    entities.push({ text: person, type: 'person' });
+                }
+            });
+
+            // Date patterns
+            const datePattern = /\b(\d{1,2}\/\d{1,2}\/\d{2,4}|\d{4}|january|february|march|april|may|june|july|august|september|october|november|december)\b/gi;
+            let dateMatch;
+            while ((dateMatch = datePattern.exec(text)) !== null) {
+                entities.push({ text: dateMatch[0], type: 'date' });
+            }
+
+            return { text, entities };
+        }
+
+        // Sentiment Analysis
+        function analyzeSentiment(text) {
+            const words = text.toLowerCase().split(/\s+/);
+            let score = 0;
+            let positiveCount = 0;
+            let negativeCount = 0;
+            
+            words.forEach(word => {
+                const cleanWord = word.replace(/[^\w]/g, '');
+                if (positiveWords.includes(cleanWord)) {
+                    score += 1;
+                    positiveCount++;
+                }
+                if (negativeWords.includes(cleanWord)) {
+                    score -= 1;
+                    negativeCount++;
+                }
+            });
+            
+            const normalizedScore = Math.max(-1, Math.min(1, score / Math.max(1, positiveCount + negativeCount)));
+            let label = 'Neutral';
+            if (normalizedScore > 0.2) label = 'Positive';
+            else if (normalizedScore < -0.2) label = 'Negative';
+            
+            return { score: normalizedScore, label, positiveCount, negativeCount };
+        }
+
+        // Text Statistics
+        function getTextStats(text) {
+            const words = text.trim().split(/\s+/).filter(w => w.length > 0);
+            const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+            const chars = text.replace(/\s/g, '').length;
+            const avgWordLength = words.length > 0 ? (words.reduce((sum, w) => sum + w.length, 0) / words.length).toFixed(1) : 0;
+            const uniqueWords = new Set(words.map(w => w.toLowerCase().replace(/[^\w]/g, ''))).size;
+            
+            return {
+                wordCount: words.length,
+                charCount: chars,
+                sentenceCount: sentences.length,
+                avgWordLength,
+                uniqueWords,
+                lexicalDensity: words.length > 0 ? ((uniqueWords / words.length) * 100).toFixed(1) : 0
+            };
+        }
+
+        // Render functions
+        function renderTokenization(text) {
+            const tokens = tokenize(text);
+            return tokens.map(t => 
+                `<span class="token token-${t.type}">${t.text}</span>`
+            ).join(' ');
+        }
+
+        function renderPOS(text) {
+            const tagged = posTag(text);
+            return tagged.map(t => {
+                if (t.pos === 'punct' || t.pos === 'num') {
+                    return `<span class="token token-${t.type}">${t.text}</span>`;
+                }
+                return `<span class="token pos-${t.pos}" title="${t.pos.toUpperCase()}">${t.text}</span>`;
+            }).join(' ');
+        }
+
+        function renderNER(text) {
+            const { entities } = nerTag(text);
+            let result = text;
+            
+            // Sort entities by length (longer first to avoid partial replacements)
+            entities.sort((a, b) => b.text.length - a.text.length);
+            
+            entities.forEach(entity => {
+                const regex = new RegExp(`\\b(${entity.text})\\b`, 'gi');
+                result = result.replace(regex, `<span class="token ner-${entity.type}" title="${entity.type.toUpperCase()}">$1</span>`);
+            });
+            
+            return result;
+        }
+
+        function renderSentiment(text) {
+            const { score, label, positiveCount, negativeCount } = analyzeSentiment(text);
+            const percentage = ((score + 1) / 2) * 100;
+            const labelClass = label.toLowerCase();
+            
+            return `
+                <div class="sentiment-result">
+                    <div class="sentiment-meter">
+                        <div class="sentiment-indicator" style="left: ${percentage}%"></div>
+                    </div>
+                    <span class="sentiment-label sentiment-${labelClass}">${label}</span>
+                </div>
+                <div style="margin-top: 12px; font-size: 13px; color: var(--text-muted);">
+                    Found <strong style="color: #10b981">${positiveCount}</strong> positive and 
+                    <strong style="color: #ef4444">${negativeCount}</strong> negative words.
+                    Score: <strong style="color: var(--text)">${score.toFixed(2)}</strong>
+                </div>
+            `;
+        }
+
+        function renderStats(text) {
+            const stats = getTextStats(text);
+            return `
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-value">${stats.wordCount}</span>
+                        <span class="stat-label">Words</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">${stats.charCount}</span>
+                        <span class="stat-label">Characters</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">${stats.sentenceCount}</span>
+                        <span class="stat-label">Sentences</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">${stats.avgWordLength}</span>
+                        <span class="stat-label">Avg Word Len</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">${stats.uniqueWords}</span>
+                        <span class="stat-label">Unique Words</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">${stats.lexicalDensity}%</span>
+                        <span class="stat-label">Lexical Density</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Main NLP processing function
+        function processNLP() {
+            const text = nlpInput.value.trim();
+            const technique = nlpFilterSelect.value;
+            
+            if (!text) {
+                nlpOutput.innerHTML = 'Enter text above to see results.';
+                return;
+            }
+            
+            switch (technique) {
+                case 'tokenization':
+                    nlpOutput.innerHTML = renderTokenization(text);
+                    break;
+                case 'pos':
+                    nlpOutput.innerHTML = renderPOS(text);
+                    break;
+                case 'ner':
+                    nlpOutput.innerHTML = renderNER(text);
+                    break;
+                case 'sentiment':
+                    nlpOutput.innerHTML = renderSentiment(text);
+                    break;
+                case 'stats':
+                    nlpOutput.innerHTML = renderStats(text);
+                    break;
+            }
+            
+            updateNLPTooltip(technique);
+        }
+
+        // Update tooltip
+        function updateNLPTooltip(technique) {
+            const info = nlpTechniqueInfo[technique];
+            nlpTooltipTitle.textContent = info.title;
+            nlpTooltipDesc.textContent = info.desc;
+            
+            if (info.legend.length > 0) {
+                nlpLegend.innerHTML = info.legend.map(item => 
+                    `<span class="legend-item ${item.class}">${item.label}</span>`
+                ).join('');
+                nlpLegend.style.display = 'flex';
+            } else {
+                nlpLegend.style.display = 'none';
+            }
+        }
+
+        // Event listeners
+        nlpInput.addEventListener('input', processNLP);
+        nlpFilterSelect.addEventListener('change', processNLP);
+
+        let nlpTooltipVisible = false;
+        nlpInfoBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            nlpTooltipVisible = !nlpTooltipVisible;
+            nlpTooltip.classList.toggle('active', nlpTooltipVisible);
+            updateNLPTooltip(nlpFilterSelect.value);
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!nlpTooltip.contains(e.target) && !nlpInfoBtn.contains(e.target)) {
+                nlpTooltipVisible = false;
+                nlpTooltip.classList.remove('active');
+            }
+        });
+
+        // Initialize
+        updateNLPTooltip('tokenization');
     </script>
 </body>
 </html>
