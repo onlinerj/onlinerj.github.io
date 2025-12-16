@@ -309,6 +309,45 @@
             margin-top: 12px;
         }
 
+        /* Frameworks Section */
+        .frameworks-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .framework-category {
+            padding: 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .framework-category:hover {
+            border-color: var(--accent);
+        }
+
+        .framework-category h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .framework-list {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        .framework-list span {
+            color: var(--text);
+            font-weight: 500;
+        }
+
         /* Blog Cards */
         .blog-grid {
             display: grid;
@@ -448,6 +487,36 @@
                 <span class="tag">Multi Agent Systems</span>
                 <span class="tag">RAG</span>
                 <span class="tag">GraphML</span>
+            </div>
+        </section>
+
+        <section>
+            <h2>Frameworks & Tools</h2>
+            <div class="frameworks-grid">
+                <div class="framework-category">
+                    <h3>Scalable AI & HPC</h3>
+                    <p class="framework-list">
+                        <span>PyTorch</span> | <span>TensorFlow</span> | <span>JAX</span> | <span>PySpark</span> | <span>DeepSpeed</span> | <span>Ray</span> | <span>SLURM</span> | <span>CUDA</span> | <span>C++</span> | <span>Triton</span> | <span>NCCL</span> | <span>ONNX</span> | <span>Apache Beam</span>
+                    </p>
+                </div>
+                <div class="framework-category">
+                    <h3>GenAI & Applied ML</h3>
+                    <p class="framework-list">
+                        <span>Transformers</span> | <span>HuggingFace</span> | <span>vLLM</span> | <span>TRLx</span> | <span>NeMo</span> | <span>PySpark</span> | <span>NumPy</span> | <span>Pandas</span> | <span>Matplotlib</span> | <span>Sagemaker</span> | <span>W&B</span>
+                    </p>
+                </div>
+                <div class="framework-category">
+                    <h3>Agentic AI & RAG</h3>
+                    <p class="framework-list">
+                        <span>LangChain</span> | <span>LangGraph</span> | <span>LangSmith</span> | <span>ADK</span> | <span>GraphRAG</span> | <span>VectorDB</span> | <span>Qdrant</span> | <span>FAISS</span> | <span>FastMCP</span> | <span>Apache Beam</span>
+                    </p>
+                </div>
+                <div class="framework-category">
+                    <h3>MLOps, Infra & Eval</h3>
+                    <p class="framework-list">
+                        <span>Azure</span> | <span>AWS</span> | <span>Docker</span> | <span>Kubernetes</span> | <span>Kubeflow</span> | <span>MLflow</span> | <span>Git</span> | <span>FastAPI</span> | <span>HELM</span> | <span>DeepEval</span>
+                    </p>
+                </div>
             </div>
         </section>
 
