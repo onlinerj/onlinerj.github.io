@@ -338,14 +338,25 @@
         }
 
         .framework-list {
-            font-size: 14px;
-            color: var(--text-muted);
-            line-height: 1.8;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
         }
 
         .framework-list span {
+            padding: 6px 12px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 13px;
             color: var(--text);
             font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .framework-list span:hover {
+            border-color: var(--accent);
+            color: var(--accent);
         }
 
         /* Blog Cards */
@@ -495,27 +506,67 @@
             <div class="frameworks-grid">
                 <div class="framework-category">
                     <h3>Scalable AI & HPC</h3>
-                    <p class="framework-list">
-                        <span>PyTorch</span> | <span>TensorFlow</span> | <span>JAX</span> | <span>PySpark</span> | <span>DeepSpeed</span> | <span>Ray</span> | <span>SLURM</span> | <span>CUDA</span> | <span>C++</span> | <span>Triton</span> | <span>NCCL</span> | <span>ONNX</span> | <span>Apache Beam</span>
-                    </p>
+                    <div class="framework-list">
+                        <span>PyTorch</span>
+                        <span>TensorFlow</span>
+                        <span>JAX</span>
+                        <span>PySpark</span>
+                        <span>DeepSpeed</span>
+                        <span>Ray</span>
+                        <span>SLURM</span>
+                        <span>CUDA</span>
+                        <span>C++</span>
+                        <span>Triton</span>
+                        <span>NCCL</span>
+                        <span>ONNX</span>
+                        <span>Apache Beam</span>
+                    </div>
                 </div>
                 <div class="framework-category">
                     <h3>GenAI & Applied ML</h3>
-                    <p class="framework-list">
-                        <span>Transformers</span> | <span>HuggingFace</span> | <span>vLLM</span> | <span>TRLx</span> | <span>NeMo</span> | <span>PySpark</span> | <span>NumPy</span> | <span>Pandas</span> | <span>Matplotlib</span> | <span>Sagemaker</span> | <span>W&B</span>
-                    </p>
+                    <div class="framework-list">
+                        <span>Transformers</span>
+                        <span>HuggingFace</span>
+                        <span>vLLM</span>
+                        <span>TRLx</span>
+                        <span>NeMo</span>
+                        <span>PySpark</span>
+                        <span>NumPy</span>
+                        <span>Pandas</span>
+                        <span>Matplotlib</span>
+                        <span>Sagemaker</span>
+                        <span>W&B</span>
+                    </div>
                 </div>
                 <div class="framework-category">
                     <h3>Agentic AI & RAG</h3>
-                    <p class="framework-list">
-                        <span>LangChain</span> | <span>LangGraph</span> | <span>LangSmith</span> | <span>ADK</span> | <span>GraphRAG</span> | <span>VectorDB</span> | <span>Qdrant</span> | <span>FAISS</span> | <span>FastMCP</span> | <span>Apache Beam</span>
-                    </p>
+                    <div class="framework-list">
+                        <span>LangChain</span>
+                        <span>LangGraph</span>
+                        <span>LangSmith</span>
+                        <span>ADK</span>
+                        <span>GraphRAG</span>
+                        <span>VectorDB</span>
+                        <span>Qdrant</span>
+                        <span>FAISS</span>
+                        <span>FastMCP</span>
+                        <span>Apache Beam</span>
+                    </div>
                 </div>
                 <div class="framework-category">
                     <h3>MLOps, Infra & Eval</h3>
-                    <p class="framework-list">
-                        <span>Azure</span> | <span>AWS</span> | <span>Docker</span> | <span>Kubernetes</span> | <span>Kubeflow</span> | <span>MLflow</span> | <span>Git</span> | <span>FastAPI</span> | <span>HELM</span> | <span>DeepEval</span>
-                    </p>
+                    <div class="framework-list">
+                        <span>Azure</span>
+                        <span>AWS</span>
+                        <span>Docker</span>
+                        <span>Kubernetes</span>
+                        <span>Kubeflow</span>
+                        <span>MLflow</span>
+                        <span>Git</span>
+                        <span>FastAPI</span>
+                        <span>HELM</span>
+                        <span>DeepEval</span>
+                    </div>
                 </div>
             </div>
         </section>
@@ -541,6 +592,24 @@
             <div class="experience-item">
                 <h3>Indian Institute of Technology, Dhanbad</h3>
                 <p>B.Tech [Hons.] in Computer Science and Engineering [Minor] - 2019</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Certifications</h2>
+            <div class="experience-item">
+                <h3>Microsoft Azure (5x Certified)</h3>
+                <div class="framework-list" style="margin-top: 12px;">
+                    <span>AI-900</span>
+                    <span>AZ-900</span>
+                    <span>DP-900</span>
+                    <span>DP-100</span>
+                    <span>PL-900</span>
+                </div>
+            </div>
+            <div class="experience-item">
+                <h3>Nvidia Deep Learning Institute</h3>
+                <p>Accelerated Computing with CUDA</p>
             </div>
         </section>
 
