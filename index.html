@@ -673,16 +673,22 @@
                 </div>
                 <div class="cv-filter-container">
                     <div class="cv-filter-header">
-                        <label>Filter</label>
+                        <label>Select a Computer Vision Filter</label>
                         <button class="cv-info-btn" id="cv-info-btn" title="Show filter info">?</button>
                     </div>
                     <select id="cv-filter-select">
                         <option value="original">Original</option>
                         <option value="sobel">Sobel — Edge Detection</option>
-                        <option value="gaussian">Gaussian Blur — Noise Reduction</option>
-                        <option value="grayscale">Grayscale — Color Conversion</option>
+                        <option value="prewitt">Prewitt — Edge Detection</option>
+                        <option value="laplacian">Laplacian — 2nd Derivative</option>
+                        <option value="gaussian">Gaussian Blur — Smoothing</option>
+                        <option value="box">Box Blur — Mean Filter</option>
+                        <option value="grayscale">Grayscale — Luminance</option>
+                        <option value="threshold">Threshold — Binary</option>
                         <option value="sharpen">Sharpen — Enhancement</option>
                         <option value="emboss">Emboss — 3D Effect</option>
+                        <option value="sepia">Sepia — Vintage Tone</option>
+                        <option value="invert">Invert — Negative</option>
                     </select>
                 </div>
             </div>
@@ -1036,15 +1042,35 @@
                 desc: 'Computes image gradients using convolution kernels to detect edges. Combines horizontal (Gx) and vertical (Gy) derivatives.',
                 kernel: 'Gx:          Gy:\n[-1  0  1]   [-1 -2 -1]\n[-2  0  2]   [ 0  0  0]\n[-1  0  1]   [ 1  2  1]'
             },
+            prewitt: {
+                title: 'Prewitt Edge Detection',
+                desc: 'Similar to Sobel but with uniform weights. Less sensitive to noise but may miss fine details.',
+                kernel: 'Gx:          Gy:\n[-1  0  1]   [-1 -1 -1]\n[-1  0  1]   [ 0  0  0]\n[-1  0  1]   [ 1  1  1]'
+            },
+            laplacian: {
+                title: 'Laplacian Filter',
+                desc: 'Second-order derivative operator that detects edges in all directions. Sensitive to noise but finds fine edges.',
+                kernel: '[ 0 -1  0 ]\n[-1  4 -1 ]\n[ 0 -1  0 ]'
+            },
             gaussian: {
                 title: 'Gaussian Blur',
                 desc: 'Smooths the image using a weighted average kernel that approximates a Gaussian distribution. Reduces noise and detail.',
                 kernel: '1/16 × [ 1  2  1 ]\n       [ 2  4  2 ]\n       [ 1  2  1 ]'
             },
+            box: {
+                title: 'Box Blur (Mean Filter)',
+                desc: 'Simple averaging filter that replaces each pixel with the mean of its neighbors. Fast but can cause blocky artifacts.',
+                kernel: '1/9 × [ 1  1  1 ]\n      [ 1  1  1 ]\n      [ 1  1  1 ]'
+            },
             grayscale: {
                 title: 'Grayscale Conversion',
                 desc: 'Converts RGB to luminance using perceptual weights based on human eye sensitivity to different wavelengths.',
                 kernel: 'Y = 0.299R + 0.587G + 0.114B\n\n(ITU-R BT.601 standard)'
+            },
+            threshold: {
+                title: 'Binary Threshold',
+                desc: 'Converts grayscale to binary (black/white) based on a threshold value. Used in segmentation and OCR preprocessing.',
+                kernel: 'if (pixel > 128)\n  output = 255\nelse\n  output = 0'
             },
             sharpen: {
                 title: 'Sharpening Filter',
@@ -1055,6 +1081,16 @@
                 title: 'Emboss Effect',
                 desc: 'Creates a 3D relief effect by computing directional gradients, making the image appear raised or stamped.',
                 kernel: '[-2 -1  0 ]\n[-1  1  1 ]\n[ 0  1  2 ]'
+            },
+            sepia: {
+                title: 'Sepia Tone',
+                desc: 'Applies a warm brownish tone reminiscent of antique photographs. Uses a color transformation matrix.',
+                kernel: 'R\' = 0.393R + 0.769G + 0.189B\nG\' = 0.349R + 0.686G + 0.168B\nB\' = 0.272R + 0.534G + 0.131B'
+            },
+            invert: {
+                title: 'Color Inversion (Negative)',
+                desc: 'Inverts all color values, creating a photographic negative effect. Each channel: output = 255 - input.',
+                kernel: 'R\' = 255 - R\nG\' = 255 - G\nB\' = 255 - B'
             }
         };
 
@@ -1186,6 +1222,176 @@
             profileCtx.putImageData(output, 0, 0);
         }
 
+        // Prewitt edge detection
+        function applyPrewitt() {
+            if (!originalImageData) return;
+
+            const width = 280;
+            const height = 280;
+            const src = originalImageData.data;
+            const output = profileCtx.createImageData(width, height);
+            const dst = output.data;
+
+            const prewittX = [[-1, 0, 1], [-1, 0, 1], [-1, 0, 1]];
+            const prewittY = [[-1, -1, -1], [0, 0, 0], [1, 1, 1]];
+
+            const gray = new Float32Array(width * height);
+            for (let i = 0; i < width * height; i++) {
+                gray[i] = 0.299 * src[i * 4] + 0.587 * src[i * 4 + 1] + 0.114 * src[i * 4 + 2];
+            }
+
+            for (let y = 1; y < height - 1; y++) {
+                for (let x = 1; x < width - 1; x++) {
+                    let gx = 0, gy = 0;
+
+                    for (let ky = -1; ky <= 1; ky++) {
+                        for (let kx = -1; kx <= 1; kx++) {
+                            const idx = (y + ky) * width + (x + kx);
+                            gx += gray[idx] * prewittX[ky + 1][kx + 1];
+                            gy += gray[idx] * prewittY[ky + 1][kx + 1];
+                        }
+                    }
+
+                    const magnitude = Math.min(255, Math.sqrt(gx * gx + gy * gy));
+                    const idx = (y * width + x) * 4;
+
+                    // Cyan-tinted edges
+                    dst[idx] = Math.min(255, magnitude * 0.3 + 50 * (magnitude / 255));
+                    dst[idx + 1] = Math.min(255, magnitude * 0.8 + 200 * (magnitude / 255));
+                    dst[idx + 2] = Math.min(255, magnitude * 0.9 + 220 * (magnitude / 255));
+                    dst[idx + 3] = 255;
+                }
+            }
+
+            for (let i = 0; i < width; i++) {
+                dst[(i) * 4 + 3] = 255;
+                dst[((height - 1) * width + i) * 4 + 3] = 255;
+            }
+            for (let i = 0; i < height; i++) {
+                dst[(i * width) * 4 + 3] = 255;
+                dst[(i * width + width - 1) * 4 + 3] = 255;
+            }
+
+            profileCtx.putImageData(output, 0, 0);
+        }
+
+        // Laplacian edge detection
+        function applyLaplacian() {
+            if (!originalImageData) return;
+
+            const width = 280;
+            const height = 280;
+            const src = originalImageData.data;
+            const output = profileCtx.createImageData(width, height);
+            const dst = output.data;
+
+            const laplacian = [[0, -1, 0], [-1, 4, -1], [0, -1, 0]];
+
+            const gray = new Float32Array(width * height);
+            for (let i = 0; i < width * height; i++) {
+                gray[i] = 0.299 * src[i * 4] + 0.587 * src[i * 4 + 1] + 0.114 * src[i * 4 + 2];
+            }
+
+            for (let y = 1; y < height - 1; y++) {
+                for (let x = 1; x < width - 1; x++) {
+                    let sum = 0;
+
+                    for (let ky = -1; ky <= 1; ky++) {
+                        for (let kx = -1; kx <= 1; kx++) {
+                            const idx = (y + ky) * width + (x + kx);
+                            sum += gray[idx] * laplacian[ky + 1][kx + 1];
+                        }
+                    }
+
+                    const value = Math.min(255, Math.abs(sum));
+                    const idx = (y * width + x) * 4;
+
+                    // Green-tinted edges
+                    dst[idx] = Math.min(255, value * 0.4);
+                    dst[idx + 1] = Math.min(255, value * 1.0 + 180 * (value / 255));
+                    dst[idx + 2] = Math.min(255, value * 0.3);
+                    dst[idx + 3] = 255;
+                }
+            }
+
+            for (let i = 0; i < width; i++) {
+                dst[(i) * 4 + 3] = 255;
+                dst[((height - 1) * width + i) * 4 + 3] = 255;
+            }
+            for (let i = 0; i < height; i++) {
+                dst[(i * width) * 4 + 3] = 255;
+                dst[(i * width + width - 1) * 4 + 3] = 255;
+            }
+
+            profileCtx.putImageData(output, 0, 0);
+        }
+
+        // Threshold filter
+        function applyThreshold() {
+            if (!originalImageData) return;
+
+            const width = 280;
+            const height = 280;
+            const src = originalImageData.data;
+            const output = profileCtx.createImageData(width, height);
+            const dst = output.data;
+
+            for (let i = 0; i < width * height; i++) {
+                const gray = 0.299 * src[i * 4] + 0.587 * src[i * 4 + 1] + 0.114 * src[i * 4 + 2];
+                const value = gray > 128 ? 255 : 0;
+                dst[i * 4] = value;
+                dst[i * 4 + 1] = value;
+                dst[i * 4 + 2] = value;
+                dst[i * 4 + 3] = src[i * 4 + 3];
+            }
+
+            profileCtx.putImageData(output, 0, 0);
+        }
+
+        // Sepia filter
+        function applySepia() {
+            if (!originalImageData) return;
+
+            const width = 280;
+            const height = 280;
+            const src = originalImageData.data;
+            const output = profileCtx.createImageData(width, height);
+            const dst = output.data;
+
+            for (let i = 0; i < width * height; i++) {
+                const r = src[i * 4];
+                const g = src[i * 4 + 1];
+                const b = src[i * 4 + 2];
+
+                dst[i * 4] = Math.min(255, 0.393 * r + 0.769 * g + 0.189 * b);
+                dst[i * 4 + 1] = Math.min(255, 0.349 * r + 0.686 * g + 0.168 * b);
+                dst[i * 4 + 2] = Math.min(255, 0.272 * r + 0.534 * g + 0.131 * b);
+                dst[i * 4 + 3] = src[i * 4 + 3];
+            }
+
+            profileCtx.putImageData(output, 0, 0);
+        }
+
+        // Invert filter
+        function applyInvert() {
+            if (!originalImageData) return;
+
+            const width = 280;
+            const height = 280;
+            const src = originalImageData.data;
+            const output = profileCtx.createImageData(width, height);
+            const dst = output.data;
+
+            for (let i = 0; i < width * height; i++) {
+                dst[i * 4] = 255 - src[i * 4];
+                dst[i * 4 + 1] = 255 - src[i * 4 + 1];
+                dst[i * 4 + 2] = 255 - src[i * 4 + 2];
+                dst[i * 4 + 3] = src[i * 4 + 3];
+            }
+
+            profileCtx.putImageData(output, 0, 0);
+        }
+
         // Apply selected filter
         function applyFilter(filterName) {
             if (!originalImageData) return;
@@ -1197,6 +1403,12 @@
                 case 'sobel':
                     applySobel();
                     break;
+                case 'prewitt':
+                    applyPrewitt();
+                    break;
+                case 'laplacian':
+                    applyLaplacian();
+                    break;
                 case 'gaussian':
                     applyConvolution([
                         [1, 2, 1],
@@ -1204,8 +1416,18 @@
                         [1, 2, 1]
                     ], 16);
                     break;
+                case 'box':
+                    applyConvolution([
+                        [1, 1, 1],
+                        [1, 1, 1],
+                        [1, 1, 1]
+                    ], 9);
+                    break;
                 case 'grayscale':
                     applyGrayscale();
+                    break;
+                case 'threshold':
+                    applyThreshold();
                     break;
                 case 'sharpen':
                     applyConvolution([
@@ -1220,6 +1442,12 @@
                         [-1, 1, 1],
                         [0, 1, 2]
                     ], 1, 128);
+                    break;
+                case 'sepia':
+                    applySepia();
+                    break;
+                case 'invert':
+                    applyInvert();
                     break;
             }
 
