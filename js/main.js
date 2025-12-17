@@ -1085,7 +1085,7 @@
                     // Apply L2 weight decay after forward pass
                     nnApplyL2Decay();
                     nnDraw();
-                }, 2500); // Pause to see final state
+                }, 5000); // Pause to see final state
                 return;
             }
             
@@ -1120,7 +1120,7 @@
                     nnAnimating = false;
                     nnApplyL2Decay();
                     nnDraw();
-                }, 2500); // Pause to see final state
+                }, 5000); // Pause to see final state
                 return;
             }
             
