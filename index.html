@@ -849,20 +849,6 @@
             transform: translateY(-2px);
         }
 
-        .affirmation-float:active {
-            transform: scale(0.98);
-        }
-
-        .affirmation-float.shuffling {
-            animation: shuffle-pulse 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        @keyframes shuffle-pulse {
-            0% { box-shadow: 0 8px 32px var(--accent-glow); }
-            50% { box-shadow: 0 0 40px var(--accent), 0 8px 32px var(--accent-glow); }
-            100% { box-shadow: 0 8px 32px var(--accent-glow); }
-        }
-
         @keyframes floatIn {
             to {
                 opacity: 1;
@@ -877,16 +863,22 @@
             border-radius: 12px;
             margin-bottom: 12px;
             opacity: 0.9;
-            transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .affirmation-image.transitioning {
-            opacity: 0 !important;
-            transform: scale(0.95);
+            transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: scale(1);
         }
 
         .affirmation-float:hover .affirmation-image {
             opacity: 1;
+        }
+
+        .affirmation-image.fade-out {
+            opacity: 0;
+            transform: scale(0.92);
+        }
+
+        .affirmation-image.fade-in {
+            opacity: 0.9;
+            transform: scale(1);
         }
 
         .affirmation-header {
@@ -902,11 +894,6 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             font-weight: 600;
-            transition: text-shadow 0.3s ease;
-        }
-
-        .affirmation-header span.sparkle {
-            text-shadow: 0 0 12px var(--accent), 0 0 24px var(--accent);
         }
 
         .affirmation-text {
@@ -914,12 +901,18 @@
             color: var(--text);
             line-height: 1.6;
             font-style: italic;
-            transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(0);
         }
 
-        .affirmation-text.transitioning {
-            opacity: 0 !important;
-            transform: translateY(8px);
+        .affirmation-text.fade-out {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        .affirmation-text.fade-in {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .affirmation-footer {
@@ -2007,31 +2000,38 @@
             img.src = aff.img;
         });
 
-        const affirmationHeader = document.querySelector('.affirmation-header span');
+        let isTransitioning = false;
 
         function showAffirmation(animate = false) {
             const aff = affirmations[currentIndex];
             
             if (animate) {
-                // Add sparkle effect to header
-                affirmationHeader.classList.add('sparkle');
+                // Fade out current content
+                affirmationImage.classList.add('fade-out');
+                affirmationText.classList.add('fade-out');
                 
-                // Add transitioning class for smooth exit
-                affirmationText.classList.add('transitioning');
-                affirmationImage.classList.add('transitioning');
-                
-                // After exit animation, swap content and animate in
+                // After fade out, update content and fade in
                 setTimeout(() => {
                     affirmationText.textContent = `"${aff.text}"`;
                     affirmationImage.src = aff.img;
                     
-                    // Wait for new image to load before revealing
-                    if (affirmationImage.complete) {
-                        revealContent();
-                    } else {
-                        affirmationImage.onload = revealContent;
-                    }
-                }, 300);
+                    // Remove fade-out, prepare for fade-in
+                    affirmationImage.classList.remove('fade-out');
+                    affirmationText.classList.remove('fade-out');
+                    
+                    // Trigger fade-in on image load
+                    affirmationImage.onload = () => {
+                        affirmationImage.classList.add('fade-in');
+                        affirmationText.classList.add('fade-in');
+                        
+                        // Clean up classes after animation
+                        setTimeout(() => {
+                            affirmationImage.classList.remove('fade-in');
+                            affirmationText.classList.remove('fade-in');
+                            isTransitioning = false;
+                        }, 500);
+                    };
+                }, 400);
             } else {
                 // Initial load without animation
                 affirmationText.textContent = `"${aff.text}"`;
@@ -2039,24 +2039,9 @@
             }
         }
 
-        function revealContent() {
-            // Small delay then remove transitioning class for smooth entrance
-            requestAnimationFrame(() => {
-                affirmationText.classList.remove('transitioning');
-                affirmationImage.classList.remove('transitioning');
-                
-                // Remove sparkle after reveal completes
-                setTimeout(() => {
-                    affirmationHeader.classList.remove('sparkle');
-                }, 400);
-            });
-        }
-
         function nextAffirmation() {
-            // Add shuffle pulse animation to container
-            affirmationFloat.classList.add('shuffling');
-            setTimeout(() => affirmationFloat.classList.remove('shuffling'), 600);
-            
+            if (isTransitioning) return; // Prevent rapid clicks
+            isTransitioning = true;
             currentIndex = (currentIndex + 1) % affirmations.length;
             showAffirmation(true);
         }
