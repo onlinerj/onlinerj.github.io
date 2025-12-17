@@ -1108,7 +1108,7 @@
                 }
                 nnDraw();
                 nnAnimateForward(layerIdx + 1);
-            }, 2400); // Slower propagation between layers
+            }, 500); // Quick propagation between layers
         }
 
         function nnAnimateBackward(layerIdx) {
@@ -1148,7 +1148,7 @@
                 }
                 nnDraw();
                 nnAnimateBackward(layerIdx - 1);
-            }, 2400); // Slower propagation between layers
+            }, 500); // Quick propagation between layers
         }
 
         nnCanvas.addEventListener('click', (e) => {
