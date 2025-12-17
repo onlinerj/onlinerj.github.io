@@ -1896,95 +1896,77 @@
         applyFilter('original');
 
         // AI/Tech Affirmations
-        // Themed image URLs from Unsplash (free, high-quality)
-        const imageThemes = [
-            'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400&h=200&fit=crop', // AI brain
-            'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=400&h=200&fit=crop', // Neural network
-            'https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&h=200&fit=crop', // Circuit board
-            'https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=400&h=200&fit=crop', // Code
-            'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=400&h=200&fit=crop', // Earth tech
-            'https://images.unsplash.com/photo-1534972195531-d756b9bfa9f2?w=400&h=200&fit=crop', // Purple code
-            'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=200&fit=crop', // Abstract
-            'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=400&h=200&fit=crop', // Math
-            'https://images.unsplash.com/photo-1509228468518-180dd4864904?w=400&h=200&fit=crop', // Galaxy
-            'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=200&fit=crop', // Gradient
-            'https://images.unsplash.com/photo-1516110833967-0b5716ca1387?w=400&h=200&fit=crop', // Data
-            'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400&h=200&fit=crop', // Cyber
-            'https://images.unsplash.com/photo-1488229297570-58520851e868?w=400&h=200&fit=crop', // Network
-            'https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=400&h=200&fit=crop', // Robot
-            'https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=400&h=200&fit=crop', // Coding
-            'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=400&h=200&fit=crop', // Matrix
-            'https://images.unsplash.com/photo-1484589065579-248aad0d628b?w=400&h=200&fit=crop', // Sunset calm
-            'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=200&fit=crop', // Mountains
-            'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=400&h=200&fit=crop', // Stars
-            'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400&h=200&fit=crop', // Peak
-        ];
+        // AI-generated images using Pollinations.ai (FREE, unique per affirmation)
+        function getAIImageUrl(prompt) {
+            const enhancedPrompt = `abstract digital art, ${prompt}, futuristic, neural network aesthetic, vibrant colors, cinematic lighting, 4k`;
+            return `https://image.pollinations.ai/prompt/${encodeURIComponent(enhancedPrompt)}?width=400&height=200&nologo=true`;
+        }
 
         const affirmations = [
             // Learning & Growth
-            { text: "Your neural networks aren't the only things learning—you're growing every day.", img: 0 },
-            { text: "Every gradient descent leads somewhere meaningful.", img: 7 },
-            { text: "The best models are built by curious minds like yours.", img: 1 },
-            { text: "Your attention mechanism is focused on the right things.", img: 2 },
-            { text: "You're not just training models, you're shaping the future.", img: 4 },
-            { text: "Even transformers started with a single attention head.", img: 0 },
-            { text: "Your loss function is decreasing—keep iterating.", img: 5 },
-            { text: "Behind every breakthrough is someone who refused to stop fine-tuning.", img: 14 },
-            { text: "Your embeddings capture more dimensions than you realize.", img: 8 },
-            { text: "Every epoch brings you closer to convergence.", img: 9 },
-            { text: "Your learning rate is perfectly tuned for this moment.", img: 7 },
-            { text: "Backpropagation taught us: growth comes from understanding our errors.", img: 10 },
-            { text: "Your knowledge graph expands with every connection you make.", img: 12 },
+            "Your neural networks aren't the only things learning—you're growing every day.",
+            "Every gradient descent leads somewhere meaningful.",
+            "The best models are built by curious minds like yours.",
+            "Your attention mechanism is focused on the right things.",
+            "You're not just training models, you're shaping the future.",
+            "Even transformers started with a single attention head.",
+            "Your loss function is decreasing—keep iterating.",
+            "Behind every breakthrough is someone who refused to stop fine-tuning.",
+            "Your embeddings capture more dimensions than you realize.",
+            "Every epoch brings you closer to convergence.",
+            "Your learning rate is perfectly tuned for this moment.",
+            "Backpropagation taught us: growth comes from understanding our errors.",
+            "Your knowledge graph expands with every connection you make.",
             
             // Career & Purpose
-            { text: "The world needs engineers who care about AI ethics. You matter.", img: 4 },
-            { text: "AGI might be uncertain, but your potential isn't.", img: 0 },
-            { text: "You're the human in human-AI collaboration.", img: 13 },
-            { text: "The best hyperparameter you have is persistence.", img: 19 },
-            { text: "Your career trajectory has the best optimizer: you.", img: 9 },
-            { text: "You're not just writing code—you're writing history.", img: 3 },
-            { text: "The AI revolution needs thoughtful builders. That's you.", img: 1 },
-            { text: "You belong at the frontier of technology.", img: 11 },
-            { text: "Your unique perspective is the secret sauce no model can replicate.", img: 8 },
-            { text: "Keep exploring—the best architectures haven't been invented yet.", img: 18 },
-            { text: "You're more than your GitHub contributions.", img: 14 },
-            { text: "The future of AI is as bright as the people building it.", img: 4 },
-            { text: "Your career is a long-horizon RL problem. Be patient with yourself.", img: 17 },
-            { text: "The best engineers debug their imposter syndrome too.", img: 5 },
+            "The world needs engineers who care about AI ethics. You matter.",
+            "AGI might be uncertain, but your potential isn't.",
+            "You're the human in human-AI collaboration.",
+            "The best hyperparameter you have is persistence.",
+            "Your career trajectory has the best optimizer: you.",
+            "You're not just writing code—you're writing history.",
+            "The AI revolution needs thoughtful builders. That's you.",
+            "You belong at the frontier of technology.",
+            "Your unique perspective is the secret sauce no model can replicate.",
+            "Keep exploring—the best architectures haven't been invented yet.",
+            "You're more than your GitHub contributions.",
+            "The future of AI is as bright as the people building it.",
+            "Your career is a long-horizon RL problem. Be patient with yourself.",
+            "The best engineers debug their imposter syndrome too.",
             
             // Balance & Wellbeing
-            { text: "Your batch size for learning is just right.", img: 16 },
-            { text: "Regularization keeps models from overfitting. Rest keeps you from burning out.", img: 17 },
-            { text: "The most powerful compute is a well-rested mind.", img: 16 },
-            { text: "Even GPUs need cooling. Take a break.", img: 17 },
-            { text: "Your context window needs refresh time. Step outside.", img: 19 },
-            { text: "The best inference happens after a good night's sleep.", img: 18 },
-            { text: "You can't pour from an empty tensor.", img: 16 },
-            { text: "Self-care is not a vanishing gradient—prioritize it.", img: 17 },
+            "Your batch size for learning is just right.",
+            "Regularization keeps models from overfitting. Rest keeps you from burning out.",
+            "The most powerful compute is a well-rested mind.",
+            "Even GPUs need cooling. Take a break.",
+            "Your context window needs refresh time. Step outside.",
+            "The best inference happens after a good night's sleep.",
+            "You can't pour from an empty tensor.",
+            "Self-care is not a vanishing gradient—prioritize it.",
             
             // Technical Inspiration
-            { text: "Dropout makes networks stronger. Setbacks make you resilient.", img: 1 },
-            { text: "Your feature extraction skills apply to life's patterns too.", img: 10 },
-            { text: "Like skip connections, your past experiences strengthen who you are today.", img: 12 },
-            { text: "Ensemble methods work because diversity is powerful. So are you.", img: 2 },
-            { text: "Your activation function is ReLU: always ready to let the positive through.", img: 9 },
-            { text: "Data augmentation teaches us: there are many valid ways to see the same thing.", img: 8 },
-            { text: "Like federated learning, your distributed experiences make you stronger.", img: 12 },
-            { text: "You're not stuck in a local minimum—you're gathering momentum.", img: 19 },
-            { text: "CUDA cores work together. So should we. Collaboration > competition.", img: 2 },
-            { text: "Your weights are initialized just right for this journey.", img: 7 },
+            "Dropout makes networks stronger. Setbacks make you resilient.",
+            "Your feature extraction skills apply to life's patterns too.",
+            "Like skip connections, your past experiences strengthen who you are today.",
+            "Ensemble methods work because diversity is powerful. So are you.",
+            "Your activation function is ReLU: always ready to let the positive through.",
+            "Data augmentation teaches us: there are many valid ways to see the same thing.",
+            "Like federated learning, your distributed experiences make you stronger.",
+            "You're not stuck in a local minimum—you're gathering momentum.",
+            "CUDA cores work together. So should we. Collaboration > competition.",
+            "Your weights are initialized just right for this journey.",
             
             // Innovation & Creativity
-            { text: "The next big paper might have your name on it.", img: 15 },
-            { text: "Your ideas are worth more than their perplexity score.", img: 8 },
-            { text: "Innovation doesn't require permission. Keep building.", img: 3 },
-            { text: "The best prompts come from those who understand both sides.", img: 13 },
-            { text: "You're not just using AI tools—you're shaping how they evolve.", img: 0 },
-            { text: "Every commit is a step toward something meaningful.", img: 14 },
-            { text: "The intersection of your interests is where magic happens.", img: 9 },
-            { text: "Your side projects matter more than you think.", img: 5 },
-            { text: "Latent space is full of possibilities. So is your future.", img: 8 },
-            { text: "The model that changes everything might be training in your head right now.", img: 0 }
+            "The next big paper might have your name on it.",
+            "Your ideas are worth more than their perplexity score.",
+            "Innovation doesn't require permission. Keep building.",
+            "The best prompts come from those who understand both sides.",
+            "You're not just using AI tools—you're shaping how they evolve.",
+            "Every commit is a step toward something meaningful.",
+            "The intersection of your interests is where magic happens.",
+            "Your side projects matter more than you think.",
+            "Latent space is full of possibilities. So is your future.",
+            "The model that changes everything might be training in your head right now."
         ];
 
         const affirmationFloat = document.getElementById('affirmation-float');
@@ -1995,15 +1977,23 @@
         let currentIndex = Math.floor(Math.random() * affirmations.length);
 
         function showAffirmation() {
-            const aff = affirmations[currentIndex];
+            const text = affirmations[currentIndex];
             affirmationText.style.opacity = '0';
-            affirmationImage.style.opacity = '0';
+            affirmationImage.style.opacity = '0.3';
+            
+            // Generate unique AI image from the affirmation text
+            const imageUrl = getAIImageUrl(text);
+            affirmationImage.src = imageUrl;
+            
             setTimeout(() => {
-                affirmationText.textContent = `"${aff.text}"`;
-                affirmationImage.src = imageThemes[aff.img];
+                affirmationText.textContent = `"${text}"`;
                 affirmationText.style.opacity = '1';
-                affirmationImage.style.opacity = '0.9';
             }, 150);
+            
+            // Fade in image when loaded
+            affirmationImage.onload = () => {
+                affirmationImage.style.opacity = '0.9';
+            };
         }
 
         function nextAffirmation() {
@@ -2013,7 +2003,7 @@
 
         // Initialize
         affirmationText.style.transition = 'opacity 0.15s ease';
-        affirmationImage.style.transition = 'opacity 0.3s ease';
+        affirmationImage.style.transition = 'opacity 0.5s ease';
         showAffirmation();
 
         // Click to get new affirmation
