@@ -831,10 +831,14 @@
                         y: padding + (i + 1) * nodeSpacing,
                         layer: layerIdx
                     });
-                    // Initialize input layer with random values (simulating input data)
-                    const initValue = layerIdx === 0 ? Math.random() * 0.6 + 0.4 : 0;
-                    activationLayer.push(initValue);
-                    gradientLayer.push(0);
+                    // Initialize input layer with activations (for forward mode)
+                    // Initialize output layer with gradients (for backprop mode)
+                    const isInputLayer = layerIdx === 0;
+                    const isOutputLayer = layerIdx === nnLayers.length - 1;
+                    const initActivation = isInputLayer ? Math.random() * 0.6 + 0.4 : 0;
+                    const initGradient = isOutputLayer ? Math.random() * 0.6 + 0.4 : 0;
+                    activationLayer.push(initActivation);
+                    gradientLayer.push(initGradient);
                     // Dropout: don't drop input or output layers
                     const isHidden = layerIdx > 0 && layerIdx < nnLayers.length - 1;
                     dropoutLayer.push(isHidden ? Math.random() > nnDropoutRate : true);
@@ -1032,6 +1036,23 @@
             modeBtns.forEach((btn, i) => {
                 btn.classList.toggle('active', (mode === 'forward' && i === 0) || (mode === 'backward' && i === 1));
             });
+            
+            // Reset and set appropriate initial values based on mode
+            if (mode === 'forward') {
+                // Highlight input layer (activations), clear gradients
+                nnActivations = nnActivations.map((l, idx) => 
+                    idx === 0 ? l.map(() => Math.random() * 0.6 + 0.4) : l.map(() => 0)
+                );
+                nnGradients = nnGradients.map(l => l.map(() => 0));
+            } else {
+                // Highlight output layer (gradients), clear activations
+                const lastIdx = nnGradients.length - 1;
+                nnGradients = nnGradients.map((l, idx) => 
+                    idx === lastIdx ? l.map(() => Math.random() * 0.6 + 0.4) : l.map(() => 0)
+                );
+                nnActivations = nnActivations.map(l => l.map(() => 0));
+            }
+            nnDraw();
         }
 
         function nnSetActivation(fn) {
@@ -1093,7 +1114,11 @@
         function nnAnimateBackward(layerIdx) {
             if (layerIdx < 0) {
                 setTimeout(() => {
-                    nnGradients = nnGradients.map(l => l.map(() => 0));
+                    // Reset input/hidden layers but keep output layer gradients
+                    const lastIdx = nnGradients.length - 1;
+                    nnGradients = nnGradients.map((l, idx) => 
+                        idx === lastIdx ? l : l.map(() => 0)
+                    );
                     nnAnimating = false;
                     // Apply L2 weight decay after backward pass
                     nnApplyL2Decay();
