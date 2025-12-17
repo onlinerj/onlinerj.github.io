@@ -193,12 +193,12 @@
             gaussian: {
                 title: 'Gaussian Blur',
                 desc: 'Smooths the image using a weighted average kernel that approximates a Gaussian distribution. Reduces noise and detail.',
-                kernel: '1/16 Ã— [ 1  2  1 ]\n       [ 2  4  2 ]\n       [ 1  2  1 ]'
+                kernel: '1/16 × [ 1  2  1 ]\n       [ 2  4  2 ]\n       [ 1  2  1 ]'
             },
             box: {
                 title: 'Box Blur (Mean Kernel)',
                 desc: 'Simple averaging kernel that replaces each pixel with the mean of its neighbors. Fast but can cause blocky artifacts.',
-                kernel: '1/9 Ã— [ 1  1  1 ]\n      [ 1  1  1 ]\n      [ 1  1  1 ]'
+                kernel: '1/9 × [ 1  1  1 ]\n      [ 1  1  1 ]\n      [ 1  1  1 ]'
             },
             grayscale: {
                 title: 'Grayscale Conversion',
@@ -625,13 +625,13 @@
         // Local AI-generated images for instant loading
         const affirmations = [
             // Learning & Growth
-            { text: "Your neural networks aren't the only things learningâ€”you're growing every day.", img: "assets/affirmations/101.jpg" },
+            { text: "Your neural networks aren't the only things learning—you're growing every day.", img: "assets/affirmations/101.jpg" },
             { text: "Every gradient descent leads somewhere meaningful.", img: "assets/affirmations/102.jpg" },
             { text: "The best models are built by curious minds like yours.", img: "assets/affirmations/103.jpg" },
             { text: "Your attention mechanism is focused on the right things.", img: "assets/affirmations/104.jpg" },
             { text: "You're not just training models, you're shaping the future.", img: "assets/affirmations/105.jpg" },
             { text: "Even transformers started with a single attention head.", img: "assets/affirmations/106.jpg" },
-            { text: "Your loss function is decreasingâ€”keep iterating.", img: "assets/affirmations/107.jpg" },
+            { text: "Your loss function is decreasing—keep iterating.", img: "assets/affirmations/107.jpg" },
             { text: "Behind every breakthrough is someone who refused to stop fine-tuning.", img: "assets/affirmations/108.jpg" },
             { text: "Your embeddings capture more dimensions than you realize.", img: "assets/affirmations/109.jpg" },
             { text: "Every epoch brings you closer to convergence.", img: "assets/affirmations/110.jpg" },
@@ -645,11 +645,11 @@
             { text: "You're the human in human-AI collaboration.", img: "assets/affirmations/203.jpg" },
             { text: "The best hyperparameter you have is persistence.", img: "assets/affirmations/204.jpg" },
             { text: "Your career trajectory has the best optimizer: you.", img: "assets/affirmations/205.jpg" },
-            { text: "You're not just writing codeâ€”you're writing history.", img: "assets/affirmations/206.jpg" },
+            { text: "You're not just writing code—you're writing history.", img: "assets/affirmations/206.jpg" },
             { text: "The AI revolution needs thoughtful builders. That's you.", img: "assets/affirmations/207.jpg" },
             { text: "You belong at the frontier of technology.", img: "assets/affirmations/208.jpg" },
             { text: "Your unique perspective is the secret sauce no model can replicate.", img: "assets/affirmations/209.jpg" },
-            { text: "Keep exploringâ€”the best architectures haven't been invented yet.", img: "assets/affirmations/210.jpg" },
+            { text: "Keep exploring—the best architectures haven't been invented yet.", img: "assets/affirmations/210.jpg" },
             { text: "You're more than your GitHub contributions.", img: "assets/affirmations/211.jpg" },
             { text: "The future of AI is as bright as the people building it.", img: "assets/affirmations/212.jpg" },
             { text: "Your career is a long-horizon RL problem. Be patient with yourself.", img: "assets/affirmations/213.jpg" },
@@ -663,7 +663,7 @@
             { text: "Your context window needs refresh time. Step outside.", img: "assets/affirmations/305.jpg" },
             { text: "The best inference happens after a good night's sleep.", img: "assets/affirmations/306.jpg" },
             { text: "You can't pour from an empty tensor.", img: "assets/affirmations/307.jpg" },
-            { text: "Self-care is not a vanishing gradientâ€”prioritize it.", img: "assets/affirmations/308.jpg" },
+            { text: "Self-care is not a vanishing gradient—prioritize it.", img: "assets/affirmations/308.jpg" },
             
             // Technical Inspiration
             { text: "Dropout makes networks stronger. Setbacks make you resilient.", img: "assets/affirmations/401.jpg" },
@@ -673,7 +673,7 @@
             { text: "Your activation function is ReLU: always ready to let the positive through.", img: "assets/affirmations/405.jpg" },
             { text: "Data augmentation teaches us: there are many valid ways to see the same thing.", img: "assets/affirmations/406.jpg" },
             { text: "Like federated learning, your distributed experiences make you stronger.", img: "assets/affirmations/407.jpg" },
-            { text: "You're not stuck in a local minimumâ€”you're gathering momentum.", img: "assets/affirmations/408.jpg" },
+            { text: "You're not stuck in a local minimum—you're gathering momentum.", img: "assets/affirmations/408.jpg" },
             { text: "CUDA cores work together. So should we. Collaboration > competition.", img: "assets/affirmations/409.jpg" },
             { text: "Your weights are initialized just right for this journey.", img: "assets/affirmations/410.jpg" },
             
@@ -682,7 +682,7 @@
             { text: "Your ideas are worth more than their perplexity score.", img: "assets/affirmations/502.jpg" },
             { text: "Innovation doesn't require permission. Keep building.", img: "assets/affirmations/503.jpg" },
             { text: "The best prompts come from those who understand both sides.", img: "assets/affirmations/504.jpg" },
-            { text: "You're not just using AI toolsâ€”you're shaping how they evolve.", img: "assets/affirmations/505.jpg" },
+            { text: "You're not just using AI tools—you're shaping how they evolve.", img: "assets/affirmations/505.jpg" },
             { text: "Every commit is a step toward something meaningful.", img: "assets/affirmations/506.jpg" },
             { text: "The intersection of your interests is where magic happens.", img: "assets/affirmations/507.jpg" },
             { text: "Your side projects matter more than you think.", img: "assets/affirmations/508.jpg" },
