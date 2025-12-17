@@ -1083,7 +1083,7 @@
                     // Apply L2 weight decay after forward pass
                     nnApplyL2Decay();
                     nnDraw();
-                }, 800);
+                }, 2000); // Longer pause to see final state
                 return;
             }
             
@@ -1108,7 +1108,7 @@
                 }
                 nnDraw();
                 nnAnimateForward(layerIdx + 1);
-            }, 300);
+            }, 600); // Slower propagation between layers
         }
 
         function nnAnimateBackward(layerIdx) {
@@ -1123,7 +1123,7 @@
                     // Apply L2 weight decay after backward pass
                     nnApplyL2Decay();
                     nnDraw();
-                }, 800);
+                }, 2000); // Longer pause to see final state
                 return;
             }
             
@@ -1148,7 +1148,7 @@
                 }
                 nnDraw();
                 nnAnimateBackward(layerIdx - 1);
-            }, 300);
+            }, 600); // Slower propagation between layers
         }
 
         nnCanvas.addEventListener('click', (e) => {
