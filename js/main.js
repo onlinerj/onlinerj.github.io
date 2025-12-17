@@ -1643,3 +1643,14 @@
             attnResize();
             lossResize();
         });
+
+        // Expose functions to global scope for onclick handlers
+        window.nnSetLayers = nnSetLayers;
+        window.nnSetMode = nnSetMode;
+        window.nnSetActivation = nnSetActivation;
+        window.nnToggleDropout = nnToggleDropout;
+        window.embedSetCategory = embedSetCategory;
+        window.embedReset = embedReset;
+        window.attnSetSentence = attnSetSentence;
+        window.lossReset = lossReset;
+        window.lossSetOptimizer = lossSetOptimizer;
