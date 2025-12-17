@@ -1,0 +1,1645 @@
+﻿        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Theme Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const htmlElement = document.documentElement;
+        
+        // Check for saved theme preference or default to dark
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        if (savedTheme === 'light') {
+            htmlElement.setAttribute('data-theme', 'light');
+        }
+        
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            if (newTheme === 'light') {
+                htmlElement.setAttribute('data-theme', 'light');
+            } else {
+                htmlElement.removeAttribute('data-theme');
+            }
+            
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // Interactive Particle Background
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        const mouseGlow = document.getElementById('mouse-glow');
+        
+        let particles = [];
+        let mouse = { x: null, y: null };
+        let animationId;
+
+        // Resize canvas
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // Particle class
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.speedY = (Math.random() - 0.5) * 0.5;
+                this.opacity = Math.random() * 0.5 + 0.1;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                // Mouse interaction
+                if (mouse.x !== null && mouse.y !== null) {
+                    const dx = mouse.x - this.x;
+                    const dy = mouse.y - this.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < 150) {
+                        const force = (150 - distance) / 150;
+                        this.x -= dx * force * 0.02;
+                        this.y -= dy * force * 0.02;
+                    }
+                }
+
+                // Wrap around edges
+                if (this.x < 0) this.x = canvas.width;
+                if (this.x > canvas.width) this.x = 0;
+                if (this.y < 0) this.y = canvas.height;
+                if (this.y > canvas.height) this.y = 0;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(99, 102, 241, ${this.opacity})`;
+                ctx.fill();
+            }
+        }
+
+        // Create particles
+        function initParticles() {
+            particles = [];
+            const particleCount = Math.min(80, Math.floor((canvas.width * canvas.height) / 15000));
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+        initParticles();
+        window.addEventListener('resize', initParticles);
+
+        // Draw connections
+        function drawConnections() {
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 120) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = `rgba(99, 102, 241, ${0.1 * (1 - distance / 120)})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        // Animation loop
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+
+            drawConnections();
+            animationId = requestAnimationFrame(animate);
+        }
+        animate();
+
+        // Mouse tracking
+        document.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+            
+            // Update mouse glow position
+            mouseGlow.style.left = e.clientX + 'px';
+            mouseGlow.style.top = e.clientY + 'px';
+            mouseGlow.classList.add('active');
+        });
+
+        document.addEventListener('mouseleave', () => {
+            mouse.x = null;
+            mouse.y = null;
+            mouseGlow.classList.remove('active');
+        });
+
+        // Reduce animation on mobile for performance
+        if (window.innerWidth < 768) {
+            cancelAnimationFrame(animationId);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        // Computer Vision Filters for Profile Picture
+        const profileImg = document.getElementById('profile-img');
+        const profileCanvas = document.getElementById('profile-canvas');
+        const profileCtx = profileCanvas.getContext('2d');
+        const filterSelect = document.getElementById('cv-filter-select');
+        const cvInfoBtn = document.getElementById('cv-info-btn');
+        const cvTooltip = document.getElementById('cv-tooltip');
+        const tooltipTitle = document.getElementById('tooltip-title');
+        const tooltipDesc = document.getElementById('tooltip-desc');
+        const tooltipKernel = document.getElementById('tooltip-kernel');
+        
+        let originalImageData = null;
+
+        // Filter information for tooltips
+        const filterInfo = {
+            original: {
+                title: 'Original Image',
+                desc: 'No kernel applied. The raw RGB image data as captured by the camera.',
+                kernel: ''
+            },
+            sobel: {
+                title: 'Sobel Edge Detection',
+                desc: 'Computes image gradients using convolution kernels to detect edges. Combines horizontal (Gx) and vertical (Gy) derivatives.',
+                kernel: 'Gx:          Gy:\n[-1  0  1]   [-1 -2 -1]\n[-2  0  2]   [ 0  0  0]\n[-1  0  1]   [ 1  2  1]'
+            },
+            prewitt: {
+                title: 'Prewitt Edge Detection',
+                desc: 'Similar to Sobel but with uniform weights. Less sensitive to noise but may miss fine details.',
+                kernel: 'Gx:          Gy:\n[-1  0  1]   [-1 -1 -1]\n[-1  0  1]   [ 0  0  0]\n[-1  0  1]   [ 1  1  1]'
+            },
+            laplacian: {
+                title: 'Laplacian Kernel',
+                desc: 'Second-order derivative operator that detects edges in all directions. Sensitive to noise but finds fine edges.',
+                kernel: '[ 0 -1  0 ]\n[-1  4 -1 ]\n[ 0 -1  0 ]'
+            },
+            gaussian: {
+                title: 'Gaussian Blur',
+                desc: 'Smooths the image using a weighted average kernel that approximates a Gaussian distribution. Reduces noise and detail.',
+                kernel: '1/16 Ã— [ 1  2  1 ]\n       [ 2  4  2 ]\n       [ 1  2  1 ]'
+            },
+            box: {
+                title: 'Box Blur (Mean Kernel)',
+                desc: 'Simple averaging kernel that replaces each pixel with the mean of its neighbors. Fast but can cause blocky artifacts.',
+                kernel: '1/9 Ã— [ 1  1  1 ]\n      [ 1  1  1 ]\n      [ 1  1  1 ]'
+            },
+            grayscale: {
+                title: 'Grayscale Conversion',
+                desc: 'Converts RGB to luminance using perceptual weights based on human eye sensitivity to different wavelengths.',
+                kernel: 'Y = 0.299R + 0.587G + 0.114B\n\n(ITU-R BT.601 standard)'
+            },
+            threshold: {
+                title: 'Binary Threshold',
+                desc: 'Converts grayscale to binary (black/white) based on a threshold value. Used in segmentation and OCR preprocessing.',
+                kernel: 'if (pixel > 128)\n  output = 255\nelse\n  output = 0'
+            },
+            sharpen: {
+                title: 'Sharpening Kernel',
+                desc: 'Enhances edges by subtracting a blurred version from the original. Uses a high-pass kernel.',
+                kernel: '[ 0 -1  0 ]\n[-1  5 -1 ]\n[ 0 -1  0 ]'
+            },
+            emboss: {
+                title: 'Emboss Effect',
+                desc: 'Creates a 3D relief effect by computing directional gradients, making the image appear raised or stamped.',
+                kernel: '[-2 -1  0 ]\n[-1  1  1 ]\n[ 0  1  2 ]'
+            },
+            sepia: {
+                title: 'Sepia Tone',
+                desc: 'Applies a warm brownish tone reminiscent of antique photographs. Uses a color transformation matrix.',
+                kernel: 'R\' = 0.393R + 0.769G + 0.189B\nG\' = 0.349R + 0.686G + 0.168B\nB\' = 0.272R + 0.534G + 0.131B'
+            },
+            invert: {
+                title: 'Color Inversion (Negative)',
+                desc: 'Inverts all color values, creating a photographic negative effect. Each channel: output = 255 - input.',
+                kernel: 'R\' = 255 - R\nG\' = 255 - G\nB\' = 255 - B'
+            }
+        };
+
+        // Load and draw the original image
+        profileImg.onload = function() {
+            profileCtx.drawImage(profileImg, 0, 0, 280, 280);
+            originalImageData = profileCtx.getImageData(0, 0, 280, 280);
+        };
+
+        // If image is already cached
+        if (profileImg.complete) {
+            profileCtx.drawImage(profileImg, 0, 0, 280, 280);
+            originalImageData = profileCtx.getImageData(0, 0, 280, 280);
+        }
+
+        // Convolution helper function
+        function applyConvolution(kernel, divisor = 1, offset = 0) {
+            if (!originalImageData) return;
+
+            const width = 280;
+            const height = 280;
+            const src = originalImageData.data;
+            const output = profileCtx.createImageData(width, height);
+            const dst = output.data;
+            const kSize = kernel.length;
+            const kHalf = Math.floor(kSize / 2);
+
+            for (let y = 0; y < height; y++) {
+                for (let x = 0; x < width; x++) {
+                    let r = 0, g = 0, b = 0;
+
+                    for (let ky = 0; ky < kSize; ky++) {
+                        for (let kx = 0; kx < kSize; kx++) {
+                            const py = Math.min(height - 1, Math.max(0, y + ky - kHalf));
+                            const px = Math.min(width - 1, Math.max(0, x + kx - kHalf));
+                            const idx = (py * width + px) * 4;
+                            const weight = kernel[ky][kx];
+
+                            r += src[idx] * weight;
+                            g += src[idx + 1] * weight;
+                            b += src[idx + 2] * weight;
+                        }
+                    }
+
+                    const idx = (y * width + x) * 4;
+                    dst[idx] = Math.min(255, Math.max(0, r / divisor + offset));
+                    dst[idx + 1] = Math.min(255, Math.max(0, g / divisor + offset));
+                    dst[idx + 2] = Math.min(255, Math.max(0, b / divisor + offset));
+                    dst[idx + 3] = src[idx + 3];
+                }
+            }
+
+            profileCtx.putImageData(output, 0, 0);
+        }
+
+        // Sobel filter
+        function applySobel() {
+            if (!originalImageData) return;
+
+            const width = 280;
+            const height = 280;
+            const src = originalImageData.data;
+            const output = profileCtx.createImageData(width, height);
+            const dst = output.data;
+
+            const sobelX = [[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]];
+            const sobelY = [[-1, -2, -1], [0, 0, 0], [1, 2, 1]];
+
+            // Convert to grayscale
+            const gray = new Float32Array(width * height);
+            for (let i = 0; i < width * height; i++) {
+                gray[i] = 0.299 * src[i * 4] + 0.587 * src[i * 4 + 1] + 0.114 * src[i * 4 + 2];
+            }
+
+            for (let y = 1; y < height - 1; y++) {
+                for (let x = 1; x < width - 1; x++) {
+                    let gx = 0, gy = 0;
+
+                    for (let ky = -1; ky <= 1; ky++) {
+                        for (let kx = -1; kx <= 1; kx++) {
+                            const idx = (y + ky) * width + (x + kx);
+                            gx += gray[idx] * sobelX[ky + 1][kx + 1];
+                            gy += gray[idx] * sobelY[ky + 1][kx + 1];
+                        }
+                    }
+
+                    const magnitude = Math.min(255, Math.sqrt(gx * gx + gy * gy));
+                    const idx = (y * width + x) * 4;
+
+                    // Purple-tinted edges
+                    dst[idx] = Math.min(255, magnitude * 0.6 + 99 * (magnitude / 255));
+                    dst[idx + 1] = Math.min(255, magnitude * 0.3 + 50 * (magnitude / 255));
+                    dst[idx + 2] = Math.min(255, magnitude * 0.9 + 241 * (magnitude / 255));
+                    dst[idx + 3] = 255;
+                }
+            }
+
+            // Handle border pixels
+            for (let i = 0; i < width; i++) {
+                dst[(i) * 4 + 3] = 255;
+                dst[((height - 1) * width + i) * 4 + 3] = 255;
+            }
+            for (let i = 0; i < height; i++) {
+                dst[(i * width) * 4 + 3] = 255;
+                dst[(i * width + width - 1) * 4 + 3] = 255;
+            }
+
+            profileCtx.putImageData(output, 0, 0);
+        }
+
+        // Grayscale filter
+        function applyGrayscale() {
+            if (!originalImageData) return;
+
+            const width = 280;
+            const height = 280;
+            const src = originalImageData.data;
+            const output = profileCtx.createImageData(width, height);
+            const dst = output.data;
+
+            for (let i = 0; i < width * height; i++) {
+                const gray = 0.299 * src[i * 4] + 0.587 * src[i * 4 + 1] + 0.114 * src[i * 4 + 2];
+                dst[i * 4] = gray;
+                dst[i * 4 + 1] = gray;
+                dst[i * 4 + 2] = gray;
+                dst[i * 4 + 3] = src[i * 4 + 3];
+            }
+
+            profileCtx.putImageData(output, 0, 0);
+        }
+
+        // Prewitt edge detection
+        function applyPrewitt() {
+            if (!originalImageData) return;
+
+            const width = 280;
+            const height = 280;
+            const src = originalImageData.data;
+            const output = profileCtx.createImageData(width, height);
+            const dst = output.data;
+
+            const prewittX = [[-1, 0, 1], [-1, 0, 1], [-1, 0, 1]];
+            const prewittY = [[-1, -1, -1], [0, 0, 0], [1, 1, 1]];
+
+            const gray = new Float32Array(width * height);
+            for (let i = 0; i < width * height; i++) {
+                gray[i] = 0.299 * src[i * 4] + 0.587 * src[i * 4 + 1] + 0.114 * src[i * 4 + 2];
+            }
+
+            for (let y = 1; y < height - 1; y++) {
+                for (let x = 1; x < width - 1; x++) {
+                    let gx = 0, gy = 0;
+
+                    for (let ky = -1; ky <= 1; ky++) {
+                        for (let kx = -1; kx <= 1; kx++) {
+                            const idx = (y + ky) * width + (x + kx);
+                            gx += gray[idx] * prewittX[ky + 1][kx + 1];
+                            gy += gray[idx] * prewittY[ky + 1][kx + 1];
+                        }
+                    }
+
+                    const magnitude = Math.min(255, Math.sqrt(gx * gx + gy * gy));
+                    const idx = (y * width + x) * 4;
+
+                    // Cyan-tinted edges
+                    dst[idx] = Math.min(255, magnitude * 0.3 + 50 * (magnitude / 255));
+                    dst[idx + 1] = Math.min(255, magnitude * 0.8 + 200 * (magnitude / 255));
+                    dst[idx + 2] = Math.min(255, magnitude * 0.9 + 220 * (magnitude / 255));
+                    dst[idx + 3] = 255;
+                }
+            }
+
+            for (let i = 0; i < width; i++) {
+                dst[(i) * 4 + 3] = 255;
+                dst[((height - 1) * width + i) * 4 + 3] = 255;
+            }
+            for (let i = 0; i < height; i++) {
+                dst[(i * width) * 4 + 3] = 255;
+                dst[(i * width + width - 1) * 4 + 3] = 255;
+            }
+
+            profileCtx.putImageData(output, 0, 0);
+        }
+
+        // Laplacian edge detection
+        function applyLaplacian() {
+            if (!originalImageData) return;
+
+            const width = 280;
+            const height = 280;
+            const src = originalImageData.data;
+            const output = profileCtx.createImageData(width, height);
+            const dst = output.data;
+
+            const laplacian = [[0, -1, 0], [-1, 4, -1], [0, -1, 0]];
+
+            const gray = new Float32Array(width * height);
+            for (let i = 0; i < width * height; i++) {
+                gray[i] = 0.299 * src[i * 4] + 0.587 * src[i * 4 + 1] + 0.114 * src[i * 4 + 2];
+            }
+
+            for (let y = 1; y < height - 1; y++) {
+                for (let x = 1; x < width - 1; x++) {
+                    let sum = 0;
+
+                    for (let ky = -1; ky <= 1; ky++) {
+                        for (let kx = -1; kx <= 1; kx++) {
+                            const idx = (y + ky) * width + (x + kx);
+                            sum += gray[idx] * laplacian[ky + 1][kx + 1];
+                        }
+                    }
+
+                    const value = Math.min(255, Math.abs(sum));
+                    const idx = (y * width + x) * 4;
+
+                    // Green-tinted edges
+                    dst[idx] = Math.min(255, value * 0.4);
+                    dst[idx + 1] = Math.min(255, value * 1.0 + 180 * (value / 255));
+                    dst[idx + 2] = Math.min(255, value * 0.3);
+                    dst[idx + 3] = 255;
+                }
+            }
+
+            for (let i = 0; i < width; i++) {
+                dst[(i) * 4 + 3] = 255;
+                dst[((height - 1) * width + i) * 4 + 3] = 255;
+            }
+            for (let i = 0; i < height; i++) {
+                dst[(i * width) * 4 + 3] = 255;
+                dst[(i * width + width - 1) * 4 + 3] = 255;
+            }
+
+            profileCtx.putImageData(output, 0, 0);
+        }
+
+        // Threshold filter
+        function applyThreshold() {
+            if (!originalImageData) return;
+
+            const width = 280;
+            const height = 280;
+            const src = originalImageData.data;
+            const output = profileCtx.createImageData(width, height);
+            const dst = output.data;
+
+            for (let i = 0; i < width * height; i++) {
+                const gray = 0.299 * src[i * 4] + 0.587 * src[i * 4 + 1] + 0.114 * src[i * 4 + 2];
+                const value = gray > 128 ? 255 : 0;
+                dst[i * 4] = value;
+                dst[i * 4 + 1] = value;
+                dst[i * 4 + 2] = value;
+                dst[i * 4 + 3] = src[i * 4 + 3];
+            }
+
+            profileCtx.putImageData(output, 0, 0);
+        }
+
+        // Sepia filter
+        function applySepia() {
+            if (!originalImageData) return;
+
+            const width = 280;
+            const height = 280;
+            const src = originalImageData.data;
+            const output = profileCtx.createImageData(width, height);
+            const dst = output.data;
+
+            for (let i = 0; i < width * height; i++) {
+                const r = src[i * 4];
+                const g = src[i * 4 + 1];
+                const b = src[i * 4 + 2];
+
+                dst[i * 4] = Math.min(255, 0.393 * r + 0.769 * g + 0.189 * b);
+                dst[i * 4 + 1] = Math.min(255, 0.349 * r + 0.686 * g + 0.168 * b);
+                dst[i * 4 + 2] = Math.min(255, 0.272 * r + 0.534 * g + 0.131 * b);
+                dst[i * 4 + 3] = src[i * 4 + 3];
+            }
+
+            profileCtx.putImageData(output, 0, 0);
+        }
+
+        // Invert filter
+        function applyInvert() {
+            if (!originalImageData) return;
+
+            const width = 280;
+            const height = 280;
+            const src = originalImageData.data;
+            const output = profileCtx.createImageData(width, height);
+            const dst = output.data;
+
+            for (let i = 0; i < width * height; i++) {
+                dst[i * 4] = 255 - src[i * 4];
+                dst[i * 4 + 1] = 255 - src[i * 4 + 1];
+                dst[i * 4 + 2] = 255 - src[i * 4 + 2];
+                dst[i * 4 + 3] = src[i * 4 + 3];
+            }
+
+            profileCtx.putImageData(output, 0, 0);
+        }
+
+        // Apply selected filter
+        function applyFilter(filterName) {
+            if (!originalImageData) return;
+
+            switch (filterName) {
+                case 'original':
+                    profileCtx.putImageData(originalImageData, 0, 0);
+                    break;
+                case 'sobel':
+                    applySobel();
+                    break;
+                case 'prewitt':
+                    applyPrewitt();
+                    break;
+                case 'laplacian':
+                    applyLaplacian();
+                    break;
+                case 'gaussian':
+                    applyConvolution([
+                        [1, 2, 1],
+                        [2, 4, 2],
+                        [1, 2, 1]
+                    ], 16);
+                    break;
+                case 'box':
+                    applyConvolution([
+                        [1, 1, 1],
+                        [1, 1, 1],
+                        [1, 1, 1]
+                    ], 9);
+                    break;
+                case 'grayscale':
+                    applyGrayscale();
+                    break;
+                case 'threshold':
+                    applyThreshold();
+                    break;
+                case 'sharpen':
+                    applyConvolution([
+                        [0, -1, 0],
+                        [-1, 5, -1],
+                        [0, -1, 0]
+                    ]);
+                    break;
+                case 'emboss':
+                    applyConvolution([
+                        [-2, -1, 0],
+                        [-1, 1, 1],
+                        [0, 1, 2]
+                    ], 1, 128);
+                    break;
+                case 'sepia':
+                    applySepia();
+                    break;
+                case 'invert':
+                    applyInvert();
+                    break;
+            }
+
+            // Update tooltip content
+            const info = filterInfo[filterName];
+            tooltipTitle.textContent = info.title;
+            tooltipDesc.textContent = info.desc;
+            tooltipKernel.textContent = info.kernel;
+            tooltipKernel.style.display = info.kernel ? 'block' : 'none';
+        }
+
+        // Filter select event listener
+        filterSelect.addEventListener('change', function() {
+            applyFilter(this.value);
+        });
+
+        // Tooltip toggle
+        let tooltipVisible = false;
+        cvInfoBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            tooltipVisible = !tooltipVisible;
+            cvTooltip.classList.toggle('active', tooltipVisible);
+        });
+
+        // Close tooltip when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!cvTooltip.contains(e.target) && !cvInfoBtn.contains(e.target)) {
+                tooltipVisible = false;
+                cvTooltip.classList.remove('active');
+            }
+        });
+
+        // Initialize tooltip with original info
+        applyFilter('original');
+
+        // AI/Tech Affirmations
+        // Local AI-generated images for instant loading
+        const affirmations = [
+            // Learning & Growth
+            { text: "Your neural networks aren't the only things learningâ€”you're growing every day.", img: "assets/affirmations/101.jpg" },
+            { text: "Every gradient descent leads somewhere meaningful.", img: "assets/affirmations/102.jpg" },
+            { text: "The best models are built by curious minds like yours.", img: "assets/affirmations/103.jpg" },
+            { text: "Your attention mechanism is focused on the right things.", img: "assets/affirmations/104.jpg" },
+            { text: "You're not just training models, you're shaping the future.", img: "assets/affirmations/105.jpg" },
+            { text: "Even transformers started with a single attention head.", img: "assets/affirmations/106.jpg" },
+            { text: "Your loss function is decreasingâ€”keep iterating.", img: "assets/affirmations/107.jpg" },
+            { text: "Behind every breakthrough is someone who refused to stop fine-tuning.", img: "assets/affirmations/108.jpg" },
+            { text: "Your embeddings capture more dimensions than you realize.", img: "assets/affirmations/109.jpg" },
+            { text: "Every epoch brings you closer to convergence.", img: "assets/affirmations/110.jpg" },
+            { text: "Your learning rate is perfectly tuned for this moment.", img: "assets/affirmations/111.jpg" },
+            { text: "Backpropagation taught us: growth comes from understanding our errors.", img: "assets/affirmations/112.jpg" },
+            { text: "Your knowledge graph expands with every connection you make.", img: "assets/affirmations/113.jpg" },
+            
+            // Career & Purpose
+            { text: "The world needs engineers who care about AI ethics. You matter.", img: "assets/affirmations/201.jpg" },
+            { text: "AGI might be uncertain, but your potential isn't.", img: "assets/affirmations/202.jpg" },
+            { text: "You're the human in human-AI collaboration.", img: "assets/affirmations/203.jpg" },
+            { text: "The best hyperparameter you have is persistence.", img: "assets/affirmations/204.jpg" },
+            { text: "Your career trajectory has the best optimizer: you.", img: "assets/affirmations/205.jpg" },
+            { text: "You're not just writing codeâ€”you're writing history.", img: "assets/affirmations/206.jpg" },
+            { text: "The AI revolution needs thoughtful builders. That's you.", img: "assets/affirmations/207.jpg" },
+            { text: "You belong at the frontier of technology.", img: "assets/affirmations/208.jpg" },
+            { text: "Your unique perspective is the secret sauce no model can replicate.", img: "assets/affirmations/209.jpg" },
+            { text: "Keep exploringâ€”the best architectures haven't been invented yet.", img: "assets/affirmations/210.jpg" },
+            { text: "You're more than your GitHub contributions.", img: "assets/affirmations/211.jpg" },
+            { text: "The future of AI is as bright as the people building it.", img: "assets/affirmations/212.jpg" },
+            { text: "Your career is a long-horizon RL problem. Be patient with yourself.", img: "assets/affirmations/213.jpg" },
+            { text: "The best engineers debug their imposter syndrome too.", img: "assets/affirmations/214.jpg" },
+            
+            // Balance & Wellbeing
+            { text: "Your batch size for learning is just right.", img: "assets/affirmations/301.jpg" },
+            { text: "Regularization keeps models from overfitting. Rest keeps you from burning out.", img: "assets/affirmations/302.jpg" },
+            { text: "The most powerful compute is a well-rested mind.", img: "assets/affirmations/303.jpg" },
+            { text: "Even GPUs need cooling. Take a break.", img: "assets/affirmations/304.jpg" },
+            { text: "Your context window needs refresh time. Step outside.", img: "assets/affirmations/305.jpg" },
+            { text: "The best inference happens after a good night's sleep.", img: "assets/affirmations/306.jpg" },
+            { text: "You can't pour from an empty tensor.", img: "assets/affirmations/307.jpg" },
+            { text: "Self-care is not a vanishing gradientâ€”prioritize it.", img: "assets/affirmations/308.jpg" },
+            
+            // Technical Inspiration
+            { text: "Dropout makes networks stronger. Setbacks make you resilient.", img: "assets/affirmations/401.jpg" },
+            { text: "Your feature extraction skills apply to life's patterns too.", img: "assets/affirmations/402.jpg" },
+            { text: "Like skip connections, your past experiences strengthen who you are today.", img: "assets/affirmations/403.jpg" },
+            { text: "Ensemble methods work because diversity is powerful. So are you.", img: "assets/affirmations/404.jpg" },
+            { text: "Your activation function is ReLU: always ready to let the positive through.", img: "assets/affirmations/405.jpg" },
+            { text: "Data augmentation teaches us: there are many valid ways to see the same thing.", img: "assets/affirmations/406.jpg" },
+            { text: "Like federated learning, your distributed experiences make you stronger.", img: "assets/affirmations/407.jpg" },
+            { text: "You're not stuck in a local minimumâ€”you're gathering momentum.", img: "assets/affirmations/408.jpg" },
+            { text: "CUDA cores work together. So should we. Collaboration > competition.", img: "assets/affirmations/409.jpg" },
+            { text: "Your weights are initialized just right for this journey.", img: "assets/affirmations/410.jpg" },
+            
+            // Innovation & Creativity
+            { text: "The next big paper might have your name on it.", img: "assets/affirmations/501.jpg" },
+            { text: "Your ideas are worth more than their perplexity score.", img: "assets/affirmations/502.jpg" },
+            { text: "Innovation doesn't require permission. Keep building.", img: "assets/affirmations/503.jpg" },
+            { text: "The best prompts come from those who understand both sides.", img: "assets/affirmations/504.jpg" },
+            { text: "You're not just using AI toolsâ€”you're shaping how they evolve.", img: "assets/affirmations/505.jpg" },
+            { text: "Every commit is a step toward something meaningful.", img: "assets/affirmations/506.jpg" },
+            { text: "The intersection of your interests is where magic happens.", img: "assets/affirmations/507.jpg" },
+            { text: "Your side projects matter more than you think.", img: "assets/affirmations/508.jpg" },
+            { text: "Latent space is full of possibilities. So is your future.", img: "assets/affirmations/509.jpg" },
+            { text: "The model that changes everything might be training in your head right now.", img: "assets/affirmations/510.jpg" }
+        ];
+
+        const affirmationFloat = document.getElementById('affirmation-float');
+        const affirmationText = document.getElementById('affirmation-text');
+        const affirmationImage = document.getElementById('affirmation-image');
+        const affirmationClose = document.getElementById('affirmation-close');
+
+        let currentIndex = Math.floor(Math.random() * affirmations.length);
+
+        // Preload images for faster display
+        affirmations.forEach(aff => {
+            const img = new Image();
+            img.src = aff.img;
+        });
+
+        let isTransitioning = false;
+
+        function showAffirmation(animate = false) {
+            const aff = affirmations[currentIndex];
+            
+            if (animate) {
+                // Fade out current content
+                affirmationImage.classList.add('fade-out');
+                affirmationText.classList.add('fade-out');
+                
+                // After fade out, update content and fade in
+                setTimeout(() => {
+                    affirmationText.textContent = `"${aff.text}"`;
+                    affirmationImage.src = aff.img;
+                    
+                    // Remove fade-out, prepare for fade-in
+                    affirmationImage.classList.remove('fade-out');
+                    affirmationText.classList.remove('fade-out');
+                    
+                    // Trigger fade-in on image load
+                    affirmationImage.onload = () => {
+                        affirmationImage.classList.add('fade-in');
+                        affirmationText.classList.add('fade-in');
+                        
+                        // Clean up classes after animation
+                        setTimeout(() => {
+                            affirmationImage.classList.remove('fade-in');
+                            affirmationText.classList.remove('fade-in');
+                            isTransitioning = false;
+                        }, 500);
+                    };
+                }, 500);
+            } else {
+                // Initial load without animation
+                affirmationText.textContent = `"${aff.text}"`;
+                affirmationImage.src = aff.img;
+            }
+        }
+
+        function nextAffirmation() {
+            if (isTransitioning) return; // Prevent rapid clicks
+            isTransitioning = true;
+            currentIndex = (currentIndex + 1) % affirmations.length;
+            showAffirmation(true);
+        }
+
+        // Initialize without animation
+        showAffirmation(false);
+
+        // Click to get new affirmation
+        affirmationFloat.addEventListener('click', (e) => {
+            if (e.target !== affirmationClose) {
+                nextAffirmation();
+            }
+        });
+
+        // Close button
+        affirmationClose.addEventListener('click', (e) => {
+            e.stopPropagation();
+            affirmationFloat.classList.add('hidden');
+            sessionStorage.setItem('affirmationClosed', 'true');
+        });
+
+        // Check if user closed it this session
+        if (sessionStorage.getItem('affirmationClosed') === 'true') {
+            affirmationFloat.classList.add('hidden');
+        }
+
+        // ==========================================
+        // AI PLAYGROUND DEMOS
+        // ==========================================
+
+        // --- Neural Network Visualizer ---
+        const nnCanvas = document.getElementById('nn-canvas');
+        const nnCtx = nnCanvas.getContext('2d');
+        const nnTooltip = document.getElementById('nn-tooltip');
+        let nnLayers = [4, 6, 6, 3];
+        let nnNodes = [];
+        let nnActivations = [];
+        let nnGradients = [];
+        let nnWeights = [];
+        let nnDropoutMask = [];
+        let nnAnimating = false;
+        let nnMode = 'forward'; // 'forward' or 'backward'
+        let nnActivationFn = 'relu';
+        let nnHoveredNode = null;
+        let nnDropoutEnabled = false;
+        let nnDropoutRate = 0.5;
+        let nnL2Lambda = 0;
+
+        // Activation functions
+        const activationFns = {
+            relu: (x) => Math.max(0, x),
+            sigmoid: (x) => 1 / (1 + Math.exp(-x * 5)),
+            tanh: (x) => Math.tanh(x * 2)
+        };
+
+        function nnResize() {
+            const rect = nnCanvas.parentElement.getBoundingClientRect();
+            nnCanvas.width = rect.width;
+            nnCanvas.height = rect.height;
+            nnInitNodes();
+            nnDraw();
+        }
+
+        function nnInitNodes() {
+            nnNodes = [];
+            nnActivations = [];
+            nnGradients = [];
+            nnWeights = [];
+            nnDropoutMask = [];
+            const padding = 40;
+            const layerSpacing = (nnCanvas.width - padding * 2) / (nnLayers.length - 1);
+            
+            nnLayers.forEach((count, layerIdx) => {
+                const layer = [];
+                const activationLayer = [];
+                const gradientLayer = [];
+                const dropoutLayer = [];
+                const nodeSpacing = (nnCanvas.height - padding * 2) / (count + 1);
+                for (let i = 0; i < count; i++) {
+                    layer.push({
+                        x: padding + layerIdx * layerSpacing,
+                        y: padding + (i + 1) * nodeSpacing,
+                        layer: layerIdx
+                    });
+                    activationLayer.push(0);
+                    gradientLayer.push(0);
+                    // Dropout: don't drop input or output layers
+                    const isHidden = layerIdx > 0 && layerIdx < nnLayers.length - 1;
+                    dropoutLayer.push(isHidden ? Math.random() > nnDropoutRate : true);
+                }
+                nnNodes.push(layer);
+                nnActivations.push(activationLayer);
+                nnGradients.push(gradientLayer);
+                nnDropoutMask.push(dropoutLayer);
+            });
+
+            // Initialize random weights
+            for (let l = 0; l < nnLayers.length - 1; l++) {
+                const layerWeights = [];
+                for (let i = 0; i < nnLayers[l]; i++) {
+                    const nodeWeights = [];
+                    for (let j = 0; j < nnLayers[l + 1]; j++) {
+                        nodeWeights.push(Math.random() * 0.8 + 0.2);
+                    }
+                    layerWeights.push(nodeWeights);
+                }
+                nnWeights.push(layerWeights);
+            }
+        }
+
+        function nnRegenerateDropoutMask() {
+            nnDropoutMask = [];
+            nnLayers.forEach((count, layerIdx) => {
+                const dropoutLayer = [];
+                for (let i = 0; i < count; i++) {
+                    const isHidden = layerIdx > 0 && layerIdx < nnLayers.length - 1;
+                    dropoutLayer.push(isHidden ? Math.random() > nnDropoutRate : true);
+                }
+                nnDropoutMask.push(dropoutLayer);
+            });
+        }
+
+        function nnApplyL2Decay() {
+            if (nnL2Lambda <= 0) return;
+            for (let l = 0; l < nnWeights.length; l++) {
+                for (let i = 0; i < nnWeights[l].length; i++) {
+                    for (let j = 0; j < nnWeights[l][i].length; j++) {
+                        nnWeights[l][i][j] *= (1 - nnL2Lambda * 0.1);
+                        nnWeights[l][i][j] = Math.max(0.05, nnWeights[l][i][j]);
+                    }
+                }
+            }
+        }
+
+        function nnDraw() {
+            const isDark = !document.documentElement.hasAttribute('data-theme');
+            nnCtx.clearRect(0, 0, nnCanvas.width, nnCanvas.height);
+            
+            // Draw connections with weight-based thickness
+            for (let l = 0; l < nnNodes.length - 1; l++) {
+                for (let i = 0; i < nnNodes[l].length; i++) {
+                    for (let j = 0; j < nnNodes[l + 1].length; j++) {
+                        const weight = nnWeights[l]?.[i]?.[j] || 0.5;
+                        const activation = Math.min(nnActivations[l][i], nnActivations[l + 1][j]);
+                        const gradient = Math.min(nnGradients[l][i], nnGradients[l + 1]?.[j] || 0);
+                        
+                        // Check if either node is dropped out
+                        const srcDropped = nnDropoutEnabled && !nnDropoutMask[l]?.[i];
+                        const dstDropped = nnDropoutEnabled && !nnDropoutMask[l + 1]?.[j];
+                        const isDroppedConnection = srcDropped || dstDropped;
+                        
+                        nnCtx.beginPath();
+                        nnCtx.moveTo(nnNodes[l][i].x, nnNodes[l][i].y);
+                        nnCtx.lineTo(nnNodes[l + 1][j].x, nnNodes[l + 1][j].y);
+                        
+                        if (isDroppedConnection) {
+                            // Dropped connection - very faint
+                            nnCtx.strokeStyle = isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.03)';
+                            nnCtx.lineWidth = 0.5;
+                        } else if (gradient > 0) {
+                            // Backprop mode - red gradient flow
+                            nnCtx.strokeStyle = `rgba(239, 68, 68, ${0.3 + gradient * 0.7})`;
+                            nnCtx.lineWidth = 1 + weight * 2 + gradient * 2;
+                        } else if (activation > 0) {
+                            // Forward mode - blue activation flow
+                            nnCtx.strokeStyle = `rgba(99, 102, 241, ${0.2 + activation * 0.8})`;
+                            nnCtx.lineWidth = 1 + weight * 2;
+                        } else {
+                            // Inactive - show weight as thickness
+                            nnCtx.strokeStyle = isDark ? `rgba(255,255,255,${0.05 + weight * 0.15})` : `rgba(0,0,0,${0.05 + weight * 0.1})`;
+                            nnCtx.lineWidth = 0.5 + weight * 1.5;
+                        }
+                        nnCtx.stroke();
+                    }
+                }
+            }
+            
+            // Draw nodes
+            nnNodes.forEach((layer, l) => {
+                layer.forEach((node, i) => {
+                    const activation = nnActivations[l][i];
+                    const gradient = nnGradients[l][i];
+                    const isHovered = nnHoveredNode && nnHoveredNode.l === l && nnHoveredNode.i === i;
+                    const isDropped = nnDropoutEnabled && !nnDropoutMask[l]?.[i];
+                    const radius = 10 + Math.max(activation, gradient) * 4 + (isHovered ? 2 : 0);
+                    
+                    nnCtx.beginPath();
+                    nnCtx.arc(node.x, node.y, radius, 0, Math.PI * 2);
+                    
+                    if (isDropped) {
+                        // Dropped out node - gray with X
+                        nnCtx.fillStyle = isDark ? 'rgba(100,100,100,0.2)' : 'rgba(150,150,150,0.2)';
+                        nnCtx.strokeStyle = isDark ? 'rgba(100,100,100,0.4)' : 'rgba(150,150,150,0.4)';
+                        nnCtx.setLineDash([3, 3]);
+                    } else if (gradient > 0) {
+                        // Backprop - red glow
+                        const grad = nnCtx.createRadialGradient(node.x, node.y, 0, node.x, node.y, radius + 4);
+                        grad.addColorStop(0, `rgba(239, 68, 68, ${gradient})`);
+                        grad.addColorStop(1, `rgba(239, 68, 68, ${gradient * 0.3})`);
+                        nnCtx.fillStyle = grad;
+                        nnCtx.strokeStyle = '#ef4444';
+                        nnCtx.setLineDash([]);
+                    } else if (activation > 0) {
+                        // Forward - blue glow
+                        const grad = nnCtx.createRadialGradient(node.x, node.y, 0, node.x, node.y, radius + 4);
+                        grad.addColorStop(0, `rgba(99, 102, 241, ${activation})`);
+                        grad.addColorStop(1, `rgba(99, 102, 241, ${activation * 0.3})`);
+                        nnCtx.fillStyle = grad;
+                        nnCtx.strokeStyle = '#6366f1';
+                        nnCtx.setLineDash([]);
+                    } else {
+                        nnCtx.fillStyle = isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.1)';
+                        nnCtx.strokeStyle = isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.2)';
+                        nnCtx.setLineDash([]);
+                    }
+                    
+                    if (isHovered && !isDropped) {
+                        nnCtx.strokeStyle = '#10b981';
+                        nnCtx.lineWidth = 2.5;
+                        nnCtx.setLineDash([]);
+                    } else {
+                        nnCtx.lineWidth = 1.5;
+                    }
+                    
+                    nnCtx.fill();
+                    nnCtx.stroke();
+                    nnCtx.setLineDash([]);
+                    
+                    // Draw X for dropped nodes
+                    if (isDropped) {
+                        nnCtx.beginPath();
+                        nnCtx.moveTo(node.x - 5, node.y - 5);
+                        nnCtx.lineTo(node.x + 5, node.y + 5);
+                        nnCtx.moveTo(node.x + 5, node.y - 5);
+                        nnCtx.lineTo(node.x - 5, node.y + 5);
+                        nnCtx.strokeStyle = isDark ? 'rgba(239, 68, 68, 0.6)' : 'rgba(220, 38, 38, 0.6)';
+                        nnCtx.lineWidth = 2;
+                        nnCtx.stroke();
+                    }
+                });
+            });
+
+            // Draw layer labels
+            nnCtx.font = '9px "IBM Plex Sans"';
+            nnCtx.fillStyle = isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)';
+            nnCtx.textAlign = 'center';
+            const labels = ['Input', ...Array(nnLayers.length - 2).fill('Hidden'), 'Output'];
+            nnNodes.forEach((layer, l) => {
+                if (layer[0]) {
+                    nnCtx.fillText(labels[l] || 'Hidden', layer[0].x, 18);
+                }
+            });
+        }
+
+        function nnSetLayers(count) {
+            if (nnAnimating) return;
+            document.querySelectorAll('.demo-card:first-child .demo-controls:first-of-type .demo-btn').forEach((btn, i) => {
+                btn.classList.toggle('active', i === count - 3);
+            });
+            if (count === 3) nnLayers = [4, 6, 3];
+            else if (count === 4) nnLayers = [4, 5, 5, 3];
+            else nnLayers = [4, 5, 6, 5, 3];
+            nnInitNodes();
+            nnDraw();
+        }
+
+        function nnSetMode(mode) {
+            nnMode = mode;
+            document.querySelectorAll('.demo-card:first-child .demo-controls:nth-of-type(2) .demo-btn').forEach((btn, i) => {
+                btn.classList.toggle('active', (mode === 'forward' && i === 0) || (mode === 'backward' && i === 1));
+            });
+        }
+
+        function nnSetActivation(fn) {
+            nnActivationFn = fn;
+        }
+
+        function nnToggleDropout() {
+            nnDropoutEnabled = !nnDropoutEnabled;
+            const btn = document.getElementById('nn-dropout-btn');
+            if (btn) {
+                btn.textContent = `Dropout: ${nnDropoutEnabled ? '50%' : 'Off'}`;
+                btn.classList.toggle('active', nnDropoutEnabled);
+            }
+            if (nnDropoutEnabled) {
+                nnRegenerateDropoutMask();
+            }
+            nnDraw();
+        }
+
+        function nnAnimateForward(layerIdx) {
+            if (layerIdx >= nnLayers.length - 1) {
+                setTimeout(() => {
+                    nnActivations = nnActivations.map(l => l.map(() => 0));
+                    nnAnimating = false;
+                    // Apply L2 weight decay after forward pass
+                    nnApplyL2Decay();
+                    nnDraw();
+                }, 800);
+                return;
+            }
+            
+            setTimeout(() => {
+                const actFn = activationFns[nnActivationFn];
+                for (let j = 0; j < nnActivations[layerIdx + 1].length; j++) {
+                    // Skip if this node is dropped out
+                    if (nnDropoutEnabled && !nnDropoutMask[layerIdx + 1]?.[j]) {
+                        nnActivations[layerIdx + 1][j] = 0;
+                        continue;
+                    }
+                    let sum = 0;
+                    let count = 0;
+                    for (let i = 0; i < nnActivations[layerIdx].length; i++) {
+                        // Skip connections from dropped nodes
+                        if (nnDropoutEnabled && !nnDropoutMask[layerIdx]?.[i]) continue;
+                        sum += nnActivations[layerIdx][i] * nnWeights[layerIdx][i][j];
+                        count++;
+                    }
+                    const raw = count > 0 ? sum / count + Math.random() * 0.2 : 0;
+                    nnActivations[layerIdx + 1][j] = Math.min(1, actFn(raw));
+                }
+                nnDraw();
+                nnAnimateForward(layerIdx + 1);
+            }, 300);
+        }
+
+        function nnAnimateBackward(layerIdx) {
+            if (layerIdx < 0) {
+                setTimeout(() => {
+                    nnGradients = nnGradients.map(l => l.map(() => 0));
+                    nnAnimating = false;
+                    // Apply L2 weight decay after backward pass
+                    nnApplyL2Decay();
+                    nnDraw();
+                }, 800);
+                return;
+            }
+            
+            setTimeout(() => {
+                for (let i = 0; i < nnGradients[layerIdx].length; i++) {
+                    // Skip if this node is dropped out
+                    if (nnDropoutEnabled && !nnDropoutMask[layerIdx]?.[i]) {
+                        nnGradients[layerIdx][i] = 0;
+                        continue;
+                    }
+                    let sum = 0;
+                    let count = 0;
+                    if (layerIdx < nnLayers.length - 1) {
+                        for (let j = 0; j < nnGradients[layerIdx + 1].length; j++) {
+                            // Skip connections to dropped nodes
+                            if (nnDropoutEnabled && !nnDropoutMask[layerIdx + 1]?.[j]) continue;
+                            sum += nnGradients[layerIdx + 1][j] * (nnWeights[layerIdx]?.[i]?.[j] || 0.5);
+                            count++;
+                        }
+                    }
+                    nnGradients[layerIdx][i] = Math.min(1, (count > 0 ? sum / count : 0) + Math.random() * 0.3);
+                }
+                nnDraw();
+                nnAnimateBackward(layerIdx - 1);
+            }, 300);
+        }
+
+        nnCanvas.addEventListener('click', (e) => {
+            if (nnAnimating) return;
+            const rect = nnCanvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            if (nnMode === 'forward') {
+                // Check input nodes
+                for (let i = 0; i < nnNodes[0].length; i++) {
+                    const node = nnNodes[0][i];
+                    const dist = Math.sqrt((x - node.x) ** 2 + (y - node.y) ** 2);
+                    if (dist < 15) {
+                        nnActivations[0][i] = 1;
+                        nnAnimating = true;
+                        nnDraw();
+                        nnAnimateForward(0);
+                        return;
+                    }
+                }
+            } else {
+                // Check output nodes for backprop
+                const lastLayer = nnNodes[nnNodes.length - 1];
+                for (let i = 0; i < lastLayer.length; i++) {
+                    const node = lastLayer[i];
+                    const dist = Math.sqrt((x - node.x) ** 2 + (y - node.y) ** 2);
+                    if (dist < 15) {
+                        nnGradients[nnGradients.length - 1][i] = 1;
+                        nnAnimating = true;
+                        nnDraw();
+                        nnAnimateBackward(nnLayers.length - 2);
+                        return;
+                    }
+                }
+            }
+        });
+
+        // Hover tooltip
+        nnCanvas.addEventListener('mousemove', (e) => {
+            const rect = nnCanvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            nnHoveredNode = null;
+            for (let l = 0; l < nnNodes.length; l++) {
+                for (let i = 0; i < nnNodes[l].length; i++) {
+                    const node = nnNodes[l][i];
+                    const dist = Math.sqrt((x - node.x) ** 2 + (y - node.y) ** 2);
+                    if (dist < 15) {
+                        nnHoveredNode = { l, i };
+                        const act = nnActivations[l][i];
+                        const grad = nnGradients[l][i];
+                        const layerName = l === 0 ? 'Input' : l === nnNodes.length - 1 ? 'Output' : `Hidden ${l}`;
+                        
+                        const isDropped = nnDropoutEnabled && !nnDropoutMask[l]?.[i];
+                        nnTooltip.innerHTML = `
+                            <span class="label">${layerName} Node ${i + 1}</span>
+                            ${isDropped ? '<span class="value" style="color:#ef4444">DROPPED</span>' : `<span class="value">a=${act.toFixed(3)}</span>`}
+                            ${grad > 0 && !isDropped ? `<span class="value" style="color:#ef4444"> âˆ‡=${grad.toFixed(3)}</span>` : ''}
+                        `;
+                        nnTooltip.style.left = (node.x + 15) + 'px';
+                        nnTooltip.style.top = (node.y - 10) + 'px';
+                        nnTooltip.classList.add('visible');
+                        nnDraw();
+                        return;
+                    }
+                }
+            }
+            nnTooltip.classList.remove('visible');
+            nnDraw();
+        });
+
+        nnCanvas.addEventListener('mouseleave', () => {
+            nnHoveredNode = null;
+            nnTooltip.classList.remove('visible');
+            nnDraw();
+        });
+
+        // --- Embedding Space Explorer ---
+        const embedCanvas = document.getElementById('embed-canvas');
+        const embedCtx = embedCanvas.getContext('2d');
+        let embedWords = [];
+        let embedOffset = { x: 0, y: 0 };
+        let embedZoom = 1;
+        let embedDragging = false;
+        let embedLastPos = { x: 0, y: 0 };
+        let embedCategory = 'tech';
+
+        const embedData = {
+            tech: [
+                { word: 'PyTorch', x: 0.2, y: 0.3 }, { word: 'TensorFlow', x: 0.25, y: 0.35 },
+                { word: 'Neural', x: 0.3, y: 0.4 }, { word: 'Network', x: 0.35, y: 0.38 },
+                { word: 'GPU', x: 0.15, y: 0.5 }, { word: 'CUDA', x: 0.18, y: 0.55 },
+                { word: 'Model', x: 0.5, y: 0.5 }, { word: 'Training', x: 0.55, y: 0.45 },
+                { word: 'Inference', x: 0.6, y: 0.52 }, { word: 'Weights', x: 0.45, y: 0.42 },
+                { word: 'Transformer', x: 0.7, y: 0.3 }, { word: 'Attention', x: 0.75, y: 0.35 },
+                { word: 'LLM', x: 0.8, y: 0.4 }, { word: 'GPT', x: 0.78, y: 0.32 },
+                { word: 'BERT', x: 0.72, y: 0.28 }, { word: 'Embedding', x: 0.5, y: 0.65 }
+            ],
+            emotions: [
+                { word: 'Happy', x: 0.7, y: 0.2 }, { word: 'Joy', x: 0.75, y: 0.25 },
+                { word: 'Excited', x: 0.8, y: 0.22 }, { word: 'Sad', x: 0.3, y: 0.7 },
+                { word: 'Melancholy', x: 0.28, y: 0.75 }, { word: 'Angry', x: 0.2, y: 0.3 },
+                { word: 'Furious', x: 0.18, y: 0.25 }, { word: 'Calm', x: 0.6, y: 0.6 },
+                { word: 'Peaceful', x: 0.65, y: 0.65 }, { word: 'Anxious', x: 0.4, y: 0.4 },
+                { word: 'Nervous', x: 0.38, y: 0.45 }, { word: 'Love', x: 0.8, y: 0.7 },
+                { word: 'Affection', x: 0.82, y: 0.68 }, { word: 'Fear', x: 0.25, y: 0.5 }
+            ],
+            animals: [
+                { word: 'Dog', x: 0.3, y: 0.3 }, { word: 'Wolf', x: 0.28, y: 0.25 },
+                { word: 'Cat', x: 0.6, y: 0.3 }, { word: 'Lion', x: 0.55, y: 0.25 },
+                { word: 'Tiger', x: 0.58, y: 0.22 }, { word: 'Bird', x: 0.5, y: 0.7 },
+                { word: 'Eagle', x: 0.52, y: 0.65 }, { word: 'Sparrow', x: 0.48, y: 0.72 },
+                { word: 'Fish', x: 0.8, y: 0.6 }, { word: 'Shark', x: 0.82, y: 0.55 },
+                { word: 'Whale', x: 0.78, y: 0.65 }, { word: 'Horse', x: 0.2, y: 0.6 },
+                { word: 'Zebra', x: 0.22, y: 0.55 }, { word: 'Snake', x: 0.4, y: 0.5 }
+            ]
+        };
+
+        function embedResize() {
+            const rect = embedCanvas.parentElement.getBoundingClientRect();
+            embedCanvas.width = rect.width;
+            embedCanvas.height = rect.height;
+            embedDraw();
+        }
+
+        function embedDraw() {
+            const isDark = !document.documentElement.hasAttribute('data-theme');
+            embedCtx.clearRect(0, 0, embedCanvas.width, embedCanvas.height);
+            
+            // Draw grid
+            embedCtx.strokeStyle = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
+            embedCtx.lineWidth = 1;
+            const gridSize = 40 * embedZoom;
+            for (let x = embedOffset.x % gridSize; x < embedCanvas.width; x += gridSize) {
+                embedCtx.beginPath();
+                embedCtx.moveTo(x, 0);
+                embedCtx.lineTo(x, embedCanvas.height);
+                embedCtx.stroke();
+            }
+            for (let y = embedOffset.y % gridSize; y < embedCanvas.height; y += gridSize) {
+                embedCtx.beginPath();
+                embedCtx.moveTo(0, y);
+                embedCtx.lineTo(embedCanvas.width, y);
+                embedCtx.stroke();
+            }
+            
+            // Draw words
+            embedWords.forEach(item => {
+                const x = item.x * embedCanvas.width * embedZoom + embedOffset.x;
+                const y = item.y * embedCanvas.height * embedZoom + embedOffset.y;
+                
+                if (x < -50 || x > embedCanvas.width + 50 || y < -20 || y > embedCanvas.height + 20) return;
+                
+                // Draw dot
+                embedCtx.beginPath();
+                embedCtx.arc(x, y, 5, 0, Math.PI * 2);
+                embedCtx.fillStyle = '#6366f1';
+                embedCtx.fill();
+                
+                // Draw label
+                embedCtx.font = '11px "IBM Plex Sans"';
+                embedCtx.fillStyle = isDark ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.8)';
+                embedCtx.fillText(item.word, x + 8, y + 4);
+            });
+        }
+
+        function embedSetCategory(cat) {
+            embedCategory = cat;
+            embedWords = embedData[cat];
+            document.querySelectorAll('.demo-card:nth-child(2) .demo-btn').forEach((btn, i) => {
+                btn.classList.toggle('active', ['tech', 'emotions', 'animals'][i] === cat);
+            });
+            embedDraw();
+        }
+
+        function embedReset() {
+            embedOffset = { x: 0, y: 0 };
+            embedZoom = 1;
+            embedDraw();
+        }
+
+        embedCanvas.addEventListener('mousedown', (e) => {
+            embedDragging = true;
+            embedLastPos = { x: e.clientX, y: e.clientY };
+        });
+
+        embedCanvas.addEventListener('mousemove', (e) => {
+            if (embedDragging) {
+                embedOffset.x += e.clientX - embedLastPos.x;
+                embedOffset.y += e.clientY - embedLastPos.y;
+                embedLastPos = { x: e.clientX, y: e.clientY };
+                embedDraw();
+            }
+        });
+
+        embedCanvas.addEventListener('mouseup', () => embedDragging = false);
+        embedCanvas.addEventListener('mouseleave', () => embedDragging = false);
+
+        embedCanvas.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const zoomFactor = e.deltaY > 0 ? 0.9 : 1.1;
+            embedZoom = Math.max(0.5, Math.min(3, embedZoom * zoomFactor));
+            embedDraw();
+        });
+
+        // --- Attention Heatmap ---
+        const attnCanvas = document.getElementById('attn-canvas');
+        const attnCtx = attnCanvas.getContext('2d');
+        let attnSentenceIdx = 0;
+        let attnHover = { row: -1, col: -1 };
+
+        const attnSentences = [
+            { tokens: ['The', 'cat', 'sat', 'on', 'the', 'mat'], weights: null },
+            { tokens: ['I', 'love', 'machine', 'learning'], weights: null },
+            { tokens: ['Attention', 'is', 'all', 'you', 'need'], weights: null }
+        ];
+
+        // Generate random attention weights
+        attnSentences.forEach(s => {
+            const n = s.tokens.length;
+            s.weights = Array(n).fill().map(() => {
+                const row = Array(n).fill().map(() => Math.random());
+                const sum = row.reduce((a, b) => a + b);
+                return row.map(v => v / sum);
+            });
+        });
+
+        function attnResize() {
+            const rect = attnCanvas.parentElement.getBoundingClientRect();
+            attnCanvas.width = rect.width;
+            attnCanvas.height = rect.height;
+            attnDraw();
+        }
+
+        function attnDraw() {
+            const isDark = !document.documentElement.hasAttribute('data-theme');
+            attnCtx.clearRect(0, 0, attnCanvas.width, attnCanvas.height);
+            
+            const sentence = attnSentences[attnSentenceIdx];
+            const n = sentence.tokens.length;
+            const padding = 50;
+            const cellSize = Math.min((attnCanvas.width - padding * 2) / n, (attnCanvas.height - padding * 2) / n);
+            const startX = (attnCanvas.width - cellSize * n) / 2;
+            const startY = padding;
+            
+            // Draw cells
+            for (let i = 0; i < n; i++) {
+                for (let j = 0; j < n; j++) {
+                    const weight = sentence.weights[i][j];
+                    const x = startX + j * cellSize;
+                    const y = startY + i * cellSize;
+                    
+                    // Cell color
+                    const alpha = weight;
+                    attnCtx.fillStyle = `rgba(99, 102, 241, ${alpha})`;
+                    attnCtx.fillRect(x, y, cellSize - 1, cellSize - 1);
+                    
+                    // Highlight on hover
+                    if (i === attnHover.row && j === attnHover.col) {
+                        attnCtx.strokeStyle = '#fff';
+                        attnCtx.lineWidth = 2;
+                        attnCtx.strokeRect(x, y, cellSize - 1, cellSize - 1);
+                        
+                        // Show weight value
+                        attnCtx.fillStyle = isDark ? '#fff' : '#000';
+                        attnCtx.font = 'bold 11px "JetBrains Mono"';
+                        attnCtx.fillText(weight.toFixed(2), x + cellSize / 2 - 15, y + cellSize / 2 + 4);
+                    }
+                }
+            }
+            
+            // Draw labels
+            attnCtx.font = '10px "IBM Plex Sans"';
+            attnCtx.fillStyle = isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)';
+            
+            // Top labels (keys)
+            for (let j = 0; j < n; j++) {
+                attnCtx.save();
+                attnCtx.translate(startX + j * cellSize + cellSize / 2, startY - 5);
+                attnCtx.rotate(-Math.PI / 4);
+                attnCtx.fillText(sentence.tokens[j], 0, 0);
+                attnCtx.restore();
+            }
+            
+            // Left labels (queries)
+            attnCtx.textAlign = 'right';
+            for (let i = 0; i < n; i++) {
+                attnCtx.fillText(sentence.tokens[i], startX - 8, startY + i * cellSize + cellSize / 2 + 4);
+            }
+            attnCtx.textAlign = 'left';
+        }
+
+        function attnSetSentence(idx) {
+            attnSentenceIdx = idx;
+            document.querySelectorAll('.demo-card:nth-child(3) .demo-btn').forEach((btn, i) => {
+                btn.classList.toggle('active', i === idx);
+            });
+            attnDraw();
+        }
+
+        attnCanvas.addEventListener('mousemove', (e) => {
+            const rect = attnCanvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const sentence = attnSentences[attnSentenceIdx];
+            const n = sentence.tokens.length;
+            const padding = 50;
+            const cellSize = Math.min((attnCanvas.width - padding * 2) / n, (attnCanvas.height - padding * 2) / n);
+            const startX = (attnCanvas.width - cellSize * n) / 2;
+            const startY = padding;
+            
+            const col = Math.floor((x - startX) / cellSize);
+            const row = Math.floor((y - startY) / cellSize);
+            
+            if (row >= 0 && row < n && col >= 0 && col < n) {
+                attnHover = { row, col };
+            } else {
+                attnHover = { row: -1, col: -1 };
+            }
+            attnDraw();
+        });
+
+        attnCanvas.addEventListener('mouseleave', () => {
+            attnHover = { row: -1, col: -1 };
+            attnDraw();
+        });
+
+        // --- Loss Landscape ---
+        const lossCanvas = document.getElementById('loss-canvas');
+        const lossCtx = lossCanvas.getContext('2d');
+        let lossPos = { x: 0.2, y: 0.8 };
+        let lossVel = { x: 0, y: 0 };
+        let lossLR = 0.15;
+        let lossOptimizer = 'sgd';
+        let lossAnimating = false;
+        let lossPath = [];
+        let lossM = { x: 0, y: 0 }; // Momentum
+        let lossV = { x: 0, y: 0 }; // Adam variance
+        let lossT = 0; // Adam timestep
+
+        function lossResize() {
+            const rect = lossCanvas.parentElement.getBoundingClientRect();
+            lossCanvas.width = rect.width;
+            lossCanvas.height = rect.height;
+            lossDraw();
+        }
+
+        // Loss function (Rosenbrock-like with multiple minima)
+        function lossFunc(x, y) {
+            const a = (1 - x) * (1 - x);
+            const b = 100 * (y - x * x) * (y - x * x);
+            return (a + b) * 0.01 + Math.sin(x * 5) * 0.1 + Math.sin(y * 5) * 0.1;
+        }
+
+        function lossGradient(x, y) {
+            const h = 0.001;
+            const dx = (lossFunc(x + h, y) - lossFunc(x - h, y)) / (2 * h);
+            const dy = (lossFunc(x, y + h) - lossFunc(x, y - h)) / (2 * h);
+            return { x: dx, y: dy };
+        }
+
+        function lossDraw() {
+            const isDark = !document.documentElement.hasAttribute('data-theme');
+            lossCtx.clearRect(0, 0, lossCanvas.width, lossCanvas.height);
+            
+            // Draw contour
+            const imageData = lossCtx.createImageData(lossCanvas.width, lossCanvas.height);
+            for (let py = 0; py < lossCanvas.height; py++) {
+                for (let px = 0; px < lossCanvas.width; px++) {
+                    const x = px / lossCanvas.width;
+                    const y = py / lossCanvas.height;
+                    const loss = lossFunc(x, y);
+                    const intensity = Math.max(0, Math.min(255, 255 - loss * 200));
+                    const idx = (py * lossCanvas.width + px) * 4;
+                    
+                    if (isDark) {
+                        imageData.data[idx] = intensity * 0.4;
+                        imageData.data[idx + 1] = intensity * 0.4;
+                        imageData.data[idx + 2] = intensity * 0.9;
+                    } else {
+                        imageData.data[idx] = 230 - intensity * 0.3;
+                        imageData.data[idx + 1] = 230 - intensity * 0.3;
+                        imageData.data[idx + 2] = 255 - intensity * 0.1;
+                    }
+                    imageData.data[idx + 3] = 255;
+                }
+            }
+            lossCtx.putImageData(imageData, 0, 0);
+            
+            // Draw path
+            if (lossPath.length > 1) {
+                lossCtx.beginPath();
+                lossCtx.moveTo(lossPath[0].x * lossCanvas.width, lossPath[0].y * lossCanvas.height);
+                for (let i = 1; i < lossPath.length; i++) {
+                    lossCtx.lineTo(lossPath[i].x * lossCanvas.width, lossPath[i].y * lossCanvas.height);
+                }
+                lossCtx.strokeStyle = 'rgba(255, 200, 50, 0.8)';
+                lossCtx.lineWidth = 2;
+                lossCtx.stroke();
+            }
+            
+            // Draw current position
+            lossCtx.beginPath();
+            lossCtx.arc(lossPos.x * lossCanvas.width, lossPos.y * lossCanvas.height, 8, 0, Math.PI * 2);
+            lossCtx.fillStyle = '#f59e0b';
+            lossCtx.fill();
+            lossCtx.strokeStyle = '#fff';
+            lossCtx.lineWidth = 2;
+            lossCtx.stroke();
+        }
+
+        function lossStep() {
+            const grad = lossGradient(lossPos.x, lossPos.y);
+            
+            if (lossOptimizer === 'sgd') {
+                lossPos.x -= lossLR * grad.x;
+                lossPos.y -= lossLR * grad.y;
+            } else if (lossOptimizer === 'momentum') {
+                const beta = 0.9;
+                lossVel.x = beta * lossVel.x + lossLR * grad.x;
+                lossVel.y = beta * lossVel.y + lossLR * grad.y;
+                lossPos.x -= lossVel.x;
+                lossPos.y -= lossVel.y;
+            } else if (lossOptimizer === 'adam') {
+                const beta1 = 0.9, beta2 = 0.999, eps = 1e-8;
+                lossT++;
+                lossM.x = beta1 * lossM.x + (1 - beta1) * grad.x;
+                lossM.y = beta1 * lossM.y + (1 - beta1) * grad.y;
+                lossV.x = beta2 * lossV.x + (1 - beta2) * grad.x * grad.x;
+                lossV.y = beta2 * lossV.y + (1 - beta2) * grad.y * grad.y;
+                const mHatX = lossM.x / (1 - Math.pow(beta1, lossT));
+                const mHatY = lossM.y / (1 - Math.pow(beta1, lossT));
+                const vHatX = lossV.x / (1 - Math.pow(beta2, lossT));
+                const vHatY = lossV.y / (1 - Math.pow(beta2, lossT));
+                lossPos.x -= lossLR * mHatX / (Math.sqrt(vHatX) + eps);
+                lossPos.y -= lossLR * mHatY / (Math.sqrt(vHatY) + eps);
+            }
+            
+            // Clamp position
+            lossPos.x = Math.max(0, Math.min(1, lossPos.x));
+            lossPos.y = Math.max(0, Math.min(1, lossPos.y));
+            
+            lossPath.push({ x: lossPos.x, y: lossPos.y });
+            lossDraw();
+        }
+
+        function lossAnimate() {
+            if (!lossAnimating) return;
+            lossStep();
+            if (lossPath.length < 100) {
+                requestAnimationFrame(lossAnimate);
+            } else {
+                lossAnimating = false;
+            }
+        }
+
+        function lossReset() {
+            lossPos = { x: 0.2, y: 0.8 };
+            lossVel = { x: 0, y: 0 };
+            lossM = { x: 0, y: 0 };
+            lossV = { x: 0, y: 0 };
+            lossT = 0;
+            lossPath = [{ x: lossPos.x, y: lossPos.y }];
+            lossAnimating = true;
+            lossAnimate();
+        }
+
+        function lossSetOptimizer(opt) {
+            lossOptimizer = opt;
+            document.querySelectorAll('.demo-card:nth-child(4) .demo-btn').forEach((btn, i) => {
+                if (i > 0) btn.classList.toggle('active', ['sgd', 'momentum', 'adam'][i - 1] === opt);
+            });
+            lossReset();
+        }
+
+        lossCanvas.addEventListener('click', (e) => {
+            const rect = lossCanvas.getBoundingClientRect();
+            lossPos.x = (e.clientX - rect.left) / rect.width;
+            lossPos.y = (e.clientY - rect.top) / rect.height;
+            lossVel = { x: 0, y: 0 };
+            lossM = { x: 0, y: 0 };
+            lossV = { x: 0, y: 0 };
+            lossT = 0;
+            lossPath = [{ x: lossPos.x, y: lossPos.y }];
+            lossAnimating = true;
+            lossAnimate();
+        });
+
+        // Learning rate slider
+        const lossLRSlider = document.getElementById('loss-lr');
+        const lossLRVal = document.getElementById('loss-lr-val');
+        if (lossLRSlider) {
+            lossLRSlider.addEventListener('input', () => {
+                lossLR = lossLRSlider.value / 100;
+                lossLRVal.textContent = lossLR.toFixed(2);
+            });
+        }
+
+        // L2 Regularization slider for NN Visualizer
+        const nnL2Slider = document.getElementById('nn-l2');
+        const nnL2Val = document.getElementById('nn-l2-val');
+        if (nnL2Slider) {
+            nnL2Slider.addEventListener('input', () => {
+                nnL2Lambda = nnL2Slider.value / 100;
+                nnL2Val.textContent = nnL2Lambda.toFixed(2);
+                // Immediately apply decay to show effect
+                if (nnL2Lambda > 0) {
+                    nnApplyL2Decay();
+                    nnDraw();
+                }
+            });
+        }
+
+        // Initialize all demos on load
+        function initPlaygroundDemos() {
+            nnResize();
+            embedWords = embedData.tech;
+            embedResize();
+            attnResize();
+            lossPath = [{ x: lossPos.x, y: lossPos.y }];
+            lossResize();
+        }
+
+        // Wait for DOM and fonts to load
+        if (document.readyState === 'complete') {
+            initPlaygroundDemos();
+        } else {
+            window.addEventListener('load', initPlaygroundDemos);
+        }
+        window.addEventListener('resize', () => {
+            nnResize();
+            embedResize();
+            attnResize();
+            lossResize();
+        });
