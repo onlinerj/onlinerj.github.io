@@ -831,7 +831,9 @@
                         y: padding + (i + 1) * nodeSpacing,
                         layer: layerIdx
                     });
-                    activationLayer.push(0);
+                    // Initialize input layer with random values (simulating input data)
+                    const initValue = layerIdx === 0 ? Math.random() * 0.6 + 0.4 : 0;
+                    activationLayer.push(initValue);
                     gradientLayer.push(0);
                     // Dropout: don't drop input or output layers
                     const isHidden = layerIdx > 0 && layerIdx < nnLayers.length - 1;
@@ -1052,7 +1054,10 @@
         function nnAnimateForward(layerIdx) {
             if (layerIdx >= nnLayers.length - 1) {
                 setTimeout(() => {
-                    nnActivations = nnActivations.map(l => l.map(() => 0));
+                    // Reset hidden/output layers but keep input layer values
+                    nnActivations = nnActivations.map((l, idx) => 
+                        idx === 0 ? l : l.map(() => 0)
+                    );
                     nnAnimating = false;
                     // Apply L2 weight decay after forward pass
                     nnApplyL2Decay();
