@@ -453,6 +453,28 @@
                     </div>
                     <p class="demo-info">Click anywhere to place the starting point</p>
                 </div>
+
+                <!-- Multi-Agent System -->
+                <div class="demo-card">
+                    <h3>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><path d="M12 8v4M8.5 17L11 14M15.5 17L13 14"/></svg>
+                        Multi-Agent System
+                    </h3>
+                    <p>Watch agents collaborate to solve a task.</p>
+                    <div class="demo-canvas-container">
+                        <canvas id="mas-canvas" class="demo-canvas"></canvas>
+                    </div>
+                    <div class="demo-controls">
+                        <button class="demo-btn" onclick="masRun()">▶ Run Task</button>
+                        <button class="demo-btn" onclick="masReset()">Reset</button>
+                    </div>
+                    <div class="demo-controls">
+                        <button class="demo-btn active" onclick="masSetScenario('research')">Research</button>
+                        <button class="demo-btn" onclick="masSetScenario('code')">Code Review</button>
+                        <button class="demo-btn" onclick="masSetScenario('creative')">Creative</button>
+                    </div>
+                    <p class="demo-info">Orchestrator coordinates specialized agents</p>
+                </div>
             </div>
         </section>
 
