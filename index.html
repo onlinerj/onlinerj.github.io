@@ -1896,77 +1896,72 @@
         applyFilter('original');
 
         // AI/Tech Affirmations
-        // AI-generated images using Pollinations.ai (FREE, unique per affirmation)
-        function getAIImageUrl(prompt) {
-            const enhancedPrompt = `abstract digital art, ${prompt}, futuristic, neural network aesthetic, vibrant colors, cinematic lighting, 4k`;
-            return `https://image.pollinations.ai/prompt/${encodeURIComponent(enhancedPrompt)}?width=400&height=200&nologo=true`;
-        }
-
+        // Pre-generated AI images with fixed seeds for instant loading (Pollinations.ai)
         const affirmations = [
             // Learning & Growth
-            "Your neural networks aren't the only things learning—you're growing every day.",
-            "Every gradient descent leads somewhere meaningful.",
-            "The best models are built by curious minds like yours.",
-            "Your attention mechanism is focused on the right things.",
-            "You're not just training models, you're shaping the future.",
-            "Even transformers started with a single attention head.",
-            "Your loss function is decreasing—keep iterating.",
-            "Behind every breakthrough is someone who refused to stop fine-tuning.",
-            "Your embeddings capture more dimensions than you realize.",
-            "Every epoch brings you closer to convergence.",
-            "Your learning rate is perfectly tuned for this moment.",
-            "Backpropagation taught us: growth comes from understanding our errors.",
-            "Your knowledge graph expands with every connection you make.",
+            { text: "Your neural networks aren't the only things learning—you're growing every day.", img: "https://image.pollinations.ai/prompt/neural%20network%20brain%20growing%20digital%20art%20neon?width=400&height=200&seed=101&nologo=true" },
+            { text: "Every gradient descent leads somewhere meaningful.", img: "https://image.pollinations.ai/prompt/gradient%20descent%20path%20mountains%20abstract%20art?width=400&height=200&seed=102&nologo=true" },
+            { text: "The best models are built by curious minds like yours.", img: "https://image.pollinations.ai/prompt/curious%20mind%20lightbulb%20AI%20digital%20art?width=400&height=200&seed=103&nologo=true" },
+            { text: "Your attention mechanism is focused on the right things.", img: "https://image.pollinations.ai/prompt/attention%20focus%20spotlight%20neural%20network?width=400&height=200&seed=104&nologo=true" },
+            { text: "You're not just training models, you're shaping the future.", img: "https://image.pollinations.ai/prompt/future%20city%20AI%20technology%20futuristic?width=400&height=200&seed=105&nologo=true" },
+            { text: "Even transformers started with a single attention head.", img: "https://image.pollinations.ai/prompt/transformer%20architecture%20digital%20abstract?width=400&height=200&seed=106&nologo=true" },
+            { text: "Your loss function is decreasing—keep iterating.", img: "https://image.pollinations.ai/prompt/decreasing%20graph%20success%20progress%20neon?width=400&height=200&seed=107&nologo=true" },
+            { text: "Behind every breakthrough is someone who refused to stop fine-tuning.", img: "https://image.pollinations.ai/prompt/breakthrough%20explosion%20light%20discovery?width=400&height=200&seed=108&nologo=true" },
+            { text: "Your embeddings capture more dimensions than you realize.", img: "https://image.pollinations.ai/prompt/multidimensional%20space%20vectors%20cosmic?width=400&height=200&seed=109&nologo=true" },
+            { text: "Every epoch brings you closer to convergence.", img: "https://image.pollinations.ai/prompt/convergence%20spiral%20unity%20abstract?width=400&height=200&seed=110&nologo=true" },
+            { text: "Your learning rate is perfectly tuned for this moment.", img: "https://image.pollinations.ai/prompt/tuning%20dial%20perfect%20balance%20tech?width=400&height=200&seed=111&nologo=true" },
+            { text: "Backpropagation taught us: growth comes from understanding our errors.", img: "https://image.pollinations.ai/prompt/growth%20from%20errors%20phoenix%20rising?width=400&height=200&seed=112&nologo=true" },
+            { text: "Your knowledge graph expands with every connection you make.", img: "https://image.pollinations.ai/prompt/knowledge%20graph%20network%20connections%20glow?width=400&height=200&seed=113&nologo=true" },
             
             // Career & Purpose
-            "The world needs engineers who care about AI ethics. You matter.",
-            "AGI might be uncertain, but your potential isn't.",
-            "You're the human in human-AI collaboration.",
-            "The best hyperparameter you have is persistence.",
-            "Your career trajectory has the best optimizer: you.",
-            "You're not just writing code—you're writing history.",
-            "The AI revolution needs thoughtful builders. That's you.",
-            "You belong at the frontier of technology.",
-            "Your unique perspective is the secret sauce no model can replicate.",
-            "Keep exploring—the best architectures haven't been invented yet.",
-            "You're more than your GitHub contributions.",
-            "The future of AI is as bright as the people building it.",
-            "Your career is a long-horizon RL problem. Be patient with yourself.",
-            "The best engineers debug their imposter syndrome too.",
+            { text: "The world needs engineers who care about AI ethics. You matter.", img: "https://image.pollinations.ai/prompt/AI%20ethics%20balance%20scales%20digital?width=400&height=200&seed=201&nologo=true" },
+            { text: "AGI might be uncertain, but your potential isn't.", img: "https://image.pollinations.ai/prompt/human%20potential%20infinite%20stars%20cosmic?width=400&height=200&seed=202&nologo=true" },
+            { text: "You're the human in human-AI collaboration.", img: "https://image.pollinations.ai/prompt/human%20AI%20handshake%20collaboration%20future?width=400&height=200&seed=203&nologo=true" },
+            { text: "The best hyperparameter you have is persistence.", img: "https://image.pollinations.ai/prompt/persistence%20mountain%20climber%20summit?width=400&height=200&seed=204&nologo=true" },
+            { text: "Your career trajectory has the best optimizer: you.", img: "https://image.pollinations.ai/prompt/career%20rocket%20trajectory%20upward?width=400&height=200&seed=205&nologo=true" },
+            { text: "You're not just writing code—you're writing history.", img: "https://image.pollinations.ai/prompt/writing%20history%20code%20ancient%20scroll%20tech?width=400&height=200&seed=206&nologo=true" },
+            { text: "The AI revolution needs thoughtful builders. That's you.", img: "https://image.pollinations.ai/prompt/builder%20architect%20AI%20construction?width=400&height=200&seed=207&nologo=true" },
+            { text: "You belong at the frontier of technology.", img: "https://image.pollinations.ai/prompt/frontier%20horizon%20technology%20explorer?width=400&height=200&seed=208&nologo=true" },
+            { text: "Your unique perspective is the secret sauce no model can replicate.", img: "https://image.pollinations.ai/prompt/unique%20fingerprint%20colorful%20identity?width=400&height=200&seed=209&nologo=true" },
+            { text: "Keep exploring—the best architectures haven't been invented yet.", img: "https://image.pollinations.ai/prompt/explorer%20telescope%20stars%20discovery?width=400&height=200&seed=210&nologo=true" },
+            { text: "You're more than your GitHub contributions.", img: "https://image.pollinations.ai/prompt/person%20beyond%20code%20wholeness%20light?width=400&height=200&seed=211&nologo=true" },
+            { text: "The future of AI is as bright as the people building it.", img: "https://image.pollinations.ai/prompt/bright%20future%20sunrise%20technology?width=400&height=200&seed=212&nologo=true" },
+            { text: "Your career is a long-horizon RL problem. Be patient with yourself.", img: "https://image.pollinations.ai/prompt/long%20horizon%20path%20patience%20journey?width=400&height=200&seed=213&nologo=true" },
+            { text: "The best engineers debug their imposter syndrome too.", img: "https://image.pollinations.ai/prompt/confidence%20mirror%20reflection%20strength?width=400&height=200&seed=214&nologo=true" },
             
             // Balance & Wellbeing
-            "Your batch size for learning is just right.",
-            "Regularization keeps models from overfitting. Rest keeps you from burning out.",
-            "The most powerful compute is a well-rested mind.",
-            "Even GPUs need cooling. Take a break.",
-            "Your context window needs refresh time. Step outside.",
-            "The best inference happens after a good night's sleep.",
-            "You can't pour from an empty tensor.",
-            "Self-care is not a vanishing gradient—prioritize it.",
+            { text: "Your batch size for learning is just right.", img: "https://image.pollinations.ai/prompt/balance%20perfect%20zen%20harmony?width=400&height=200&seed=301&nologo=true" },
+            { text: "Regularization keeps models from overfitting. Rest keeps you from burning out.", img: "https://image.pollinations.ai/prompt/rest%20peaceful%20nature%20calm%20water?width=400&height=200&seed=302&nologo=true" },
+            { text: "The most powerful compute is a well-rested mind.", img: "https://image.pollinations.ai/prompt/rested%20mind%20brain%20glowing%20peaceful?width=400&height=200&seed=303&nologo=true" },
+            { text: "Even GPUs need cooling. Take a break.", img: "https://image.pollinations.ai/prompt/cooling%20breeze%20refreshing%20nature?width=400&height=200&seed=304&nologo=true" },
+            { text: "Your context window needs refresh time. Step outside.", img: "https://image.pollinations.ai/prompt/nature%20walk%20forest%20sunlight%20peace?width=400&height=200&seed=305&nologo=true" },
+            { text: "The best inference happens after a good night's sleep.", img: "https://image.pollinations.ai/prompt/peaceful%20sleep%20stars%20night%20dreams?width=400&height=200&seed=306&nologo=true" },
+            { text: "You can't pour from an empty tensor.", img: "https://image.pollinations.ai/prompt/self%20care%20filling%20cup%20energy?width=400&height=200&seed=307&nologo=true" },
+            { text: "Self-care is not a vanishing gradient—prioritize it.", img: "https://image.pollinations.ai/prompt/self%20care%20meditation%20wellness%20glow?width=400&height=200&seed=308&nologo=true" },
             
             // Technical Inspiration
-            "Dropout makes networks stronger. Setbacks make you resilient.",
-            "Your feature extraction skills apply to life's patterns too.",
-            "Like skip connections, your past experiences strengthen who you are today.",
-            "Ensemble methods work because diversity is powerful. So are you.",
-            "Your activation function is ReLU: always ready to let the positive through.",
-            "Data augmentation teaches us: there are many valid ways to see the same thing.",
-            "Like federated learning, your distributed experiences make you stronger.",
-            "You're not stuck in a local minimum—you're gathering momentum.",
-            "CUDA cores work together. So should we. Collaboration > competition.",
-            "Your weights are initialized just right for this journey.",
+            { text: "Dropout makes networks stronger. Setbacks make you resilient.", img: "https://image.pollinations.ai/prompt/resilience%20strength%20phoenix%20fire?width=400&height=200&seed=401&nologo=true" },
+            { text: "Your feature extraction skills apply to life's patterns too.", img: "https://image.pollinations.ai/prompt/patterns%20life%20fractals%20beautiful?width=400&height=200&seed=402&nologo=true" },
+            { text: "Like skip connections, your past experiences strengthen who you are today.", img: "https://image.pollinations.ai/prompt/connections%20bridge%20past%20present?width=400&height=200&seed=403&nologo=true" },
+            { text: "Ensemble methods work because diversity is powerful. So are you.", img: "https://image.pollinations.ai/prompt/diversity%20colorful%20unity%20strength?width=400&height=200&seed=404&nologo=true" },
+            { text: "Your activation function is ReLU: always ready to let the positive through.", img: "https://image.pollinations.ai/prompt/positive%20energy%20light%20rays%20burst?width=400&height=200&seed=405&nologo=true" },
+            { text: "Data augmentation teaches us: there are many valid ways to see the same thing.", img: "https://image.pollinations.ai/prompt/perspectives%20prism%20rainbow%20light?width=400&height=200&seed=406&nologo=true" },
+            { text: "Like federated learning, your distributed experiences make you stronger.", img: "https://image.pollinations.ai/prompt/distributed%20network%20global%20connected?width=400&height=200&seed=407&nologo=true" },
+            { text: "You're not stuck in a local minimum—you're gathering momentum.", img: "https://image.pollinations.ai/prompt/momentum%20wave%20energy%20motion?width=400&height=200&seed=408&nologo=true" },
+            { text: "CUDA cores work together. So should we. Collaboration > competition.", img: "https://image.pollinations.ai/prompt/teamwork%20collaboration%20hands%20together?width=400&height=200&seed=409&nologo=true" },
+            { text: "Your weights are initialized just right for this journey.", img: "https://image.pollinations.ai/prompt/journey%20beginning%20path%20sunrise?width=400&height=200&seed=410&nologo=true" },
             
             // Innovation & Creativity
-            "The next big paper might have your name on it.",
-            "Your ideas are worth more than their perplexity score.",
-            "Innovation doesn't require permission. Keep building.",
-            "The best prompts come from those who understand both sides.",
-            "You're not just using AI tools—you're shaping how they evolve.",
-            "Every commit is a step toward something meaningful.",
-            "The intersection of your interests is where magic happens.",
-            "Your side projects matter more than you think.",
-            "Latent space is full of possibilities. So is your future.",
-            "The model that changes everything might be training in your head right now."
+            { text: "The next big paper might have your name on it.", img: "https://image.pollinations.ai/prompt/publication%20spotlight%20achievement%20star?width=400&height=200&seed=501&nologo=true" },
+            { text: "Your ideas are worth more than their perplexity score.", img: "https://image.pollinations.ai/prompt/valuable%20ideas%20gems%20treasure?width=400&height=200&seed=502&nologo=true" },
+            { text: "Innovation doesn't require permission. Keep building.", img: "https://image.pollinations.ai/prompt/innovation%20building%20creation%20sparks?width=400&height=200&seed=503&nologo=true" },
+            { text: "The best prompts come from those who understand both sides.", img: "https://image.pollinations.ai/prompt/understanding%20bridge%20two%20worlds?width=400&height=200&seed=504&nologo=true" },
+            { text: "You're not just using AI tools—you're shaping how they evolve.", img: "https://image.pollinations.ai/prompt/shaping%20future%20hands%20clay%20creation?width=400&height=200&seed=505&nologo=true" },
+            { text: "Every commit is a step toward something meaningful.", img: "https://image.pollinations.ai/prompt/steps%20progress%20stairway%20light?width=400&height=200&seed=506&nologo=true" },
+            { text: "The intersection of your interests is where magic happens.", img: "https://image.pollinations.ai/prompt/intersection%20magic%20sparkles%20convergence?width=400&height=200&seed=507&nologo=true" },
+            { text: "Your side projects matter more than you think.", img: "https://image.pollinations.ai/prompt/side%20project%20hidden%20gem%20glowing?width=400&height=200&seed=508&nologo=true" },
+            { text: "Latent space is full of possibilities. So is your future.", img: "https://image.pollinations.ai/prompt/possibilities%20galaxy%20infinite%20space?width=400&height=200&seed=509&nologo=true" },
+            { text: "The model that changes everything might be training in your head right now.", img: "https://image.pollinations.ai/prompt/brain%20lightbulb%20idea%20breakthrough%20glow?width=400&height=200&seed=510&nologo=true" }
         ];
 
         const affirmationFloat = document.getElementById('affirmation-float');
@@ -1976,17 +1971,21 @@
 
         let currentIndex = Math.floor(Math.random() * affirmations.length);
 
+        // Preload images for faster display
+        affirmations.forEach(aff => {
+            const img = new Image();
+            img.src = aff.img;
+        });
+
         function showAffirmation() {
-            const text = affirmations[currentIndex];
+            const aff = affirmations[currentIndex];
             affirmationText.style.opacity = '0';
             affirmationImage.style.opacity = '0.3';
             
-            // Generate unique AI image from the affirmation text
-            const imageUrl = getAIImageUrl(text);
-            affirmationImage.src = imageUrl;
+            affirmationImage.src = aff.img;
             
             setTimeout(() => {
-                affirmationText.textContent = `"${text}"`;
+                affirmationText.textContent = `"${aff.text}"`;
                 affirmationText.style.opacity = '1';
             }, 150);
             
