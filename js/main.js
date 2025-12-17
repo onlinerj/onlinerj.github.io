@@ -784,6 +784,7 @@
         let nnActivations = [];
         let nnGradients = [];
         let nnWeights = [];
+        let nnWeightsOriginal = []; // Store original weights for L2 visualization
         let nnDropoutMask = [];
         let nnAnimating = false;
         let nnMode = 'forward'; // 'forward' or 'backward'
@@ -813,6 +814,7 @@
             nnActivations = [];
             nnGradients = [];
             nnWeights = [];
+            nnWeightsOriginal = [];
             nnDropoutMask = [];
             const padding = 40;
             const layerSpacing = (nnCanvas.width - padding * 2) / (nnLayers.length - 1);
@@ -844,14 +846,20 @@
             // Initialize random weights
             for (let l = 0; l < nnLayers.length - 1; l++) {
                 const layerWeights = [];
+                const layerWeightsOrig = [];
                 for (let i = 0; i < nnLayers[l]; i++) {
                     const nodeWeights = [];
+                    const nodeWeightsOrig = [];
                     for (let j = 0; j < nnLayers[l + 1]; j++) {
-                        nodeWeights.push(Math.random() * 0.8 + 0.2);
+                        const w = Math.random() * 0.8 + 0.2;
+                        nodeWeights.push(w);
+                        nodeWeightsOrig.push(w);
                     }
                     layerWeights.push(nodeWeights);
+                    layerWeightsOrig.push(nodeWeightsOrig);
                 }
                 nnWeights.push(layerWeights);
+                nnWeightsOriginal.push(layerWeightsOrig);
             }
         }
 
@@ -868,11 +876,13 @@
         }
 
         function nnApplyL2Decay() {
-            if (nnL2Lambda <= 0) return;
+            // Recalculate weights from original based on L2 lambda
             for (let l = 0; l < nnWeights.length; l++) {
                 for (let i = 0; i < nnWeights[l].length; i++) {
                     for (let j = 0; j < nnWeights[l][i].length; j++) {
-                        nnWeights[l][i][j] *= (1 - nnL2Lambda * 0.1);
+                        // Apply decay effect: higher L2 = more shrinkage
+                        const decayFactor = 1 - nnL2Lambda * 0.9;
+                        nnWeights[l][i][j] = nnWeightsOriginal[l][i][j] * decayFactor;
                         nnWeights[l][i][j] = Math.max(0.05, nnWeights[l][i][j]);
                     }
                 }
@@ -1621,11 +1631,9 @@
             nnL2Slider.addEventListener('input', () => {
                 nnL2Lambda = nnL2Slider.value / 100;
                 nnL2Val.textContent = nnL2Lambda.toFixed(2);
-                // Immediately apply decay to show effect
-                if (nnL2Lambda > 0) {
-                    nnApplyL2Decay();
-                    nnDraw();
-                }
+                // Recalculate weights from original and redraw
+                nnApplyL2Decay();
+                nnDraw();
             });
         }
 
