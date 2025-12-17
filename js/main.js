@@ -1206,10 +1206,13 @@
                         const layerName = l === 0 ? 'Input' : l === nnNodes.length - 1 ? 'Output' : `Hidden ${l}`;
                         
                         const isDropped = nnDropoutEnabled && !nnDropoutMask[l]?.[i];
+                        const primaryVal = nnMode === 'forward' ? act : grad;
+                        const primaryLabel = nnMode === 'forward' ? 'a' : '∇';
+                        const primaryColor = nnMode === 'forward' ? '#6366f1' : '#ef4444';
                         nnTooltip.innerHTML = `
                             <span class="label">${layerName} Node ${i + 1}</span>
-                            ${isDropped ? '<span class="value" style="color:#ef4444">DROPPED</span>' : `<span class="value">a=${act.toFixed(3)}</span>`}
-                            ${grad > 0 && !isDropped ? `<span class="value" style="color:#ef4444"> âˆ‡=${grad.toFixed(3)}</span>` : ''}
+                            ${isDropped ? '<span class="value" style="color:#ef4444">DROPPED</span>' : 
+                                `<span class="value" style="color:${primaryColor}">${primaryLabel}=${primaryVal.toFixed(3)}</span>`}
                         `;
                         nnTooltip.style.left = (node.x + 15) + 'px';
                         nnTooltip.style.top = (node.y - 10) + 'px';
