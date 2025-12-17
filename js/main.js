@@ -1017,10 +1017,10 @@
 
         function nnSetLayers(count) {
             if (nnAnimating) return;
-            const card = document.querySelector('.ai-playground-grid .demo-card:first-child');
-            const layerBtns = card.querySelectorAll('.demo-controls')[0].querySelectorAll('.demo-btn');
-            layerBtns.forEach((btn, i) => {
-                btn.classList.toggle('active', i === count - 3);
+            // Update button states using onclick attribute matching
+            document.querySelectorAll('[onclick*="nnSetLayers"]').forEach(btn => {
+                const btnCount = parseInt(btn.textContent);
+                btn.classList.toggle('active', btnCount === count);
             });
             if (count === 3) nnLayers = [4, 6, 3];
             else if (count === 4) nnLayers = [4, 5, 5, 3];
@@ -1031,11 +1031,12 @@
         }
 
         function nnSetMode(mode) {
+            if (nnAnimating) return;
             nnMode = mode;
-            const card = document.querySelector('.ai-playground-grid .demo-card:first-child');
-            const modeBtns = card.querySelectorAll('.demo-controls')[1].querySelectorAll('.demo-btn');
-            modeBtns.forEach((btn, i) => {
-                btn.classList.toggle('active', (mode === 'forward' && i === 0) || (mode === 'backward' && i === 1));
+            // Update button states using onclick attribute matching
+            document.querySelectorAll('[onclick*="nnSetMode"]').forEach(btn => {
+                const isForwardBtn = btn.getAttribute('onclick').includes("'forward'");
+                btn.classList.toggle('active', (mode === 'forward') === isForwardBtn);
             });
             
             // Reset and set appropriate initial values based on mode
@@ -1084,22 +1085,19 @@
                     // Apply L2 weight decay after forward pass
                     nnApplyL2Decay();
                     nnDraw();
-                }, 8000); // Longer pause to see final state
+                }, 2500); // Pause to see final state
                 return;
             }
             
             setTimeout(() => {
                 const actFn = activationFns[nnActivationFn];
                 for (let j = 0; j < nnActivations[layerIdx + 1].length; j++) {
-                    // Skip if this node is dropped out
                     if (nnDropoutEnabled && !nnDropoutMask[layerIdx + 1]?.[j]) {
                         nnActivations[layerIdx + 1][j] = 0;
                         continue;
                     }
-                    let sum = 0;
-                    let count = 0;
+                    let sum = 0, count = 0;
                     for (let i = 0; i < nnActivations[layerIdx].length; i++) {
-                        // Skip connections from dropped nodes
                         if (nnDropoutEnabled && !nnDropoutMask[layerIdx]?.[i]) continue;
                         sum += nnActivations[layerIdx][i] * nnWeights[layerIdx][i][j];
                         count++;
@@ -1109,37 +1107,32 @@
                 }
                 nnDraw();
                 nnAnimateForward(layerIdx + 1);
-            }, 500); // Quick propagation between layers
+            }, 350);
         }
 
         function nnAnimateBackward(layerIdx) {
             if (layerIdx < 0) {
                 setTimeout(() => {
-                    // Reset input/hidden layers but keep output layer gradients
                     const lastIdx = nnGradients.length - 1;
                     nnGradients = nnGradients.map((l, idx) => 
                         idx === lastIdx ? l : l.map(() => 0)
                     );
                     nnAnimating = false;
-                    // Apply L2 weight decay after backward pass
                     nnApplyL2Decay();
                     nnDraw();
-                }, 8000); // Longer pause to see final state
+                }, 2500); // Pause to see final state
                 return;
             }
             
             setTimeout(() => {
                 for (let i = 0; i < nnGradients[layerIdx].length; i++) {
-                    // Skip if this node is dropped out
                     if (nnDropoutEnabled && !nnDropoutMask[layerIdx]?.[i]) {
                         nnGradients[layerIdx][i] = 0;
                         continue;
                     }
-                    let sum = 0;
-                    let count = 0;
+                    let sum = 0, count = 0;
                     if (layerIdx < nnLayers.length - 1) {
                         for (let j = 0; j < nnGradients[layerIdx + 1].length; j++) {
-                            // Skip connections to dropped nodes
                             if (nnDropoutEnabled && !nnDropoutMask[layerIdx + 1]?.[j]) continue;
                             sum += nnGradients[layerIdx + 1][j] * (nnWeights[layerIdx]?.[i]?.[j] || 0.5);
                             count++;
@@ -1149,7 +1142,7 @@
                 }
                 nnDraw();
                 nnAnimateBackward(layerIdx - 1);
-            }, 500); // Quick propagation between layers
+            }, 350);
         }
 
         nnCanvas.addEventListener('click', (e) => {
