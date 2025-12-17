@@ -863,8 +863,7 @@
             border-radius: 12px;
             margin-bottom: 12px;
             opacity: 0.9;
-            transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            transform: scale(1);
+            transition: opacity 0.6s ease-in-out;
         }
 
         .affirmation-float:hover .affirmation-image {
@@ -873,12 +872,10 @@
 
         .affirmation-image.fade-out {
             opacity: 0;
-            transform: scale(0.92);
         }
 
         .affirmation-image.fade-in {
             opacity: 0.9;
-            transform: scale(1);
         }
 
         .affirmation-header {
@@ -901,18 +898,15 @@
             color: var(--text);
             line-height: 1.6;
             font-style: italic;
-            transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            transform: translateY(0);
+            transition: opacity 0.5s ease-in-out;
         }
 
         .affirmation-text.fade-out {
             opacity: 0;
-            transform: translateY(10px);
         }
 
         .affirmation-text.fade-in {
             opacity: 1;
-            transform: translateY(0);
         }
 
         .affirmation-footer {
@@ -2029,9 +2023,9 @@
                             affirmationImage.classList.remove('fade-in');
                             affirmationText.classList.remove('fade-in');
                             isTransitioning = false;
-                        }, 500);
+                        }, 600);
                     };
-                }, 400);
+                }, 500);
             } else {
                 // Initial load without animation
                 affirmationText.textContent = `"${aff.text}"`;
