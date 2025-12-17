@@ -823,6 +823,94 @@
             height: 14px;
         }
 
+        /* Floating Affirmation */
+        .affirmation-float {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            max-width: 320px;
+            padding: 16px 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: floatIn 0.6s ease forwards;
+            animation-delay: 2s;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .affirmation-float:hover {
+            border-color: var(--accent);
+            box-shadow: 0 12px 40px var(--accent-glow);
+            transform: translateY(-2px);
+        }
+
+        @keyframes floatIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .affirmation-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .affirmation-header span {
+            font-size: 12px;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .affirmation-text {
+            font-size: 14px;
+            color: var(--text);
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        .affirmation-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+        }
+
+        .affirmation-hint {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .affirmation-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 4px;
+            font-size: 18px;
+            line-height: 1;
+            transition: color 0.2s ease;
+        }
+
+        .affirmation-close:hover {
+            color: var(--accent);
+        }
+
+        .affirmation-float.hidden {
+            display: none;
+        }
+
         /* Responsive */
         @media (max-width: 600px) {
             .container {
@@ -837,6 +925,13 @@
                 width: 44px;
                 height: 44px;
             }
+
+            .affirmation-float {
+                bottom: 16px;
+                right: 16px;
+                left: 16px;
+                max-width: none;
+            }
         }
     </style>
 </head>
@@ -844,6 +939,18 @@
     <canvas id="particles-canvas"></canvas>
     <div class="mouse-glow" id="mouse-glow"></div>
     <div class="glow-orb"></div>
+
+    <!-- Floating Affirmation -->
+    <div class="affirmation-float" id="affirmation-float">
+        <div class="affirmation-header">
+            <span>✨ AI Wisdom</span>
+        </div>
+        <p class="affirmation-text" id="affirmation-text"></p>
+        <div class="affirmation-footer">
+            <span class="affirmation-hint">Click for new inspiration</span>
+            <button class="affirmation-close" id="affirmation-close" title="Close">×</button>
+        </div>
+    </div>
     
     <div class="container">
         <header>
@@ -1772,6 +1879,77 @@
 
         // Initialize tooltip with original info
         applyFilter('original');
+
+        // AI/Tech Affirmations
+        const affirmations = [
+            "Your neural networks aren't the only things learning—you're growing every day.",
+            "Every gradient descent leads somewhere meaningful.",
+            "The best models are built by curious minds like yours.",
+            "Your attention mechanism is focused on the right things.",
+            "You're not just training models, you're shaping the future.",
+            "Even transformers started with a single attention head.",
+            "Your loss function is decreasing—keep iterating.",
+            "The world needs engineers who care about AI ethics. You matter.",
+            "Behind every breakthrough is someone who refused to stop fine-tuning.",
+            "Your embeddings capture more dimensions than you realize.",
+            "AGI might be uncertain, but your potential isn't.",
+            "You're the human in human-AI collaboration.",
+            "The best hyperparameter you have is persistence.",
+            "Your career trajectory has the best optimizer: you.",
+            "Every epoch brings you closer to convergence.",
+            "You're not just writing code—you're writing history.",
+            "The AI revolution needs thoughtful builders. That's you.",
+            "Your batch size for learning is just right.",
+            "Regularization keeps models from overfitting. Rest keeps you from burning out.",
+            "The future of AI is as bright as the people building it.",
+            "You belong at the frontier of technology.",
+            "Your unique perspective is the secret sauce no model can replicate.",
+            "Keep exploring—the best architectures haven't been invented yet.",
+            "You're more than your GitHub contributions.",
+            "The most powerful compute is a well-rested mind."
+        ];
+
+        const affirmationFloat = document.getElementById('affirmation-float');
+        const affirmationText = document.getElementById('affirmation-text');
+        const affirmationClose = document.getElementById('affirmation-close');
+
+        let currentIndex = Math.floor(Math.random() * affirmations.length);
+
+        function showAffirmation() {
+            affirmationText.style.opacity = '0';
+            setTimeout(() => {
+                affirmationText.textContent = `"${affirmations[currentIndex]}"`;
+                affirmationText.style.opacity = '1';
+            }, 150);
+        }
+
+        function nextAffirmation() {
+            currentIndex = (currentIndex + 1) % affirmations.length;
+            showAffirmation();
+        }
+
+        // Initialize
+        affirmationText.style.transition = 'opacity 0.15s ease';
+        showAffirmation();
+
+        // Click to get new affirmation
+        affirmationFloat.addEventListener('click', (e) => {
+            if (e.target !== affirmationClose) {
+                nextAffirmation();
+            }
+        });
+
+        // Close button
+        affirmationClose.addEventListener('click', (e) => {
+            e.stopPropagation();
+            affirmationFloat.classList.add('hidden');
+            sessionStorage.setItem('affirmationClosed', 'true');
+        });
+
+        // Check if user closed it this session
+        if (sessionStorage.getItem('affirmationClosed') === 'true') {
+            affirmationFloat.classList.add('hidden');
+        }
     </script>
 </body>
 </html>
