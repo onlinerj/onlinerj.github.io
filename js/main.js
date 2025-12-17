@@ -1026,7 +1026,8 @@
             else if (count === 4) nnLayers = [4, 5, 5, 3];
             else nnLayers = [4, 5, 6, 5, 3];
             nnInitNodes();
-            nnDraw();
+            // Re-apply mode highlighting after layer change
+            nnSetMode(nnMode);
         }
 
         function nnSetMode(mode) {
@@ -1154,15 +1155,19 @@
         nnCanvas.addEventListener('click', (e) => {
             if (nnAnimating) return;
             const rect = nnCanvas.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
+            // Scale coordinates to match canvas internal size
+            const scaleX = nnCanvas.width / rect.width;
+            const scaleY = nnCanvas.height / rect.height;
+            const x = (e.clientX - rect.left) * scaleX;
+            const y = (e.clientY - rect.top) * scaleY;
+            const clickRadius = 25; // Larger click area for easier interaction
             
             if (nnMode === 'forward') {
                 // Check input nodes
                 for (let i = 0; i < nnNodes[0].length; i++) {
                     const node = nnNodes[0][i];
                     const dist = Math.sqrt((x - node.x) ** 2 + (y - node.y) ** 2);
-                    if (dist < 15) {
+                    if (dist < clickRadius) {
                         nnActivations[0][i] = 1;
                         nnAnimating = true;
                         nnDraw();
@@ -1176,7 +1181,7 @@
                 for (let i = 0; i < lastLayer.length; i++) {
                     const node = lastLayer[i];
                     const dist = Math.sqrt((x - node.x) ** 2 + (y - node.y) ** 2);
-                    if (dist < 15) {
+                    if (dist < clickRadius) {
                         nnGradients[nnGradients.length - 1][i] = 1;
                         nnAnimating = true;
                         nnDraw();
@@ -1190,15 +1195,18 @@
         // Hover tooltip
         nnCanvas.addEventListener('mousemove', (e) => {
             const rect = nnCanvas.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
+            // Scale coordinates to match canvas internal size
+            const scaleX = nnCanvas.width / rect.width;
+            const scaleY = nnCanvas.height / rect.height;
+            const x = (e.clientX - rect.left) * scaleX;
+            const y = (e.clientY - rect.top) * scaleY;
             
             nnHoveredNode = null;
             for (let l = 0; l < nnNodes.length; l++) {
                 for (let i = 0; i < nnNodes[l].length; i++) {
                     const node = nnNodes[l][i];
                     const dist = Math.sqrt((x - node.x) ** 2 + (y - node.y) ** 2);
-                    if (dist < 15) {
+                    if (dist < 20) {
                         nnHoveredNode = { l, i };
                         const act = nnActivations[l][i];
                         const grad = nnGradients[l][i];
