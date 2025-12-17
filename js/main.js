@@ -1214,8 +1214,19 @@
                             ${isDropped ? '<span class="value" style="color:#ef4444">DROPPED</span>' : 
                                 `<span class="value" style="color:${primaryColor}">${primaryLabel}=${primaryVal.toFixed(3)}</span>`}
                         `;
-                        nnTooltip.style.left = (node.x + 15) + 'px';
-                        nnTooltip.style.top = (node.y - 10) + 'px';
+                        // Position tooltip within canvas bounds
+                        const tooltipW = 100, tooltipH = 40;
+                        const rect = nnCanvas.getBoundingClientRect();
+                        let tooltipX = node.x + 15;
+                        let tooltipY = node.y - 10;
+                        // If near right edge, show on left side of node
+                        if (tooltipX + tooltipW > nnCanvas.width) tooltipX = node.x - tooltipW - 10;
+                        // If near top, show below node
+                        if (tooltipY < 5) tooltipY = node.y + 20;
+                        // If near bottom, show above node
+                        if (tooltipY + tooltipH > nnCanvas.height) tooltipY = node.y - tooltipH - 10;
+                        nnTooltip.style.left = Math.max(5, tooltipX) + 'px';
+                        nnTooltip.style.top = Math.max(5, tooltipY) + 'px';
                         nnTooltip.classList.add('visible');
                         nnDraw();
                         return;
