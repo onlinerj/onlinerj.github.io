@@ -1682,191 +1682,6 @@
             });
         }
 
-        // --- Multi-Agent System ---
-        const masCanvas = document.getElementById('mas-canvas');
-        const masCtx = masCanvas ? masCanvas.getContext('2d') : null;
-        
-        const mas = {
-            agents: [
-                { id: 'orchestrator', name: 'Orchestrator', color: '#8b5cf6', x: 0.5, y: 0.2 },
-                { id: 'researcher', name: 'Researcher', color: '#3b82f6', x: 0.2, y: 0.6 },
-                { id: 'coder', name: 'Coder', color: '#10b981', x: 0.5, y: 0.8 },
-                { id: 'writer', name: 'Writer', color: '#f59e0b', x: 0.8, y: 0.6 }
-            ],
-            scenario: 'research',
-            animating: false,
-            step: -1,
-            messages: [],
-            activeAgent: null
-        };
-
-        const masScenarios = {
-            research: [
-                { from: 'orchestrator', to: 'researcher', msg: 'Find papers on FL' },
-                { from: 'researcher', to: 'orchestrator', msg: '5 papers found' },
-                { from: 'orchestrator', to: 'writer', msg: 'Summarize findings' },
-                { from: 'writer', to: 'orchestrator', msg: 'Summary ready' }
-            ],
-            code: [
-                { from: 'orchestrator', to: 'coder', msg: 'Review PR #42' },
-                { from: 'coder', to: 'orchestrator', msg: 'Issues found' },
-                { from: 'orchestrator', to: 'coder', msg: 'Fix bugs' },
-                { from: 'coder', to: 'orchestrator', msg: 'PR approved' }
-            ],
-            creative: [
-                { from: 'orchestrator', to: 'researcher', msg: 'Find trends' },
-                { from: 'researcher', to: 'writer', msg: 'AI trends data' },
-                { from: 'writer', to: 'orchestrator', msg: 'Draft ready' },
-                { from: 'orchestrator', to: 'writer', msg: 'Looks great!' }
-            ]
-        };
-
-        function masResize() {
-            if (!masCanvas) return;
-            const rect = masCanvas.parentElement.getBoundingClientRect();
-            masCanvas.width = rect.width;
-            masCanvas.height = rect.height;
-            masDraw();
-        }
-
-        function masDraw() {
-            if (!masCtx) return;
-            const isDark = !document.documentElement.hasAttribute('data-theme');
-            const w = masCanvas.width, h = masCanvas.height;
-            masCtx.clearRect(0, 0, w, h);
-
-            // Draw connections between agents
-            masCtx.strokeStyle = isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
-            masCtx.lineWidth = 1;
-            mas.agents.forEach((a1, i) => {
-                mas.agents.forEach((a2, j) => {
-                    if (i < j) {
-                        masCtx.beginPath();
-                        masCtx.moveTo(a1.x * w, a1.y * h);
-                        masCtx.lineTo(a2.x * w, a2.y * h);
-                        masCtx.stroke();
-                    }
-                });
-            });
-
-            // Draw agents
-            mas.agents.forEach(agent => {
-                const x = agent.x * w, y = agent.y * h;
-                const isActive = mas.activeAgent === agent.id;
-                const r = isActive ? 28 : 22;
-
-                // Glow for active
-                if (isActive) {
-                    masCtx.beginPath();
-                    masCtx.arc(x, y, r + 8, 0, Math.PI * 2);
-                    masCtx.fillStyle = agent.color + '40';
-                    masCtx.fill();
-                }
-
-                // Circle
-                masCtx.beginPath();
-                masCtx.arc(x, y, r, 0, Math.PI * 2);
-                masCtx.fillStyle = agent.color;
-                masCtx.fill();
-
-                // Icon (first letter)
-                masCtx.fillStyle = '#fff';
-                masCtx.font = 'bold 14px sans-serif';
-                masCtx.textAlign = 'center';
-                masCtx.textBaseline = 'middle';
-                masCtx.fillText(agent.name[0], x, y);
-
-                // Label
-                masCtx.fillStyle = isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)';
-                masCtx.font = '10px sans-serif';
-                masCtx.fillText(agent.name, x, y + r + 12);
-            });
-
-            // Draw animated message
-            if (mas.messages.length > 0) {
-                mas.messages.forEach(m => {
-                    const from = mas.agents.find(a => a.id === m.from);
-                    const to = mas.agents.find(a => a.id === m.to);
-                    if (from && to) {
-                        const x = from.x * w + (to.x * w - from.x * w) * m.progress;
-                        const y = from.y * h + (to.y * h - from.y * h) * m.progress;
-                        
-                        // Message dot
-                        masCtx.beginPath();
-                        masCtx.arc(x, y, 6, 0, Math.PI * 2);
-                        masCtx.fillStyle = from.color;
-                        masCtx.fill();
-
-                        // Message text
-                        if (m.progress > 0.3 && m.progress < 0.7) {
-                            masCtx.fillStyle = isDark ? '#fff' : '#000';
-                            masCtx.font = '9px sans-serif';
-                            masCtx.fillText(m.msg, x, y - 15);
-                        }
-                    }
-                });
-            }
-        }
-
-        function masRun() {
-            if (mas.animating) return;
-            mas.animating = true;
-            mas.step = 0;
-            masAnimateStep();
-        }
-
-        function masAnimateStep() {
-            const scenario = masScenarios[mas.scenario];
-            if (mas.step >= scenario.length) {
-                mas.animating = false;
-                mas.activeAgent = null;
-                mas.messages = [];
-                masDraw();
-                return;
-            }
-
-            const step = scenario[mas.step];
-            mas.activeAgent = step.from;
-            mas.messages = [{ ...step, progress: 0 }];
-            masDraw();
-
-            // Animate message
-            let progress = 0;
-            const animate = () => {
-                progress += 0.03;
-                mas.messages[0].progress = progress;
-                
-                if (progress >= 1) {
-                    mas.activeAgent = step.to;
-                    masDraw();
-                    mas.step++;
-                    setTimeout(masAnimateStep, 600);
-                } else {
-                    masDraw();
-                    requestAnimationFrame(animate);
-                }
-            };
-            requestAnimationFrame(animate);
-        }
-
-        function masReset() {
-            mas.animating = false;
-            mas.step = -1;
-            mas.messages = [];
-            mas.activeAgent = null;
-            masDraw();
-        }
-
-        function masSetScenario(scenario) {
-            if (mas.animating) return;
-            mas.scenario = scenario;
-            // Update buttons
-            document.querySelectorAll('[onclick*="masSetScenario"]').forEach(btn => {
-                btn.classList.toggle('active', btn.getAttribute('onclick').includes(`'${scenario}'`));
-            });
-            masReset();
-        }
-
         // Initialize all demos on load
         function initPlaygroundDemos() {
             nnResize();
@@ -1875,7 +1690,6 @@
             attnResize();
             lossPath = [{ x: lossPos.x, y: lossPos.y }];
             lossResize();
-            masResize();
         }
 
         // Wait for DOM and fonts to load
@@ -1889,7 +1703,6 @@
             embedResize();
             attnResize();
             lossResize();
-            masResize();
         });
 
         // Expose functions to global scope for onclick handlers
@@ -1902,6 +1715,3 @@
         window.attnSetSentence = attnSetSentence;
         window.lossReset = lossReset;
         window.lossSetOptimizer = lossSetOptimizer;
-        window.masRun = masRun;
-        window.masReset = masReset;
-        window.masSetScenario = masSetScenario;
