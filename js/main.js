@@ -1001,7 +1001,9 @@
 
         function nnSetLayers(count) {
             if (nnAnimating) return;
-            document.querySelectorAll('.demo-card:first-child .demo-controls:first-of-type .demo-btn').forEach((btn, i) => {
+            const card = document.querySelector('.ai-playground-grid .demo-card:first-child');
+            const layerBtns = card.querySelectorAll('.demo-controls')[0].querySelectorAll('.demo-btn');
+            layerBtns.forEach((btn, i) => {
                 btn.classList.toggle('active', i === count - 3);
             });
             if (count === 3) nnLayers = [4, 6, 3];
@@ -1013,7 +1015,9 @@
 
         function nnSetMode(mode) {
             nnMode = mode;
-            document.querySelectorAll('.demo-card:first-child .demo-controls:nth-of-type(2) .demo-btn').forEach((btn, i) => {
+            const card = document.querySelector('.ai-playground-grid .demo-card:first-child');
+            const modeBtns = card.querySelectorAll('.demo-controls')[1].querySelectorAll('.demo-btn');
+            modeBtns.forEach((btn, i) => {
                 btn.classList.toggle('active', (mode === 'forward' && i === 0) || (mode === 'backward' && i === 1));
             });
         }
@@ -1276,7 +1280,8 @@
         function embedSetCategory(cat) {
             embedCategory = cat;
             embedWords = embedData[cat];
-            document.querySelectorAll('.demo-card:nth-child(2) .demo-btn').forEach((btn, i) => {
+            const embedCard = document.querySelector('.ai-playground-grid .demo-card:nth-child(2)');
+            embedCard.querySelectorAll('.demo-controls .demo-btn').forEach((btn, i) => {
                 btn.classList.toggle('active', ['tech', 'emotions', 'animals'][i] === cat);
             });
             embedDraw();
@@ -1401,7 +1406,8 @@
 
         function attnSetSentence(idx) {
             attnSentenceIdx = idx;
-            document.querySelectorAll('.demo-card:nth-child(3) .demo-btn').forEach((btn, i) => {
+            const attnCard = document.querySelector('.ai-playground-grid .demo-card:nth-child(3)');
+            attnCard.querySelectorAll('.demo-controls .demo-btn').forEach((btn, i) => {
                 btn.classList.toggle('active', i === idx);
             });
             attnDraw();
@@ -1577,7 +1583,9 @@
 
         function lossSetOptimizer(opt) {
             lossOptimizer = opt;
-            document.querySelectorAll('.demo-card:nth-child(4) .demo-btn').forEach((btn, i) => {
+            const lossCard = document.querySelector('.ai-playground-grid .demo-card:nth-child(4)');
+            const lossBtns = lossCard.querySelectorAll('.demo-controls .demo-btn');
+            lossBtns.forEach((btn, i) => {
                 if (i > 0) btn.classList.toggle('active', ['sgd', 'momentum', 'adam'][i - 1] === opt);
             });
             lossReset();
