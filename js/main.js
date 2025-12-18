@@ -1803,6 +1803,9 @@
             btns.forEach(btn => {
                 btn.classList.toggle('active', btn.textContent.toLowerCase() === opt);
             });
+            // Deactivate compare button
+            const compareBtn = document.getElementById('gd-compare-btn');
+            if (compareBtn) compareBtn.classList.remove('active');
         }
         
         function gdReset() {
@@ -1810,11 +1813,19 @@
             gdAnimating = false;
             gdCompareMode = false;
             gdDraw();
+            // Deactivate compare button
+            const compareBtn = document.getElementById('gd-compare-btn');
+            if (compareBtn) compareBtn.classList.remove('active');
         }
         
         function gdCompare() {
             gdCompareMode = true;
-            // Visual feedback - you could highlight the compare button
+            // Highlight compare button
+            const compareBtn = document.getElementById('gd-compare-btn');
+            if (compareBtn) compareBtn.classList.add('active');
+            // Deactivate individual optimizer buttons
+            const btns = document.querySelectorAll('.demo-card.wide .demo-controls-group:nth-child(2) .demo-btn');
+            btns.forEach(btn => btn.classList.remove('active'));
         }
         
         // Canvas click handler
