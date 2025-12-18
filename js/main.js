@@ -1789,20 +1789,29 @@
             gdPaths = [];
             gdAnimating = false;
             gdDraw();
-            // Update button states
-            document.querySelectorAll('.demo-card.wide .demo-controls-group:first-child .demo-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.textContent.toLowerCase().includes(surface.substring(0, 4)));
-            });
+            // Update button states - use specific card ID
+            const gdCard = document.getElementById('gd-demo-card');
+            if (gdCard) {
+                gdCard.querySelectorAll('.demo-controls-group:first-child .demo-btn').forEach(btn => {
+                    const btnText = btn.textContent.toLowerCase();
+                    btn.classList.toggle('active', btnText.includes(surface.substring(0, 4)));
+                });
+            }
         }
         
         function gdSetOptimizer(opt) {
             gdOptimizer = opt;
             gdCompareMode = false;
-            // Update button states
-            const btns = document.querySelectorAll('.demo-card.wide .demo-controls-group:nth-child(2) .demo-btn');
-            btns.forEach(btn => {
-                btn.classList.toggle('active', btn.textContent.toLowerCase() === opt);
-            });
+            // Update button states - use specific card ID
+            const gdCard = document.getElementById('gd-demo-card');
+            if (gdCard) {
+                const groups = gdCard.querySelectorAll('.demo-controls-group');
+                if (groups.length >= 2) {
+                    groups[1].querySelectorAll('.demo-btn').forEach(btn => {
+                        btn.classList.toggle('active', btn.textContent.toLowerCase() === opt);
+                    });
+                }
+            }
             // Deactivate compare button
             const compareBtn = document.getElementById('gd-compare-btn');
             if (compareBtn) compareBtn.classList.remove('active');
@@ -1823,9 +1832,14 @@
             // Highlight compare button
             const compareBtn = document.getElementById('gd-compare-btn');
             if (compareBtn) compareBtn.classList.add('active');
-            // Deactivate individual optimizer buttons
-            const btns = document.querySelectorAll('.demo-card.wide .demo-controls-group:nth-child(2) .demo-btn');
-            btns.forEach(btn => btn.classList.remove('active'));
+            // Deactivate individual optimizer buttons - use specific card ID
+            const gdCard = document.getElementById('gd-demo-card');
+            if (gdCard) {
+                const groups = gdCard.querySelectorAll('.demo-controls-group');
+                if (groups.length >= 2) {
+                    groups[1].querySelectorAll('.demo-btn').forEach(btn => btn.classList.remove('active'));
+                }
+            }
         }
         
         // Canvas click handler
