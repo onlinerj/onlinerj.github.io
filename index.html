@@ -483,6 +483,47 @@
                     </div>
                     <p class="demo-info">Click anywhere to place the starting point</p>
                 </div>
+
+                <!-- Gradient Descent Visualizer (Wide) -->
+                <div class="demo-card wide">
+                    <h3>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="3"/><path d="M12 12l6-6M12 12l-4 8"/></svg>
+                        AutoGrad: Gradient Descent Visualizer
+                    </h3>
+                    <p>Watch how different optimizers navigate a 2D loss surface. Click to place starting point, observe gradient vectors and optimization paths.</p>
+                    <div class="demo-canvas-container">
+                        <canvas id="gd-canvas" class="demo-canvas"></canvas>
+                    </div>
+                    <div class="demo-controls-row" style="margin-top: 12px;">
+                        <div class="demo-controls-group">
+                            <label>Surface:</label>
+                            <button class="demo-btn active" onclick="gdSetSurface('quadratic')">Quadratic</button>
+                            <button class="demo-btn" onclick="gdSetSurface('rosenbrock')">Rosenbrock</button>
+                            <button class="demo-btn" onclick="gdSetSurface('saddle')">Saddle Point</button>
+                            <button class="demo-btn" onclick="gdSetSurface('multimodal')">Multi-Modal</button>
+                        </div>
+                        <div class="demo-controls-group">
+                            <label>Optimizer:</label>
+                            <button class="demo-btn active" onclick="gdSetOptimizer('sgd')">SGD</button>
+                            <button class="demo-btn" onclick="gdSetOptimizer('momentum')">Momentum</button>
+                            <button class="demo-btn" onclick="gdSetOptimizer('adam')">Adam</button>
+                        </div>
+                        <div class="demo-controls-group">
+                            <label>LR:</label>
+                            <input type="range" id="gd-lr" class="demo-slider" min="1" max="100" value="20" style="width: 80px;">
+                            <span class="demo-value" id="gd-lr-val">0.020</span>
+                        </div>
+                        <button class="demo-btn" onclick="gdReset()">Reset</button>
+                        <button class="demo-btn" onclick="gdCompare()">Compare All</button>
+                    </div>
+                    <div class="gd-legend">
+                        <div class="gd-legend-item"><div class="gd-legend-dot" style="background: #ef4444;"></div>SGD</div>
+                        <div class="gd-legend-item"><div class="gd-legend-dot" style="background: #22c55e;"></div>Momentum</div>
+                        <div class="gd-legend-item"><div class="gd-legend-dot" style="background: #3b82f6;"></div>Adam</div>
+                        <div class="gd-legend-item"><div class="gd-legend-dot" style="background: #f59e0b;"></div>Gradient Vector</div>
+                    </div>
+                    <p class="demo-info">Click anywhere on the surface to start optimization. "Compare All" runs all optimizers simultaneously from the same point.</p>
+                </div>
             </div>
         </section>
 

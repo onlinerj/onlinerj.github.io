@@ -1682,6 +1682,336 @@
             });
         }
 
+        // --- Gradient Descent Visualizer (AutoGrad) ---
+        const gdCanvas = document.getElementById('gd-canvas');
+        const gdCtx = gdCanvas.getContext('2d');
+        let gdSurface = 'quadratic';
+        let gdOptimizer = 'sgd';
+        let gdLR = 0.02;
+        let gdPaths = []; // Array of optimizer paths for comparison
+        let gdAnimating = false;
+        let gdCompareMode = false;
+        
+        // Surface functions
+        const gdSurfaces = {
+            quadratic: {
+                fn: (x, y) => (x - 0.5) * (x - 0.5) + (y - 0.5) * (y - 0.5),
+                name: 'Quadratic Bowl'
+            },
+            rosenbrock: {
+                fn: (x, y) => {
+                    const a = 1, b = 100;
+                    const sx = x * 4 - 2, sy = y * 4 - 2;
+                    return ((a - sx) * (a - sx) + b * (sy - sx * sx) * (sy - sx * sx)) * 0.001;
+                },
+                name: 'Rosenbrock'
+            },
+            saddle: {
+                fn: (x, y) => {
+                    const sx = (x - 0.5) * 4, sy = (y - 0.5) * 4;
+                    return (sx * sx - sy * sy) * 0.1 + 0.5;
+                },
+                name: 'Saddle Point'
+            },
+            multimodal: {
+                fn: (x, y) => {
+                    const sx = x * 6 - 3, sy = y * 6 - 3;
+                    return (Math.sin(sx) * Math.sin(sy) + (sx * sx + sy * sy) * 0.05) * 0.3 + 0.5;
+                },
+                name: 'Multi-Modal'
+            }
+        };
+        
+        function gdGetLoss(x, y) {
+            return gdSurfaces[gdSurface].fn(x, y);
+        }
+        
+        function gdGetGradient(x, y) {
+            const h = 0.001;
+            const dx = (gdGetLoss(x + h, y) - gdGetLoss(x - h, y)) / (2 * h);
+            const dy = (gdGetLoss(x, y + h) - gdGetLoss(x, y - h)) / (2 * h);
+            return { x: dx, y: dy };
+        }
+        
+        function gdResize() {
+            const rect = gdCanvas.parentElement.getBoundingClientRect();
+            gdCanvas.width = rect.width;
+            gdCanvas.height = rect.height;
+            gdDraw();
+        }
+        
+        function gdDraw() {
+            const isDark = !document.documentElement.hasAttribute('data-theme');
+            gdCtx.clearRect(0, 0, gdCanvas.width, gdCanvas.height);
+            
+            // Draw contour surface
+            const imageData = gdCtx.createImageData(gdCanvas.width, gdCanvas.height);
+            let minLoss = Infinity, maxLoss = -Infinity;
+            
+            // First pass: find min/max for normalization
+            for (let py = 0; py < gdCanvas.height; py += 4) {
+                for (let px = 0; px < gdCanvas.width; px += 4) {
+                    const loss = gdGetLoss(px / gdCanvas.width, py / gdCanvas.height);
+                    minLoss = Math.min(minLoss, loss);
+                    maxLoss = Math.max(maxLoss, loss);
+                }
+            }
+            
+            // Second pass: draw with normalized colors
+            const range = maxLoss - minLoss || 1;
+            for (let py = 0; py < gdCanvas.height; py++) {
+                for (let px = 0; px < gdCanvas.width; px++) {
+                    const loss = gdGetLoss(px / gdCanvas.width, py / gdCanvas.height);
+                    const norm = (loss - minLoss) / range;
+                    const idx = (py * gdCanvas.width + px) * 4;
+                    
+                    if (isDark) {
+                        // Dark theme: blue (low) to purple to red (high)
+                        const r = Math.floor(norm * 180 + 20);
+                        const g = Math.floor((1 - Math.abs(norm - 0.5) * 2) * 60 + 20);
+                        const b = Math.floor((1 - norm) * 180 + 40);
+                        imageData.data[idx] = r;
+                        imageData.data[idx + 1] = g;
+                        imageData.data[idx + 2] = b;
+                    } else {
+                        // Light theme: green (low) to yellow to red (high)
+                        const r = Math.floor(norm * 200 + 55);
+                        const g = Math.floor((1 - norm) * 180 + 75);
+                        const b = Math.floor((1 - norm) * 100 + 100);
+                        imageData.data[idx] = r;
+                        imageData.data[idx + 1] = g;
+                        imageData.data[idx + 2] = b;
+                    }
+                    imageData.data[idx + 3] = 255;
+                }
+            }
+            gdCtx.putImageData(imageData, 0, 0);
+            
+            // Draw contour lines
+            gdCtx.strokeStyle = isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.1)';
+            gdCtx.lineWidth = 1;
+            const levels = 12;
+            for (let level = 0; level < levels; level++) {
+                const targetLoss = minLoss + (level / levels) * range;
+                gdCtx.beginPath();
+                for (let px = 0; px < gdCanvas.width; px += 3) {
+                    for (let py = 0; py < gdCanvas.height; py += 3) {
+                        const loss = gdGetLoss(px / gdCanvas.width, py / gdCanvas.height);
+                        if (Math.abs(loss - targetLoss) < range * 0.02) {
+                            gdCtx.moveTo(px, py);
+                            gdCtx.arc(px, py, 0.5, 0, Math.PI * 2);
+                        }
+                    }
+                }
+                gdCtx.stroke();
+            }
+            
+            // Draw optimization paths
+            const colors = {
+                sgd: '#ef4444',
+                momentum: '#22c55e',
+                adam: '#3b82f6'
+            };
+            
+            gdPaths.forEach(pathData => {
+                if (pathData.path.length < 2) return;
+                
+                const color = colors[pathData.optimizer];
+                
+                // Draw path
+                gdCtx.beginPath();
+                gdCtx.moveTo(pathData.path[0].x * gdCanvas.width, pathData.path[0].y * gdCanvas.height);
+                for (let i = 1; i < pathData.path.length; i++) {
+                    gdCtx.lineTo(pathData.path[i].x * gdCanvas.width, pathData.path[i].y * gdCanvas.height);
+                }
+                gdCtx.strokeStyle = color;
+                gdCtx.lineWidth = 2.5;
+                gdCtx.stroke();
+                
+                // Draw points along path
+                pathData.path.forEach((point, i) => {
+                    const size = i === pathData.path.length - 1 ? 6 : 3;
+                    gdCtx.beginPath();
+                    gdCtx.arc(point.x * gdCanvas.width, point.y * gdCanvas.height, size, 0, Math.PI * 2);
+                    gdCtx.fillStyle = color;
+                    gdCtx.fill();
+                    if (i === pathData.path.length - 1) {
+                        gdCtx.strokeStyle = '#fff';
+                        gdCtx.lineWidth = 2;
+                        gdCtx.stroke();
+                    }
+                });
+                
+                // Draw gradient vector at current position
+                if (pathData.path.length > 0) {
+                    const current = pathData.path[pathData.path.length - 1];
+                    const grad = gdGetGradient(current.x, current.y);
+                    const gradMag = Math.sqrt(grad.x * grad.x + grad.y * grad.y);
+                    if (gradMag > 0.001) {
+                        const scale = Math.min(50, 30 / gradMag);
+                        const endX = current.x * gdCanvas.width - grad.x * scale;
+                        const endY = current.y * gdCanvas.height - grad.y * scale;
+                        
+                        gdCtx.beginPath();
+                        gdCtx.moveTo(current.x * gdCanvas.width, current.y * gdCanvas.height);
+                        gdCtx.lineTo(endX, endY);
+                        gdCtx.strokeStyle = '#f59e0b';
+                        gdCtx.lineWidth = 2;
+                        gdCtx.stroke();
+                        
+                        // Arrow head
+                        const angle = Math.atan2(endY - current.y * gdCanvas.height, endX - current.x * gdCanvas.width);
+                        gdCtx.beginPath();
+                        gdCtx.moveTo(endX, endY);
+                        gdCtx.lineTo(endX - 8 * Math.cos(angle - 0.4), endY - 8 * Math.sin(angle - 0.4));
+                        gdCtx.lineTo(endX - 8 * Math.cos(angle + 0.4), endY - 8 * Math.sin(angle + 0.4));
+                        gdCtx.closePath();
+                        gdCtx.fillStyle = '#f59e0b';
+                        gdCtx.fill();
+                    }
+                }
+            });
+            
+            // Draw title
+            gdCtx.fillStyle = isDark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)';
+            gdCtx.font = '12px IBM Plex Sans';
+            gdCtx.fillText(gdSurfaces[gdSurface].name, 10, 20);
+        }
+        
+        function gdStep(pathData) {
+            const current = pathData.path[pathData.path.length - 1];
+            const grad = gdGetGradient(current.x, current.y);
+            let newX, newY;
+            
+            if (pathData.optimizer === 'sgd') {
+                newX = current.x - gdLR * grad.x;
+                newY = current.y - gdLR * grad.y;
+            } else if (pathData.optimizer === 'momentum') {
+                const beta = 0.9;
+                pathData.vel.x = beta * pathData.vel.x + gdLR * grad.x;
+                pathData.vel.y = beta * pathData.vel.y + gdLR * grad.y;
+                newX = current.x - pathData.vel.x;
+                newY = current.y - pathData.vel.y;
+            } else if (pathData.optimizer === 'adam') {
+                const beta1 = 0.9, beta2 = 0.999, eps = 1e-8;
+                pathData.t++;
+                pathData.m.x = beta1 * pathData.m.x + (1 - beta1) * grad.x;
+                pathData.m.y = beta1 * pathData.m.y + (1 - beta1) * grad.y;
+                pathData.v.x = beta2 * pathData.v.x + (1 - beta2) * grad.x * grad.x;
+                pathData.v.y = beta2 * pathData.v.y + (1 - beta2) * grad.y * grad.y;
+                const mHatX = pathData.m.x / (1 - Math.pow(beta1, pathData.t));
+                const mHatY = pathData.m.y / (1 - Math.pow(beta1, pathData.t));
+                const vHatX = pathData.v.x / (1 - Math.pow(beta2, pathData.t));
+                const vHatY = pathData.v.y / (1 - Math.pow(beta2, pathData.t));
+                newX = current.x - gdLR * mHatX / (Math.sqrt(vHatX) + eps);
+                newY = current.y - gdLR * mHatY / (Math.sqrt(vHatY) + eps);
+            }
+            
+            // Clamp to canvas bounds
+            newX = Math.max(0.01, Math.min(0.99, newX));
+            newY = Math.max(0.01, Math.min(0.99, newY));
+            
+            pathData.path.push({ x: newX, y: newY });
+        }
+        
+        function gdAnimate() {
+            if (!gdAnimating || gdPaths.length === 0) return;
+            
+            let allConverged = true;
+            gdPaths.forEach(pathData => {
+                if (pathData.path.length < 200) {
+                    const current = pathData.path[pathData.path.length - 1];
+                    const grad = gdGetGradient(current.x, current.y);
+                    const gradMag = Math.sqrt(grad.x * grad.x + grad.y * grad.y);
+                    if (gradMag > 0.001) {
+                        gdStep(pathData);
+                        allConverged = false;
+                    }
+                }
+            });
+            
+            gdDraw();
+            
+            if (!allConverged) {
+                requestAnimationFrame(gdAnimate);
+            } else {
+                gdAnimating = false;
+            }
+        }
+        
+        function gdStartOptimization(x, y) {
+            if (gdCompareMode) {
+                // Compare all optimizers
+                gdPaths = [
+                    { optimizer: 'sgd', path: [{ x, y }], vel: { x: 0, y: 0 }, m: { x: 0, y: 0 }, v: { x: 0, y: 0 }, t: 0 },
+                    { optimizer: 'momentum', path: [{ x, y }], vel: { x: 0, y: 0 }, m: { x: 0, y: 0 }, v: { x: 0, y: 0 }, t: 0 },
+                    { optimizer: 'adam', path: [{ x, y }], vel: { x: 0, y: 0 }, m: { x: 0, y: 0 }, v: { x: 0, y: 0 }, t: 0 }
+                ];
+            } else {
+                // Single optimizer
+                gdPaths = [
+                    { optimizer: gdOptimizer, path: [{ x, y }], vel: { x: 0, y: 0 }, m: { x: 0, y: 0 }, v: { x: 0, y: 0 }, t: 0 }
+                ];
+            }
+            gdAnimating = true;
+            gdAnimate();
+        }
+        
+        function gdSetSurface(surface) {
+            gdSurface = surface;
+            gdPaths = [];
+            gdAnimating = false;
+            gdDraw();
+            // Update button states
+            document.querySelectorAll('.demo-card.wide .demo-controls-group:first-child .demo-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.textContent.toLowerCase().includes(surface.substring(0, 4)));
+            });
+        }
+        
+        function gdSetOptimizer(opt) {
+            gdOptimizer = opt;
+            gdCompareMode = false;
+            // Update button states
+            const btns = document.querySelectorAll('.demo-card.wide .demo-controls-group:nth-child(2) .demo-btn');
+            btns.forEach(btn => {
+                btn.classList.toggle('active', btn.textContent.toLowerCase() === opt);
+            });
+        }
+        
+        function gdReset() {
+            gdPaths = [];
+            gdAnimating = false;
+            gdCompareMode = false;
+            gdDraw();
+        }
+        
+        function gdCompare() {
+            gdCompareMode = true;
+            // Visual feedback - you could highlight the compare button
+        }
+        
+        // Canvas click handler
+        if (gdCanvas) {
+            gdCanvas.addEventListener('click', (e) => {
+                const rect = gdCanvas.getBoundingClientRect();
+                const scaleX = gdCanvas.width / rect.width;
+                const scaleY = gdCanvas.height / rect.height;
+                const x = ((e.clientX - rect.left) * scaleX) / gdCanvas.width;
+                const y = ((e.clientY - rect.top) * scaleY) / gdCanvas.height;
+                gdStartOptimization(x, y);
+            });
+            
+            // Learning rate slider
+            const gdLRSlider = document.getElementById('gd-lr');
+            const gdLRVal = document.getElementById('gd-lr-val');
+            if (gdLRSlider) {
+                gdLRSlider.addEventListener('input', () => {
+                    gdLR = gdLRSlider.value / 1000;
+                    gdLRVal.textContent = gdLR.toFixed(3);
+                });
+            }
+        }
+
         // Initialize all demos on load
         function initPlaygroundDemos() {
             nnResize();
@@ -1690,6 +2020,7 @@
             attnResize();
             lossPath = [{ x: lossPos.x, y: lossPos.y }];
             lossResize();
+            if (gdCanvas) gdResize();
         }
 
         // Wait for DOM and fonts to load
@@ -1703,6 +2034,7 @@
             embedResize();
             attnResize();
             lossResize();
+            if (gdCanvas) gdResize();
         });
 
         // Expose functions to global scope for onclick handlers
@@ -1715,3 +2047,7 @@
         window.attnSetSentence = attnSetSentence;
         window.lossReset = lossReset;
         window.lossSetOptimizer = lossSetOptimizer;
+        window.gdSetSurface = gdSetSurface;
+        window.gdSetOptimizer = gdSetOptimizer;
+        window.gdReset = gdReset;
+        window.gdCompare = gdCompare;
