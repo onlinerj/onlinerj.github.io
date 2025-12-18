@@ -759,16 +759,28 @@
             }
         });
 
+        // Restore button
+        const affirmationRestore = document.getElementById('affirmation-restore');
+
         // Close button
         affirmationClose.addEventListener('click', (e) => {
             e.stopPropagation();
             affirmationFloat.classList.add('hidden');
+            affirmationRestore.classList.add('visible');
             sessionStorage.setItem('affirmationClosed', 'true');
+        });
+
+        // Restore button click
+        affirmationRestore.addEventListener('click', () => {
+            affirmationFloat.classList.remove('hidden');
+            affirmationRestore.classList.remove('visible');
+            sessionStorage.removeItem('affirmationClosed');
         });
 
         // Check if user closed it this session
         if (sessionStorage.getItem('affirmationClosed') === 'true') {
             affirmationFloat.classList.add('hidden');
+            affirmationRestore.classList.add('visible');
         }
 
         // ==========================================

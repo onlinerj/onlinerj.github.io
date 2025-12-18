@@ -933,6 +933,37 @@ footer p {
     display: none;
 }
 
+/* Restore Affirmation Button */
+.affirmation-restore {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent) 0%, #818cf8 100%);
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 99;
+    box-shadow: 0 4px 16px var(--accent-glow);
+    transition: all 0.3s ease;
+    display: none;
+}
+
+.affirmation-restore:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 24px rgba(99, 102, 241, 0.4);
+}
+
+.affirmation-restore.visible {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: floatIn 0.4s ease forwards;
+}
+
 /* AI Playground Section */
 .ai-playground-grid {
     display: grid;
