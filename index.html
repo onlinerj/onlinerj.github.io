@@ -389,36 +389,43 @@
             <h2>AI Playground</h2>
             <p style="color: var(--text-muted); margin-bottom: 8px;">Interactive visualizations of core ML/AI concepts</p>
             <div class="ai-playground-grid">
-                <!-- Neural Network Visualizer -->
-                <div class="demo-card">
+                <!-- Neural Network Visualizer (Wide) -->
+                <div class="demo-card wide">
                     <h3>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/></svg>
                         Neural Network Visualizer
                     </h3>
-                    <p>Watch forward & backward propagation. Hover nodes to see values.</p>
+                    <p>Watch forward & backward propagation through a neural network. Hover nodes to see activation/gradient values. Click nodes to trigger animations.</p>
                     <div class="demo-canvas-container">
                         <canvas id="nn-canvas" class="demo-canvas"></canvas>
                         <div id="nn-tooltip" class="nn-tooltip"></div>
                     </div>
-                    <div class="demo-controls">
-                        <button class="demo-btn active" onclick="nnSetLayers(3)">3 Layers</button>
-                        <button class="demo-btn" onclick="nnSetLayers(4)">4 Layers</button>
-                        <button class="demo-btn" onclick="nnSetLayers(5)">5 Layers</button>
-                    </div>
-                    <div class="demo-controls">
-                        <button class="demo-btn active" onclick="nnSetMode('forward')">Forward</button>
-                        <button class="demo-btn" onclick="nnSetMode('backward')">Backprop</button>
-                        <select id="nn-activation" class="demo-select" onchange="nnSetActivation(this.value)">
-                            <option value="relu">ReLU</option>
-                            <option value="sigmoid">Sigmoid</option>
-                            <option value="tanh">Tanh</option>
-                        </select>
+                    <div class="demo-controls-row" style="margin-top: 12px;">
+                        <div class="demo-controls-group">
+                            <label>Layers:</label>
+                            <button class="demo-btn active" onclick="nnSetLayers(3)">3</button>
+                            <button class="demo-btn" onclick="nnSetLayers(4)">4</button>
+                            <button class="demo-btn" onclick="nnSetLayers(5)">5</button>
+                        </div>
+                        <div class="demo-controls-group">
+                            <label>Mode:</label>
+                            <button class="demo-btn active" onclick="nnSetMode('forward')">Forward</button>
+                            <button class="demo-btn" onclick="nnSetMode('backward')">Backprop</button>
+                        </div>
+                        <div class="demo-controls-group">
+                            <label>Activation:</label>
+                            <select id="nn-activation" class="demo-select" onchange="nnSetActivation(this.value)">
+                                <option value="relu">ReLU</option>
+                                <option value="sigmoid">Sigmoid</option>
+                                <option value="tanh">Tanh</option>
+                            </select>
+                        </div>
                         <button class="demo-btn" id="nn-dropout-btn" onclick="nnToggleDropout()">Dropout: Off</button>
-                    </div>
-                    <div class="demo-slider-group">
-                        <label>L2 Regularization</label>
-                        <input type="range" id="nn-l2" class="demo-slider" min="0" max="100" value="0">
-                        <span class="demo-value" id="nn-l2-val">0.00</span>
+                        <div class="demo-controls-group">
+                            <label>L2:</label>
+                            <input type="range" id="nn-l2" class="demo-slider" min="0" max="100" value="0" style="width: 80px;">
+                            <span class="demo-value" id="nn-l2-val">0.00</span>
+                        </div>
                     </div>
                     <p class="demo-info">Click input nodes for forward pass, output nodes for backprop</p>
                 </div>
@@ -460,35 +467,11 @@
                     <p class="demo-info">Hover over cells to see attention weights</p>
                 </div>
 
-                <!-- Loss Landscape -->
-                <div class="demo-card">
-                    <h3>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 20L8 14l4 4 8-12"/><circle cx="18" cy="8" r="2"/></svg>
-                        Loss Landscape
-                    </h3>
-                    <p>Watch gradient descent navigate the optimization landscape.</p>
-                    <div class="demo-canvas-container">
-                        <canvas id="loss-canvas" class="demo-canvas"></canvas>
-                    </div>
-                    <div class="demo-slider-group">
-                        <label>Learning Rate</label>
-                        <input type="range" id="loss-lr" class="demo-slider" min="1" max="50" value="15">
-                        <span class="demo-value" id="loss-lr-val">0.15</span>
-                    </div>
-                    <div class="demo-controls">
-                        <button class="demo-btn" onclick="lossReset()">Reset</button>
-                        <button class="demo-btn active" onclick="lossSetOptimizer('sgd')">SGD</button>
-                        <button class="demo-btn" onclick="lossSetOptimizer('momentum')">Momentum</button>
-                        <button class="demo-btn" onclick="lossSetOptimizer('adam')">Adam</button>
-                    </div>
-                    <p class="demo-info">Click anywhere to place the starting point</p>
-                </div>
-
                 <!-- Gradient Descent Visualizer (Wide) -->
                 <div class="demo-card wide">
                     <h3>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="3"/><path d="M12 12l6-6M12 12l-4 8"/></svg>
-                        AutoGrad: Gradient Descent Visualizer
+                        PyTorch AutoGrad: Gradient Descent Visualizer
                     </h3>
                     <p>Watch how different optimizers navigate a 2D loss surface. Click to place starting point, observe gradient vectors and optimization paths.</p>
                     <div class="demo-canvas-container">

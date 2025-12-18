@@ -1496,179 +1496,6 @@
             attnDraw();
         });
 
-        // --- Loss Landscape ---
-        const lossCanvas = document.getElementById('loss-canvas');
-        const lossCtx = lossCanvas.getContext('2d');
-        let lossPos = { x: 0.2, y: 0.8 };
-        let lossVel = { x: 0, y: 0 };
-        let lossLR = 0.15;
-        let lossOptimizer = 'sgd';
-        let lossAnimating = false;
-        let lossPath = [];
-        let lossM = { x: 0, y: 0 }; // Momentum
-        let lossV = { x: 0, y: 0 }; // Adam variance
-        let lossT = 0; // Adam timestep
-
-        function lossResize() {
-            const rect = lossCanvas.parentElement.getBoundingClientRect();
-            lossCanvas.width = rect.width;
-            lossCanvas.height = rect.height;
-            lossDraw();
-        }
-
-        // Loss function (Rosenbrock-like with multiple minima)
-        function lossFunc(x, y) {
-            const a = (1 - x) * (1 - x);
-            const b = 100 * (y - x * x) * (y - x * x);
-            return (a + b) * 0.01 + Math.sin(x * 5) * 0.1 + Math.sin(y * 5) * 0.1;
-        }
-
-        function lossGradient(x, y) {
-            const h = 0.001;
-            const dx = (lossFunc(x + h, y) - lossFunc(x - h, y)) / (2 * h);
-            const dy = (lossFunc(x, y + h) - lossFunc(x, y - h)) / (2 * h);
-            return { x: dx, y: dy };
-        }
-
-        function lossDraw() {
-            const isDark = !document.documentElement.hasAttribute('data-theme');
-            lossCtx.clearRect(0, 0, lossCanvas.width, lossCanvas.height);
-            
-            // Draw contour
-            const imageData = lossCtx.createImageData(lossCanvas.width, lossCanvas.height);
-            for (let py = 0; py < lossCanvas.height; py++) {
-                for (let px = 0; px < lossCanvas.width; px++) {
-                    const x = px / lossCanvas.width;
-                    const y = py / lossCanvas.height;
-                    const loss = lossFunc(x, y);
-                    const intensity = Math.max(0, Math.min(255, 255 - loss * 200));
-                    const idx = (py * lossCanvas.width + px) * 4;
-                    
-                    if (isDark) {
-                        imageData.data[idx] = intensity * 0.4;
-                        imageData.data[idx + 1] = intensity * 0.4;
-                        imageData.data[idx + 2] = intensity * 0.9;
-                    } else {
-                        imageData.data[idx] = 230 - intensity * 0.3;
-                        imageData.data[idx + 1] = 230 - intensity * 0.3;
-                        imageData.data[idx + 2] = 255 - intensity * 0.1;
-                    }
-                    imageData.data[idx + 3] = 255;
-                }
-            }
-            lossCtx.putImageData(imageData, 0, 0);
-            
-            // Draw path
-            if (lossPath.length > 1) {
-                lossCtx.beginPath();
-                lossCtx.moveTo(lossPath[0].x * lossCanvas.width, lossPath[0].y * lossCanvas.height);
-                for (let i = 1; i < lossPath.length; i++) {
-                    lossCtx.lineTo(lossPath[i].x * lossCanvas.width, lossPath[i].y * lossCanvas.height);
-                }
-                lossCtx.strokeStyle = 'rgba(255, 200, 50, 0.8)';
-                lossCtx.lineWidth = 2;
-                lossCtx.stroke();
-            }
-            
-            // Draw current position
-            lossCtx.beginPath();
-            lossCtx.arc(lossPos.x * lossCanvas.width, lossPos.y * lossCanvas.height, 8, 0, Math.PI * 2);
-            lossCtx.fillStyle = '#f59e0b';
-            lossCtx.fill();
-            lossCtx.strokeStyle = '#fff';
-            lossCtx.lineWidth = 2;
-            lossCtx.stroke();
-        }
-
-        function lossStep() {
-            const grad = lossGradient(lossPos.x, lossPos.y);
-            
-            if (lossOptimizer === 'sgd') {
-                lossPos.x -= lossLR * grad.x;
-                lossPos.y -= lossLR * grad.y;
-            } else if (lossOptimizer === 'momentum') {
-                const beta = 0.9;
-                lossVel.x = beta * lossVel.x + lossLR * grad.x;
-                lossVel.y = beta * lossVel.y + lossLR * grad.y;
-                lossPos.x -= lossVel.x;
-                lossPos.y -= lossVel.y;
-            } else if (lossOptimizer === 'adam') {
-                const beta1 = 0.9, beta2 = 0.999, eps = 1e-8;
-                lossT++;
-                lossM.x = beta1 * lossM.x + (1 - beta1) * grad.x;
-                lossM.y = beta1 * lossM.y + (1 - beta1) * grad.y;
-                lossV.x = beta2 * lossV.x + (1 - beta2) * grad.x * grad.x;
-                lossV.y = beta2 * lossV.y + (1 - beta2) * grad.y * grad.y;
-                const mHatX = lossM.x / (1 - Math.pow(beta1, lossT));
-                const mHatY = lossM.y / (1 - Math.pow(beta1, lossT));
-                const vHatX = lossV.x / (1 - Math.pow(beta2, lossT));
-                const vHatY = lossV.y / (1 - Math.pow(beta2, lossT));
-                lossPos.x -= lossLR * mHatX / (Math.sqrt(vHatX) + eps);
-                lossPos.y -= lossLR * mHatY / (Math.sqrt(vHatY) + eps);
-            }
-            
-            // Clamp position
-            lossPos.x = Math.max(0, Math.min(1, lossPos.x));
-            lossPos.y = Math.max(0, Math.min(1, lossPos.y));
-            
-            lossPath.push({ x: lossPos.x, y: lossPos.y });
-            lossDraw();
-        }
-
-        function lossAnimate() {
-            if (!lossAnimating) return;
-            lossStep();
-            if (lossPath.length < 100) {
-                requestAnimationFrame(lossAnimate);
-            } else {
-                lossAnimating = false;
-            }
-        }
-
-        function lossReset() {
-            lossPos = { x: 0.2, y: 0.8 };
-            lossVel = { x: 0, y: 0 };
-            lossM = { x: 0, y: 0 };
-            lossV = { x: 0, y: 0 };
-            lossT = 0;
-            lossPath = [{ x: lossPos.x, y: lossPos.y }];
-            lossAnimating = true;
-            lossAnimate();
-        }
-
-        function lossSetOptimizer(opt) {
-            lossOptimizer = opt;
-            const lossCard = document.querySelector('.ai-playground-grid .demo-card:nth-child(4)');
-            const lossBtns = lossCard.querySelectorAll('.demo-controls .demo-btn');
-            lossBtns.forEach((btn, i) => {
-                if (i > 0) btn.classList.toggle('active', ['sgd', 'momentum', 'adam'][i - 1] === opt);
-            });
-            lossReset();
-        }
-
-        lossCanvas.addEventListener('click', (e) => {
-            const rect = lossCanvas.getBoundingClientRect();
-            lossPos.x = (e.clientX - rect.left) / rect.width;
-            lossPos.y = (e.clientY - rect.top) / rect.height;
-            lossVel = { x: 0, y: 0 };
-            lossM = { x: 0, y: 0 };
-            lossV = { x: 0, y: 0 };
-            lossT = 0;
-            lossPath = [{ x: lossPos.x, y: lossPos.y }];
-            lossAnimating = true;
-            lossAnimate();
-        });
-
-        // Learning rate slider
-        const lossLRSlider = document.getElementById('loss-lr');
-        const lossLRVal = document.getElementById('loss-lr-val');
-        if (lossLRSlider) {
-            lossLRSlider.addEventListener('input', () => {
-                lossLR = lossLRSlider.value / 100;
-                lossLRVal.textContent = lossLR.toFixed(2);
-            });
-        }
-
         // L2 Regularization slider for NN Visualizer
         const nnL2Slider = document.getElementById('nn-l2');
         const nnL2Val = document.getElementById('nn-l2-val');
@@ -2018,8 +1845,6 @@
             embedWords = embedData.tech;
             embedResize();
             attnResize();
-            lossPath = [{ x: lossPos.x, y: lossPos.y }];
-            lossResize();
             if (gdCanvas) gdResize();
         }
 
@@ -2033,7 +1858,6 @@
             nnResize();
             embedResize();
             attnResize();
-            lossResize();
             if (gdCanvas) gdResize();
         });
 
@@ -2045,8 +1869,6 @@
         window.embedSetCategory = embedSetCategory;
         window.embedReset = embedReset;
         window.attnSetSentence = attnSetSentence;
-        window.lossReset = lossReset;
-        window.lossSetOptimizer = lossSetOptimizer;
         window.gdSetSurface = gdSetSurface;
         window.gdSetOptimizer = gdSetOptimizer;
         window.gdReset = gdReset;
