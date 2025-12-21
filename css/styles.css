@@ -818,7 +818,7 @@ footer p {
 .affirmation-float {
     position: fixed;
     bottom: 24px;
-    right: 24px;
+    left: 24px;
     max-width: 320px;
     padding: 16px 20px;
     background: var(--bg-card);
@@ -937,7 +937,7 @@ footer p {
 .affirmation-restore {
     position: fixed;
     bottom: 24px;
-    right: 24px;
+    left: 24px;
     width: 48px;
     height: 48px;
     border-radius: 50%;
@@ -1207,7 +1207,7 @@ footer p {
 .chatbot-container {
     position: fixed;
     bottom: 24px;
-    left: 24px;
+    right: 24px;
     z-index: 1000;
     font-family: 'IBM Plex Sans', sans-serif;
 }
@@ -1216,10 +1216,10 @@ footer p {
     width: 56px;
     height: 56px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+    background: linear-gradient(135deg, var(--accent) 0%, #818cf8 100%);
     border: none;
     cursor: pointer;
-    box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
+    box-shadow: 0 4px 20px var(--accent-glow);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     align-items: center;
@@ -1229,7 +1229,7 @@ footer p {
 
 .chatbot-toggle:hover {
     transform: scale(1.08);
-    box-shadow: 0 6px 28px rgba(16, 185, 129, 0.5);
+    box-shadow: 0 6px 28px rgba(99, 102, 241, 0.5);
 }
 
 .chatbot-toggle svg {
@@ -1253,7 +1253,7 @@ footer p {
 .chatbot-window {
     position: absolute;
     bottom: 70px;
-    left: 0;
+    right: 0;
     width: 360px;
     max-height: 500px;
     background: var(--bg-card);
@@ -1280,7 +1280,7 @@ footer p {
     align-items: center;
     gap: 12px;
     padding: 16px 20px;
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    background: linear-gradient(135deg, var(--accent) 0%, #818cf8 100%);
     color: white;
 }
 
@@ -1357,7 +1357,7 @@ footer p {
 }
 
 .chat-message.user .message-content {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    background: linear-gradient(135deg, var(--accent) 0%, #818cf8 100%);
     color: white;
     border-bottom-right-radius: 4px;
 }
@@ -1382,9 +1382,9 @@ footer p {
 }
 
 .suggestion-chip:hover {
-    border-color: #10b981;
-    color: #10b981;
-    background: rgba(16, 185, 129, 0.1);
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--accent-glow);
 }
 
 .chatbot-input-container {
@@ -1409,7 +1409,7 @@ footer p {
 }
 
 .chatbot-input:focus {
-    border-color: #10b981;
+    border-color: var(--accent);
 }
 
 .chatbot-input::placeholder {
@@ -1420,7 +1420,7 @@ footer p {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    background: linear-gradient(135deg, var(--accent) 0%, #818cf8 100%);
     border: none;
     cursor: pointer;
     display: flex;
@@ -1489,22 +1489,22 @@ footer p {
 
     .affirmation-float {
         bottom: 16px;
-        right: 16px;
         left: 16px;
+        right: 16px;
         max-width: none;
     }
     
     .chatbot-container {
         bottom: 16px;
-        left: 16px;
         right: 16px;
+        left: auto;
     }
     
     .chatbot-window {
         width: calc(100vw - 32px);
         max-height: 70vh;
-        left: 0;
         right: 0;
+        left: auto;
     }
 }
 
