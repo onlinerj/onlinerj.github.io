@@ -1910,3 +1910,266 @@
         window.gdSetOptimizer = gdSetOptimizer;
         window.gdReset = gdReset;
         window.gdCompare = gdCompare;
+
+        // ==========================================
+        // CHATBOT
+        // ==========================================
+        const chatbotContainer = document.getElementById('chatbot-container');
+        const chatbotToggle = document.getElementById('chatbot-toggle');
+        const chatbotWindow = document.getElementById('chatbot-window');
+        const chatbotMessages = document.getElementById('chatbot-messages');
+        const chatbotInput = document.getElementById('chatbot-input');
+        const chatbotSend = document.getElementById('chatbot-send');
+        const chatbotSuggestions = document.getElementById('chatbot-suggestions');
+
+        // Knowledge base about Rajat
+        const rajatKnowledge = {
+            name: "Rajat Jaiswal",
+            role: "Machine Learning Engineer & AI Researcher",
+            email: "onlinerj@live.com",
+            github: "https://github.com/onlinerj",
+            linkedin: "https://linkedin.com/in/rajatjw",
+            calendly: "https://calendly.com/onlinerj",
+            
+            about: "Rajat is an AI researcher and engineer with expertise in building and deploying AI models in production for trillion-dollar companies including Aramco.",
+            
+            experience: [
+                { title: "AI Research Fellow", desc: "Research on Foundation Models across various research areas" },
+                { title: "Lead AI/ML Engineer", desc: "Led a team of engineers building generative AI products and infrastructure" },
+                { title: "Machine Learning Engineer", desc: "Developed and deployed production-level AI models for trillion-dollar companies including Aramco" }
+            ],
+            
+            education: [
+                "MS in Applied Artificial Intelligence with Software Engineering Specialization",
+                "B.Tech [Hons.] in Computer Science and Engineering"
+            ],
+            
+            certifications: [
+                "Microsoft Azure (5x Certified): AI-900, AZ-900, DP-900, DP-100, PL-900",
+                "Nvidia Deep Learning Institute: Accelerated Computing with CUDA"
+            ],
+            
+            research: [
+                "Foundation Models", "LLM Privacy & Security", "Federated Learning",
+                "RL / LLM Alignment", "GPU Acceleration", "Multi-Modal AI",
+                "Distributed LLM Training", "LLM Architecture", "Computer Vision",
+                "Natural Language Processing", "Multi Agent Systems", "RAG",
+                "GraphML", "Prompt Engineering"
+            ],
+            
+            skills: {
+                hpc: ["PyTorch", "PyTorch Distributed", "TensorFlow", "JAX", "CUDA", "DeepSpeed", "Megatron-LM", "Ray", "Triton Inference Server"],
+                genai: ["Transformers", "HuggingFace", "OpenAI API", "Claude API", "vLLM", "LangChain", "LlamaIndex"],
+                mlops: ["Docker", "Kubernetes", "MLflow", "AWS", "Azure", "GCP", "FastAPI", "CI/CD"],
+                languages: ["Python", "C++", "Java", "JavaScript", "SQL"]
+            },
+            
+            openSource: "PyTorch Playground - A comprehensive ML/DL implementation library with production-ready PyTorch implementations covering CNNs, Transformers, LLMs, Federated Learning, and more."
+        };
+
+        // Pattern matching responses
+        const chatPatterns = [
+            {
+                patterns: [/hi|hello|hey|greetings|howdy/i],
+                response: () => `Hello! 👋 I'm here to tell you about Rajat. What would you like to know? You can ask about his experience, skills, research, or how to contact him!`
+            },
+            {
+                patterns: [/who (is|are you)|about (you|rajat)|tell me about/i],
+                response: () => `${rajatKnowledge.about}\n\nHe's currently working as an ${rajatKnowledge.experience[0].title}, focusing on ${rajatKnowledge.experience[0].desc.toLowerCase()}.`
+            },
+            {
+                patterns: [/experience|work|job|career|worked|position/i],
+                response: () => {
+                    let resp = "Here's Rajat's professional experience:\n\n";
+                    rajatKnowledge.experience.forEach((exp, i) => {
+                        resp += `🔹 **${exp.title}**\n${exp.desc}\n\n`;
+                    });
+                    return resp;
+                }
+            },
+            {
+                patterns: [/education|study|degree|university|college|school/i],
+                response: () => `🎓 **Education:**\n\n• ${rajatKnowledge.education.join('\n• ')}`
+            },
+            {
+                patterns: [/certification|certified|certificate/i],
+                response: () => `📜 **Certifications:**\n\n• ${rajatKnowledge.certifications.join('\n• ')}`
+            },
+            {
+                patterns: [/research|interest|focus|specializ/i],
+                response: () => `🔬 **Research Areas:**\n\n${rajatKnowledge.research.join(' • ')}`
+            },
+            {
+                patterns: [/skill|technolog|framework|tool|stack|know|proficient/i],
+                response: () => `💻 **Technical Skills:**\n\n**HPC & Deep Learning:** ${rajatKnowledge.skills.hpc.slice(0, 6).join(', ')}\n\n**GenAI & LLMs:** ${rajatKnowledge.skills.genai.slice(0, 5).join(', ')}\n\n**MLOps & Infra:** ${rajatKnowledge.skills.mlops.slice(0, 5).join(', ')}\n\n...and many more! Check the Frameworks section on this page for the full list.`
+            },
+            {
+                patterns: [/pytorch|tensorflow|deep learning|neural/i],
+                response: () => `Rajat is highly proficient in PyTorch and deep learning! He's created **PyTorch Playground** - ${rajatKnowledge.openSource}\n\nCheck it out on GitHub: ${rajatKnowledge.github}/pytorch-playground`
+            },
+            {
+                patterns: [/llm|large language|gpt|transformer|nlp/i],
+                response: () => `Rajat has extensive experience with LLMs and transformers! His research areas include LLM Architecture, LLM Privacy & Security, and RL/LLM Alignment. He works with tools like HuggingFace, vLLM, LangChain, and LlamaIndex.`
+            },
+            {
+                patterns: [/contact|email|reach|connect|hire|hiring|recruit/i],
+                response: () => `📬 **Get in Touch:**\n\n📧 Email: ${rajatKnowledge.email}\n💼 LinkedIn: ${rajatKnowledge.linkedin}\n📅 Schedule a call: ${rajatKnowledge.calendly}\n🐙 GitHub: ${rajatKnowledge.github}\n\nRajat is open to exciting AI/ML opportunities!`
+            },
+            {
+                patterns: [/github|code|open source|project/i],
+                response: () => `🐙 **Open Source:**\n\n${rajatKnowledge.openSource}\n\nGitHub: ${rajatKnowledge.github}`
+            },
+            {
+                patterns: [/aramco|enterprise|production|deploy/i],
+                response: () => `Rajat has built and deployed AI models in production for trillion-dollar companies including **Aramco**. He specializes in bringing cutting-edge machine learning solutions to enterprise scale.`
+            },
+            {
+                patterns: [/federated|privacy|distributed/i],
+                response: () => `Rajat specializes in **Federated Learning** and **Distributed LLM Training**! These are among his core research areas, focusing on privacy-preserving AI and scaling models across distributed systems.`
+            },
+            {
+                patterns: [/azure|aws|cloud|gcp/i],
+                response: () => `☁️ **Cloud Expertise:**\n\nRajat is **5x Microsoft Azure Certified** (AI-900, AZ-900, DP-900, DP-100, PL-900) and has experience with AWS and GCP. He's skilled in cloud-native MLOps with Docker, Kubernetes, and Kubeflow.`
+            },
+            {
+                patterns: [/cuda|gpu|nvidia|accelerat/i],
+                response: () => `⚡ **GPU & CUDA:**\n\nRajat is certified by **Nvidia Deep Learning Institute** in Accelerated Computing with CUDA. His research includes GPU Acceleration, and he works with CUDA, TensorRT, OpenAI Triton, and NCCL.`
+            },
+            {
+                patterns: [/cv|computer vision|image/i],
+                response: () => `👁️ **Computer Vision:**\n\nRajat has expertise in Computer Vision, from classical techniques (check out the CV kernels on his profile picture!) to modern deep learning approaches with CNNs and Vision Transformers.`
+            },
+            {
+                patterns: [/thank|thanks|thx|appreciate/i],
+                response: () => `You're welcome! 😊 Feel free to ask if you have more questions about Rajat, or reach out directly at ${rajatKnowledge.email}!`
+            },
+            {
+                patterns: [/bye|goodbye|see you|later/i],
+                response: () => `Goodbye! 👋 Thanks for your interest in Rajat's work. Don't hesitate to reach out if you'd like to connect!`
+            },
+            {
+                patterns: [/help|what can you|how do|commands/i],
+                response: () => `I can answer questions about Rajat! Try asking:\n\n• What's your experience?\n• Tell me about your research\n• What are your skills?\n• How can I contact you?\n• Tell me about your education\n• What certifications do you have?`
+            }
+        ];
+
+        // Default response for unmatched queries
+        const defaultResponses = [
+            "That's an interesting question! I may not have specific info on that, but feel free to reach out to Rajat directly at " + rajatKnowledge.email,
+            "I'm not sure about that specific topic. Try asking about Rajat's experience, skills, research, or how to contact him!",
+            "Hmm, I don't have that info. You can ask about: experience, education, skills, research areas, or contact info!"
+        ];
+
+        function getChatResponse(message) {
+            const lowerMessage = message.toLowerCase().trim();
+            
+            // Check each pattern
+            for (const pattern of chatPatterns) {
+                for (const regex of pattern.patterns) {
+                    if (regex.test(lowerMessage)) {
+                        return pattern.response();
+                    }
+                }
+            }
+            
+            // Return a random default response
+            return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
+        }
+
+        function addMessage(content, isUser = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message ${isUser ? 'user' : 'bot'}`;
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content';
+            
+            // Simple markdown-like formatting
+            content = content
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\n/g, '<br>');
+            
+            contentDiv.innerHTML = content;
+            messageDiv.appendChild(contentDiv);
+            chatbotMessages.appendChild(messageDiv);
+            
+            // Scroll to bottom
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        }
+
+        function showTypingIndicator() {
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'chat-message bot';
+            typingDiv.id = 'typing-indicator';
+            typingDiv.innerHTML = `
+                <div class="message-content typing-indicator">
+                    <span></span><span></span><span></span>
+                </div>
+            `;
+            chatbotMessages.appendChild(typingDiv);
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const typing = document.getElementById('typing-indicator');
+            if (typing) typing.remove();
+        }
+
+        function sendMessage() {
+            const message = chatbotInput.value.trim();
+            if (!message) return;
+            
+            // Add user message
+            addMessage(message, true);
+            chatbotInput.value = '';
+            
+            // Hide suggestions after first message
+            if (chatbotSuggestions) {
+                chatbotSuggestions.style.display = 'none';
+            }
+            
+            // Show typing indicator
+            showTypingIndicator();
+            
+            // Simulate response delay (300-800ms)
+            const delay = Math.random() * 500 + 300;
+            setTimeout(() => {
+                removeTypingIndicator();
+                const response = getChatResponse(message);
+                addMessage(response);
+            }, delay);
+        }
+
+        // Toggle chat window
+        if (chatbotToggle) {
+            chatbotToggle.addEventListener('click', () => {
+                chatbotContainer.classList.toggle('open');
+                if (chatbotContainer.classList.contains('open')) {
+                    chatbotInput.focus();
+                }
+            });
+        }
+
+        // Send message on button click
+        if (chatbotSend) {
+            chatbotSend.addEventListener('click', sendMessage);
+        }
+
+        // Send message on Enter key
+        if (chatbotInput) {
+            chatbotInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+        }
+
+        // Handle suggestion chips
+        if (chatbotSuggestions) {
+            chatbotSuggestions.addEventListener('click', (e) => {
+                if (e.target.classList.contains('suggestion-chip')) {
+                    const question = e.target.getAttribute('data-question');
+                    chatbotInput.value = question;
+                    sendMessage();
+                }
+            });
+        }

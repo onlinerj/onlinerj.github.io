@@ -31,6 +31,54 @@
     <!-- Restore Affirmation Button -->
     <button class="affirmation-restore" id="affirmation-restore" title="Show AI Wisdom">✨</button>
     
+    <!-- Chatbot Widget -->
+    <div class="chatbot-container" id="chatbot-container">
+        <!-- Chat Toggle Button -->
+        <button class="chatbot-toggle" id="chatbot-toggle" title="Chat with me">
+            <svg class="chat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+            <svg class="close-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+        </button>
+        
+        <!-- Chat Window -->
+        <div class="chatbot-window" id="chatbot-window">
+            <div class="chatbot-header">
+                <img src="assets/profile.jpg" alt="Rajat" class="chatbot-avatar">
+                <div class="chatbot-header-info">
+                    <span class="chatbot-name">Chat with Rajat</span>
+                    <span class="chatbot-status">● Ask me anything!</span>
+                </div>
+            </div>
+            
+            <div class="chatbot-messages" id="chatbot-messages">
+                <div class="chat-message bot">
+                    <div class="message-content">
+                        Hi! 👋 I'm Rajat's virtual assistant. Ask me about his experience, skills, research, or anything else!
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chatbot-suggestions" id="chatbot-suggestions">
+                <button class="suggestion-chip" data-question="What's your experience?">Experience?</button>
+                <button class="suggestion-chip" data-question="What are your skills?">Skills?</button>
+                <button class="suggestion-chip" data-question="Tell me about your research">Research?</button>
+                <button class="suggestion-chip" data-question="How can I contact you?">Contact?</button>
+            </div>
+            
+            <div class="chatbot-input-container">
+                <input type="text" class="chatbot-input" id="chatbot-input" placeholder="Type your question..." autocomplete="off">
+                <button class="chatbot-send" id="chatbot-send">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+    
     <div class="container">
         <header>
             <div class="profile-container">
