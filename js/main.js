@@ -1564,14 +1564,14 @@
         function gdGetLoss(x, y) {
             return gdSurfaces[gdSurface].fn(x, y);
         }
-        
+
         function gdGetGradient(x, y) {
             const h = 0.001;
             const dx = (gdGetLoss(x + h, y) - gdGetLoss(x - h, y)) / (2 * h);
             const dy = (gdGetLoss(x, y + h) - gdGetLoss(x, y - h)) / (2 * h);
             return { x: dx, y: dy };
         }
-        
+
         function gdResize() {
             const rect = gdCanvas.parentElement.getBoundingClientRect();
             gdCanvas.width = rect.width;
@@ -1656,8 +1656,8 @@
                 if (pathData.path.length < 2) return;
                 
                 const color = colors[pathData.optimizer];
-                
-                // Draw path
+            
+            // Draw path
                 gdCtx.beginPath();
                 gdCtx.moveTo(pathData.path[0].x * gdCanvas.width, pathData.path[0].y * gdCanvas.height);
                 for (let i = 1; i < pathData.path.length; i++) {
@@ -1678,7 +1678,7 @@
                         gdCtx.strokeStyle = '#fff';
                         gdCtx.lineWidth = 2;
                         gdCtx.stroke();
-                    }
+            }
                 });
                 
                 // Draw gradient vector at current position
@@ -1716,7 +1716,7 @@
             gdCtx.font = '12px IBM Plex Sans';
             gdCtx.fillText(gdSurfaces[gdSurface].name, 10, 20);
         }
-        
+
         function gdStep(pathData) {
             const current = pathData.path[pathData.path.length - 1];
             const grad = gdGetGradient(current.x, current.y);
@@ -1752,7 +1752,7 @@
             
             pathData.path.push({ x: newX, y: newY });
         }
-        
+
         function gdAnimate() {
             if (!gdAnimating || gdPaths.length === 0) return;
             
@@ -1777,7 +1777,7 @@
                 gdAnimating = false;
             }
         }
-        
+
         function gdStartOptimization(x, y) {
             if (gdCompareMode) {
                 // Compare all optimizers
@@ -1795,7 +1795,7 @@
             gdAnimating = true;
             gdAnimate();
         }
-        
+
         function gdSetSurface(surface) {
             gdSurface = surface;
             gdPaths = [];
@@ -1864,7 +1864,7 @@
                 const y = ((e.clientY - rect.top) * scaleY) / gdCanvas.height;
                 gdStartOptimization(x, y);
             });
-            
+
             // Learning rate slider
             const gdLRSlider = document.getElementById('gd-lr');
             const gdLRVal = document.getElementById('gd-lr-val');
@@ -1873,7 +1873,7 @@
                     gdLR = gdLRSlider.value / 1000;
                     gdLRVal.textContent = gdLR.toFixed(3);
                 });
-            }
+                }
         }
 
         // Initialize all demos on load
