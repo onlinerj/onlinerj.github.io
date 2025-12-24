@@ -1922,7 +1922,17 @@
         const chatbotSend = document.getElementById('chatbot-send');
         const chatbotSuggestions = document.getElementById('chatbot-suggestions');
 
-        // Knowledge base about Rajat
+        // ====== LLM Configuration ======
+        // Set this to your deployed Cloudflare Worker URL
+        // If empty or null, falls back to pattern matching
+        const CHATBOT_WORKER_URL = 'https://llm-chat-app-template.onlinerj.workers.dev';
+        
+        // Conversation history for context
+        let chatHistory = [];
+        
+        // ====== End LLM Configuration ======
+
+        // Knowledge base about Rajat (used for fallback)
         const rajatKnowledge = {
             name: "Rajat Jaiswal",
             role: "Machine Learning Engineer & AI Researcher",
@@ -2114,13 +2124,16 @@
             if (typing) typing.remove();
         }
 
-        function sendMessage() {
+        async function sendMessage() {
             const message = chatbotInput.value.trim();
             if (!message) return;
             
             // Add user message
             addMessage(message, true);
             chatbotInput.value = '';
+            
+            // Add to history
+            chatHistory.push({ role: 'user', content: message });
             
             // Hide suggestions after first message
             if (chatbotSuggestions) {
@@ -2130,13 +2143,50 @@
             // Show typing indicator
             showTypingIndicator();
             
-            // Simulate response delay (300-800ms)
-            const delay = Math.random() * 500 + 300;
-            setTimeout(() => {
-                removeTypingIndicator();
-                const response = getChatResponse(message);
-                addMessage(response);
-            }, delay);
+            let response;
+            
+            // Try LLM API if configured
+            if (CHATBOT_WORKER_URL) {
+                try {
+                    const apiResponse = await fetch(CHATBOT_WORKER_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            message: message,
+                            history: chatHistory.slice(-10) // Send last 10 messages for context
+                        })
+                    });
+                    
+                    if (apiResponse.ok) {
+                        const data = await apiResponse.json();
+                        if (data.response && !data.fallback) {
+                            response = data.response;
+                        }
+                    }
+                } catch (error) {
+                    console.log('LLM API unavailable, using fallback:', error.message);
+                }
+            }
+            
+            // Fallback to pattern matching
+            if (!response) {
+                // Small delay for pattern matching to feel natural
+                await new Promise(resolve => setTimeout(resolve, Math.random() * 300 + 200));
+                response = getChatResponse(message);
+            }
+            
+            removeTypingIndicator();
+            addMessage(response);
+            
+            // Add bot response to history
+            chatHistory.push({ role: 'assistant', content: response });
+            
+            // Keep history manageable
+            if (chatHistory.length > 20) {
+                chatHistory = chatHistory.slice(-20);
+            }
         }
 
         // Toggle chat window
