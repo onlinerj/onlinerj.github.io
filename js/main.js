@@ -1922,6 +1922,11 @@
         const chatbotSend = document.getElementById('chatbot-send');
         const chatbotSuggestions = document.getElementById('chatbot-suggestions');
 
+        // Open chatbot by default
+        if (chatbotContainer) {
+            chatbotContainer.classList.add('open');
+        }
+
         // ====== LLM Configuration ======
         // Set this to your deployed Cloudflare Worker URL
         // If empty or null, falls back to pattern matching
