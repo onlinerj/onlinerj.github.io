@@ -2201,6 +2201,24 @@
                 if (chatbotContainer.classList.contains('open')) {
                     chatbotInput.focus();
                 }
+                
+                // On mobile, hide affirmation when chatbot is open
+                if (window.innerWidth <= 600) {
+                    const affirmationFloat = document.getElementById('affirmation-float');
+                    const affirmationRestore = document.getElementById('affirmation-restore');
+                    if (chatbotContainer.classList.contains('open')) {
+                        if (affirmationFloat) affirmationFloat.style.display = 'none';
+                        if (affirmationRestore) affirmationRestore.style.display = 'none';
+                    } else {
+                        // Restore visibility based on hidden state
+                        if (affirmationFloat && !affirmationFloat.classList.contains('hidden')) {
+                            affirmationFloat.style.display = '';
+                        }
+                        if (affirmationRestore && affirmationRestore.classList.contains('visible')) {
+                            affirmationRestore.style.display = '';
+                        }
+                    }
+                }
             });
         }
 
