@@ -1975,8 +1975,8 @@
             skills: {
                 hpc: ["PyTorch", "PyTorch Distributed", "TensorFlow", "JAX", "CUDA", "DeepSpeed", "Megatron-LM", "Ray", "Triton Inference Server"],
                 genai: ["Transformers", "HuggingFace", "OpenAI API", "Claude API", "vLLM", "LangChain", "LlamaIndex"],
-                mlops: ["Docker", "Kubernetes", "MLflow", "AWS", "Azure", "GCP", "FastAPI", "CI/CD"],
-                languages: ["Python", "C++", "Java", "JavaScript", "SQL"]
+                mlops: ["Docker", "Kubernetes", "MLflow", "AWS", "Azure", "GCP", "FastAPI", "Express.js", "CI/CD"],
+                languages: ["Python", "C++", "Java", "JavaScript", "TypeScript", "Node.js", "SQL"]
             },
             
             openSource: "PyTorch Playground - A comprehensive ML/DL implementation library with production-ready PyTorch implementations covering CNNs, Transformers, LLMs, Federated Learning, and more."

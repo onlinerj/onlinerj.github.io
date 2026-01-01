@@ -43,8 +43,9 @@ Foundation Models, LLM Privacy & Security, Federated Learning, RL/LLM Alignment,
 TECHNICAL SKILLS:
 - HPC & Deep Learning: PyTorch, PyTorch Distributed, TensorFlow, JAX, Flax, CUDA, DeepSpeed, Megatron-LM, Ray, Triton Inference Server, OpenMPI
 - GenAI & LLMs: Transformers, HuggingFace, OpenAI API, Claude API, Gemini API, vLLM, LangChain, LlamaIndex, CrewAI, Autogen, Qdrant, Pinecone, Weaviate, pgvector, FAISS
-- MLOps & Infrastructure: Docker, Kubernetes, MLflow, AWS, Azure, GCP, Cloudflare, FastAPI, Airflow, Prefect, DVC, CI/CD
-- Languages: Python, C, C++, Rust, Java, JavaScript, TypeScript, SQL, Bash
+- MLOps & Infrastructure: Docker, Kubernetes, MLflow, AWS, Azure, GCP, Cloudflare, FastAPI, Express.js, Airflow, Prefect, DVC, CI/CD
+- Languages: Python, C, C++, Rust, Java, JavaScript, TypeScript, Node.js, SQL, Bash
+- Testing: Jasmine
 - Data & Analytics: PySpark, Hadoop, Apache Beam, Pandas, Grafana, Prometheus, PowerBI, Spotfire
 
 OPEN SOURCE:
