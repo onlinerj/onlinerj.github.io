@@ -1295,6 +1295,7 @@ footer p {
 .chatbot-header-info {
     display: flex;
     flex-direction: column;
+    flex: 1;
 }
 
 .chatbot-name {
@@ -1305,6 +1306,82 @@ footer p {
 .chatbot-status {
     font-size: 12px;
     opacity: 0.9;
+}
+
+.async-badge {
+    position: relative;
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: #1a1a2e;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.async-badge:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 12px rgba(245, 158, 11, 0.5);
+}
+
+.async-tooltip {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    width: 260px;
+    background: var(--bg-card);
+    border: 1px solid var(--accent);
+    border-radius: 12px;
+    padding: 14px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: all 0.25s ease;
+    z-index: 1000;
+    box-shadow: 0 8px 32px rgba(99, 102, 241, 0.25);
+}
+
+.async-badge:hover .async-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.async-tooltip::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    right: 16px;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid var(--accent);
+}
+
+.async-tooltip h4 {
+    font-size: 13px;
+    color: var(--accent);
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.async-tooltip p {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+.async-tooltip code {
+    display: block;
+    background: var(--bg);
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    color: #22c55e;
+    border: 1px solid var(--border);
 }
 
 .chatbot-messages {
