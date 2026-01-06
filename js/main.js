@@ -1975,8 +1975,10 @@
             skills: {
                 hpc: ["PyTorch", "PyTorch Distributed", "TensorFlow", "JAX", "CUDA", "DeepSpeed", "Megatron-LM", "Ray", "Triton Inference Server"],
                 genai: ["Transformers", "HuggingFace", "OpenAI API", "Claude API", "vLLM", "LangChain", "LlamaIndex"],
+                vectordb: ["Qdrant", "ChromaDB", "FAISS", "Pinecone", "Weaviate", "pgvector", "Milvus", "DiskANN"],
                 mlops: ["Docker", "Kubernetes", "MLflow", "AWS", "Azure", "GCP", "FastAPI", "Express.js", "CI/CD"],
                 web: ["React", "Vue", "Angular", "Next.js", "Node.js", "Express.js"],
+                data: ["BeautifulSoup", "Scrapy", "Selenium", "Firecrawl", "comcrawl", "datatrove"],
                 languages: ["Python", "C++", "Java", "JavaScript", "TypeScript", "Node.js", "SQL"]
             },
             
