@@ -1369,6 +1369,7 @@ footer p {
     color: var(--accent);
     margin-bottom: 8px;
     font-weight: 600;
+    word-wrap: break-word;
 }
 
 .async-tooltip p {
@@ -1376,6 +1377,9 @@ footer p {
     color: var(--text-muted);
     line-height: 1.5;
     margin-bottom: 10px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
 }
 
 .async-tooltip code {
