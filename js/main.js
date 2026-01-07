@@ -38,6 +38,85 @@
             });
         });
 
+        // ==========================================
+        // AI WISDOM WIDGET (Subtle Affirmations)
+        // ==========================================
+        const wisdomWidget = document.getElementById('wisdom-widget');
+        const wisdomToggle = document.getElementById('wisdom-toggle');
+        const wisdomCard = document.getElementById('wisdom-card');
+        const wisdomText = document.getElementById('wisdom-text');
+        const wisdomImage = document.getElementById('wisdom-image');
+
+        const affirmations = [
+            { text: "Your neural networks aren't the only things learning—you're growing every day.", img: "assets/affirmations/101.jpg" },
+            { text: "Every gradient descent leads somewhere meaningful.", img: "assets/affirmations/102.jpg" },
+            { text: "The best models are built by curious minds like yours.", img: "assets/affirmations/103.jpg" },
+            { text: "Your attention mechanism is focused on the right things.", img: "assets/affirmations/104.jpg" },
+            { text: "You're not just training models, you're shaping the future.", img: "assets/affirmations/105.jpg" },
+            { text: "Even transformers started with a single attention head.", img: "assets/affirmations/106.jpg" },
+            { text: "Your loss function is decreasing—keep iterating.", img: "assets/affirmations/107.jpg" },
+            { text: "Behind every breakthrough is someone who refused to stop fine-tuning.", img: "assets/affirmations/108.jpg" },
+            { text: "Your embeddings capture more dimensions than you realize.", img: "assets/affirmations/109.jpg" },
+            { text: "Every epoch brings you closer to convergence.", img: "assets/affirmations/110.jpg" },
+            { text: "The world needs engineers who care about AI ethics. You matter.", img: "assets/affirmations/201.jpg" },
+            { text: "AGI might be uncertain, but your potential isn't.", img: "assets/affirmations/202.jpg" },
+            { text: "You're the human in human-AI collaboration.", img: "assets/affirmations/203.jpg" },
+            { text: "The best hyperparameter you have is persistence.", img: "assets/affirmations/204.jpg" },
+            { text: "Your career trajectory has the best optimizer: you.", img: "assets/affirmations/205.jpg" },
+            { text: "Regularization keeps models from overfitting. Rest keeps you from burning out.", img: "assets/affirmations/302.jpg" },
+            { text: "The most powerful compute is a well-rested mind.", img: "assets/affirmations/303.jpg" },
+            { text: "Even GPUs need cooling. Take a break.", img: "assets/affirmations/304.jpg" },
+            { text: "Dropout makes networks stronger. Setbacks make you resilient.", img: "assets/affirmations/401.jpg" },
+            { text: "Like skip connections, your past experiences strengthen who you are today.", img: "assets/affirmations/403.jpg" },
+            { text: "Ensemble methods work because diversity is powerful. So are you.", img: "assets/affirmations/404.jpg" },
+            { text: "You're not stuck in a local minimum—you're gathering momentum.", img: "assets/affirmations/408.jpg" },
+            { text: "The next big paper might have your name on it.", img: "assets/affirmations/501.jpg" },
+            { text: "Innovation doesn't require permission. Keep building.", img: "assets/affirmations/503.jpg" },
+            { text: "Latent space is full of possibilities. So is your future.", img: "assets/affirmations/509.jpg" }
+        ];
+
+        let wisdomIndex = Math.floor(Math.random() * affirmations.length);
+
+        // Preload images
+        affirmations.forEach(aff => {
+            const img = new Image();
+            img.src = aff.img;
+        });
+
+        function showWisdom() {
+            const aff = affirmations[wisdomIndex];
+            wisdomText.textContent = `"${aff.text}"`;
+            wisdomImage.src = aff.img;
+        }
+
+        function nextWisdom() {
+            wisdomIndex = (wisdomIndex + 1) % affirmations.length;
+            showWisdom();
+        }
+
+        // Initialize
+        showWisdom();
+
+        // Toggle widget
+        if (wisdomToggle) {
+            wisdomToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                wisdomWidget.classList.toggle('open');
+            });
+        }
+
+        // Click card for next wisdom
+        if (wisdomCard) {
+            wisdomCard.addEventListener('click', nextWisdom);
+        }
+
+        // Close when clicking outside
+        document.addEventListener('click', (e) => {
+            if (wisdomWidget && !wisdomWidget.contains(e.target)) {
+                wisdomWidget.classList.remove('open');
+            }
+        });
+
         // Computer Vision Filters for Profile Picture
         const profileImg = document.getElementById('profile-img');
         const profileCanvas = document.getElementById('profile-canvas');

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,38 +7,41 @@
     <meta name="description" content="Deep dive into client-specific adaptive tolerance algorithms for federated learning—using distortion as a feedback signal to optimize compression.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=IBM+Plex+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0a0a0b;
-            --bg-card: #141417;
-            --text: #e8e8ed;
-            --text-muted: #8b8b97;
-            --accent: #6366f1;
-            --accent-glow: rgba(99, 102, 241, 0.15);
-            --border: #252530;
-            --stories-accent: #f59e0b;
-            --stories-glow: rgba(245, 158, 11, 0.15);
-            --green: #10b981;
-            --red: #ef4444;
-            --blue: #3b82f6;
-            --purple: #8b5cf6;
-        }
-
-        [data-theme="light"] {
-            --bg: #f8f9fc;
+            --bg: #fafafa;
             --bg-card: #ffffff;
-            --text: #1a1a2e;
-            --text-muted: #64648c;
-            --accent: #4f46e5;
-            --accent-glow: rgba(79, 70, 229, 0.12);
-            --border: #e2e4ed;
-            --stories-accent: #d97706;
-            --stories-glow: rgba(217, 119, 6, 0.12);
+            --text: #171717;
+            --text-muted: #525252;
+            --accent: #0d9488;
+            --accent-light: #ccfbf1;
+            --border: #e5e5e5;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+            --transition: 0.2s ease;
+            --radius: 8px;
+            --radius-lg: 16px;
             --green: #059669;
             --red: #dc2626;
             --blue: #2563eb;
             --purple: #7c3aed;
+        }
+
+        [data-theme="dark"] {
+            --bg: #0a0a0a;
+            --bg-card: #171717;
+            --text: #fafafa;
+            --text-muted: #a3a3a3;
+            --accent: #14b8a6;
+            --accent-light: rgba(20, 184, 166, 0.15);
+            --border: #262626;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.3);
+            --green: #10b981;
+            --red: #ef4444;
+            --blue: #3b82f6;
+            --purple: #8b5cf6;
         }
 
         * {
@@ -48,7 +51,7 @@
         }
 
         body {
-            font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--bg);
             color: var(--text);
             line-height: 1.8;
@@ -71,11 +74,11 @@
             text-decoration: none;
             font-size: 14px;
             margin-bottom: 48px;
-            transition: all 0.3s ease;
+            transition: all var(--transition);
         }
 
         .back-link:hover {
-            color: var(--stories-accent);
+            color: var(--accent);
         }
 
         .back-link svg {
@@ -101,20 +104,19 @@
             background: var(--bg-card);
             color: var(--text-muted);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all var(--transition);
         }
 
         .theme-toggle:hover {
-            color: var(--stories-accent);
-            border-color: var(--stories-accent);
-            background: var(--stories-glow);
+            color: var(--accent);
+            border-color: var(--accent);
         }
 
         .theme-toggle svg { width: 20px; height: 20px; }
-        .theme-toggle .sun-icon { display: none; }
-        .theme-toggle .moon-icon { display: block; }
-        [data-theme="light"] .theme-toggle .sun-icon { display: block; }
-        [data-theme="light"] .theme-toggle .moon-icon { display: none; }
+        .theme-toggle .sun-icon { display: block; }
+        .theme-toggle .moon-icon { display: none; }
+        [data-theme="dark"] .theme-toggle .sun-icon { display: none; }
+        [data-theme="dark"] .theme-toggle .moon-icon { display: block; }
 
         .article-meta {
             margin-bottom: 32px;
@@ -122,7 +124,7 @@
 
         .article-meta .category {
             font-size: 12px;
-            color: var(--stories-accent);
+            color: var(--accent);
             text-transform: uppercase;
             letter-spacing: 2px;
             font-weight: 600;
@@ -135,9 +137,9 @@
         }
 
         h1 {
-            font-family: 'DM Serif Display', Georgia, serif;
+            font-family: 'Bricolage Grotesque', Georgia, serif;
             font-size: clamp(2rem, 6vw, 2.75rem);
-            font-weight: 400;
+            font-weight: 600;
             line-height: 1.2;
             margin-bottom: 24px;
             color: var(--text);
@@ -161,9 +163,10 @@
         .tag {
             font-size: 12px;
             padding: 6px 12px;
-            background: rgba(245, 158, 11, 0.1);
+            background: var(--accent-light);
             border-radius: 100px;
-            color: var(--stories-accent);
+            color: var(--accent);
+            font-weight: 500;
         }
 
         /* Article Content */
@@ -173,9 +176,9 @@
         }
 
         article h2 {
-            font-family: 'DM Serif Display', Georgia, serif;
+            font-family: 'Bricolage Grotesque', Georgia, serif;
             font-size: 1.5rem;
-            font-weight: 400;
+            font-weight: 600;
             margin-top: 48px;
             margin-bottom: 20px;
             color: var(--text);
@@ -218,10 +221,11 @@
         .highlight-box {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-left: 3px solid var(--stories-accent);
+            border-left: 3px solid var(--accent);
             padding: 24px;
-            border-radius: 8px;
+            border-radius: var(--radius);
             margin: 32px 0;
+            box-shadow: var(--shadow-sm);
         }
 
         .highlight-box p {
@@ -243,20 +247,21 @@
 
         code {
             font-family: 'JetBrains Mono', monospace;
-            background: var(--bg-card);
+            background: var(--accent-light);
             padding: 2px 8px;
             border-radius: 4px;
             font-size: 14px;
-            color: var(--stories-accent);
+            color: var(--accent);
         }
 
         pre {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 12px;
+            border-radius: var(--radius-lg);
             padding: 20px;
             overflow-x: auto;
             margin: 24px 0;
+            box-shadow: var(--shadow-sm);
         }
 
         pre code {
@@ -267,39 +272,24 @@
             color: var(--text-muted);
         }
 
-        .comment {
-            color: var(--text-muted);
-            opacity: 0.6;
-        }
-
-        .keyword {
-            color: var(--purple);
-        }
-
-        .function {
-            color: var(--blue);
-        }
-
-        .string {
-            color: var(--green);
-        }
-
         /* Algorithm Box */
         .algorithm-box {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 16px;
+            border-radius: var(--radius-lg);
             padding: 28px;
             margin: 32px 0;
+            box-shadow: var(--shadow-sm);
         }
 
         .algorithm-box h4 {
-            font-family: 'DM Serif Display', Georgia, serif;
+            font-family: 'Bricolage Grotesque', Georgia, serif;
             font-size: 1.1rem;
             color: var(--text);
             margin-bottom: 20px;
             padding-bottom: 12px;
             border-bottom: 1px solid var(--border);
+            font-weight: 600;
         }
 
         .algorithm-step {
@@ -311,8 +301,8 @@
         .step-number {
             width: 28px;
             height: 28px;
-            background: var(--stories-accent);
-            color: var(--bg);
+            background: var(--accent);
+            color: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -341,9 +331,10 @@
         .concept-diagram {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 16px;
+            border-radius: var(--radius-lg);
             padding: 32px;
             margin: 32px 0;
+            box-shadow: var(--shadow-sm);
         }
 
         .region-visual {
@@ -351,7 +342,7 @@
             align-items: stretch;
             height: 120px;
             margin: 24px 0;
-            border-radius: 8px;
+            border-radius: var(--radius);
             overflow: hidden;
         }
 
@@ -365,19 +356,19 @@
         }
 
         .region-safe {
-            background: rgba(16, 185, 129, 0.2);
+            background: rgba(5, 150, 105, 0.15);
             border: 1px solid var(--green);
             flex: 2;
         }
 
         .region-transition {
-            background: rgba(245, 158, 11, 0.2);
-            border: 1px solid var(--stories-accent);
+            background: var(--accent-light);
+            border: 1px solid var(--accent);
             flex: 1;
         }
 
         .region-danger {
-            background: rgba(239, 68, 68, 0.2);
+            background: rgba(220, 38, 38, 0.15);
             border: 1px solid var(--red);
             flex: 1;
         }
@@ -389,7 +380,7 @@
         }
 
         .region-safe .region-label { color: var(--green); }
-        .region-transition .region-label { color: var(--stories-accent); }
+        .region-transition .region-label { color: var(--accent); }
         .region-danger .region-label { color: var(--red); }
 
         .region-desc {
@@ -423,8 +414,9 @@
         .comparison-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 12px;
+            border-radius: var(--radius-lg);
             padding: 24px;
+            box-shadow: var(--shadow-sm);
         }
 
         .comparison-card h5 {
@@ -440,7 +432,7 @@
         }
 
         .comparison-card.adaptive h5 {
-            color: var(--stories-accent);
+            color: var(--accent);
         }
 
         .comparison-card ul {
@@ -483,19 +475,6 @@
             color: var(--text-muted);
         }
 
-        /* Decorative */
-        .glow-orb {
-            position: fixed;
-            width: 600px;
-            height: 600px;
-            border-radius: 50%;
-            background: radial-gradient(circle, var(--stories-glow) 0%, transparent 70%);
-            pointer-events: none;
-            top: -200px;
-            right: -200px;
-            z-index: -1;
-        }
-
         /* Responsive */
         @media (max-width: 600px) {
             .container {
@@ -518,8 +497,6 @@
     </style>
 </head>
 <body>
-    <div class="glow-orb"></div>
-    
     <div class="container">
         <div class="header-nav">
             <a href="../blog.html" class="back-link">
@@ -551,7 +528,7 @@
         <article>
             <h2>The Problem with Fixed Error Bounds</h2>
             
-            <p>In my <a href="fl-communication-problem.html" style="color: var(--stories-accent);">previous post</a>, I introduced how Error-Bounded Lossy Compressors (EBLCs) can dramatically reduce communication in federated learning. The standard approach uses a fixed error bound—typically <code>10⁻²</code> for relative mode—across all clients and all training rounds.</p>
+            <p>In my <a href="fl-communication-problem.html" style="color: var(--accent);">previous post</a>, I introduced how Error-Bounded Lossy Compressors (EBLCs) can dramatically reduce communication in federated learning. The standard approach uses a fixed error bound—typically <code>10⁻²</code> for relative mode—across all clients and all training rounds.</p>
 
             <p>But here's the question that drove our research:</p>
 
@@ -566,7 +543,7 @@
             <p>The key breakthrough was recognizing that <strong>distortion</strong>—the error introduced by compression—follows predictable patterns during training. More importantly, there exist <em>operational regions</em> where we can compress more aggressively without hurting model accuracy.</p>
 
             <div class="concept-diagram">
-                <h4 style="font-family: 'DM Serif Display', Georgia, serif; margin-bottom: 16px;">Operational Regions in EBLC Compression</h4>
+                <h4 style="font-family: 'Bricolage Grotesque', Georgia, serif; margin-bottom: 16px; font-weight: 600;">Operational Regions in EBLC Compression</h4>
                 <div class="region-visual">
                     <div class="region region-safe">
                         <span class="region-label">Safe Zone</span>
@@ -774,16 +751,14 @@
         // Theme Toggle
         const themeToggle = document.getElementById('theme-toggle');
         const htmlElement = document.documentElement;
-        const savedTheme = localStorage.getItem('theme') || 'dark';
-        if (savedTheme === 'light') htmlElement.setAttribute('data-theme', 'light');
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        if (savedTheme === 'dark') htmlElement.setAttribute('data-theme', 'dark');
         themeToggle.addEventListener('click', () => {
             const currentTheme = htmlElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            if (newTheme === 'light') htmlElement.setAttribute('data-theme', 'light');
-            else htmlElement.removeAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            htmlElement.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
         });
     </script>
 </body>
 </html>
-

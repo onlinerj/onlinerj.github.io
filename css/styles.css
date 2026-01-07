@@ -1465,4 +1465,118 @@ body {
         align-items: flex-start;
         gap: 12px;
     }
+    
+    .wisdom-widget {
+        bottom: 80px;
+        left: 16px;
+    }
+    
+    .wisdom-card {
+        width: 260px;
+    }
+}
+
+/* ==========================================
+   WISDOM WIDGET (Subtle Affirmations)
+   ========================================== */
+.wisdom-widget {
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    z-index: 999;
+    font-family: 'DM Sans', sans-serif;
+}
+
+.wisdom-toggle {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    box-shadow: var(--shadow-md);
+    transition: all var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+.wisdom-toggle:hover {
+    border-color: var(--accent);
+    transform: scale(1.05);
+}
+
+.wisdom-icon {
+    display: block;
+}
+
+.wisdom-close {
+    display: none;
+    font-size: 20px;
+    color: var(--text-muted);
+}
+
+.wisdom-widget.open .wisdom-icon {
+    display: none;
+}
+
+.wisdom-widget.open .wisdom-close {
+    display: block;
+}
+
+.wisdom-card {
+    position: absolute;
+    bottom: 56px;
+    left: 0;
+    width: 280px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    box-shadow: var(--shadow-lg);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(12px) scale(0.96);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+}
+
+.wisdom-widget.open .wisdom-card {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+.wisdom-card:hover {
+    border-color: var(--accent);
+}
+
+.wisdom-image {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+    margin-bottom: 12px;
+    opacity: 0.9;
+    transition: opacity 0.3s ease;
+}
+
+.wisdom-card:hover .wisdom-image {
+    opacity: 1;
+}
+
+.wisdom-text {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-style: italic;
+    margin-bottom: 8px;
+    transition: opacity 0.3s ease;
+}
+
+.wisdom-hint {
+    font-size: 11px;
+    color: var(--text-muted);
+    display: block;
 }
