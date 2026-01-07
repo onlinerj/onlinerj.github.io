@@ -4,18 +4,19 @@
         const themeToggle = document.getElementById('theme-toggle');
         const htmlElement = document.documentElement;
         
-        // Check for saved theme preference or default to dark
-        const savedTheme = localStorage.getItem('theme') || 'dark';
-        if (savedTheme === 'light') {
-            htmlElement.setAttribute('data-theme', 'light');
+        // Check for saved theme preference or default to light (OpenAI style)
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        if (savedTheme === 'dark') {
+            htmlElement.setAttribute('data-theme', 'dark');
         }
+        // Light is default - no attribute needed
         
         themeToggle.addEventListener('click', () => {
             const currentTheme = htmlElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
             
-            if (newTheme === 'light') {
-                htmlElement.setAttribute('data-theme', 'light');
+            if (newTheme === 'dark') {
+                htmlElement.setAttribute('data-theme', 'dark');
             } else {
                 htmlElement.removeAttribute('data-theme');
             }
@@ -23,137 +24,19 @@
             localStorage.setItem('theme', newTheme);
         });
 
-        // Interactive Particle Background
-        const canvas = document.getElementById('particles-canvas');
-        const ctx = canvas.getContext('2d');
-        const mouseGlow = document.getElementById('mouse-glow');
-        
-        let particles = [];
-        let mouse = { x: null, y: null };
-        let animationId;
-
-        // Resize canvas
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
-
-        // Particle class
-        class Particle {
-            constructor() {
-                this.reset();
-            }
-
-            reset() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2 + 0.5;
-                this.speedX = (Math.random() - 0.5) * 0.5;
-                this.speedY = (Math.random() - 0.5) * 0.5;
-                this.opacity = Math.random() * 0.5 + 0.1;
-            }
-
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-
-                // Mouse interaction
-                if (mouse.x !== null && mouse.y !== null) {
-                    const dx = mouse.x - this.x;
-                    const dy = mouse.y - this.y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    
-                    if (distance < 150) {
-                        const force = (150 - distance) / 150;
-                        this.x -= dx * force * 0.02;
-                        this.y -= dy * force * 0.02;
-                    }
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
                 }
-
-                // Wrap around edges
-                if (this.x < 0) this.x = canvas.width;
-                if (this.x > canvas.width) this.x = 0;
-                if (this.y < 0) this.y = canvas.height;
-                if (this.y > canvas.height) this.y = 0;
-            }
-
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(99, 102, 241, ${this.opacity})`;
-                ctx.fill();
-            }
-        }
-
-        // Create particles
-        function initParticles() {
-            particles = [];
-            const particleCount = Math.min(80, Math.floor((canvas.width * canvas.height) / 15000));
-            for (let i = 0; i < particleCount; i++) {
-                particles.push(new Particle());
-            }
-        }
-        initParticles();
-        window.addEventListener('resize', initParticles);
-
-        // Draw connections
-        function drawConnections() {
-            for (let i = 0; i < particles.length; i++) {
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-
-                    if (distance < 120) {
-                        ctx.beginPath();
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.strokeStyle = `rgba(99, 102, 241, ${0.1 * (1 - distance / 120)})`;
-                        ctx.lineWidth = 0.5;
-                        ctx.stroke();
-                    }
-                }
-            }
-        }
-
-        // Animation loop
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            particles.forEach(particle => {
-                particle.update();
-                particle.draw();
             });
-
-            drawConnections();
-            animationId = requestAnimationFrame(animate);
-        }
-        animate();
-
-        // Mouse tracking
-        document.addEventListener('mousemove', (e) => {
-            mouse.x = e.clientX;
-            mouse.y = e.clientY;
-            
-            // Update mouse glow position
-            mouseGlow.style.left = e.clientX + 'px';
-            mouseGlow.style.top = e.clientY + 'px';
-            mouseGlow.classList.add('active');
         });
-
-        document.addEventListener('mouseleave', () => {
-            mouse.x = null;
-            mouse.y = null;
-            mouseGlow.classList.remove('active');
-        });
-
-        // Reduce animation on mobile for performance
-        if (window.innerWidth < 768) {
-            cancelAnimationFrame(animationId);
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-        }
 
         // Computer Vision Filters for Profile Picture
         const profileImg = document.getElementById('profile-img');
@@ -621,168 +504,6 @@
         // Initialize tooltip with original info
         applyFilter('original');
 
-        // AI/Tech Affirmations
-        // Local AI-generated images for instant loading
-        const affirmations = [
-            // Learning & Growth
-            { text: "Your neural networks aren't the only things learning—you're growing every day.", img: "assets/affirmations/101.jpg" },
-            { text: "Every gradient descent leads somewhere meaningful.", img: "assets/affirmations/102.jpg" },
-            { text: "The best models are built by curious minds like yours.", img: "assets/affirmations/103.jpg" },
-            { text: "Your attention mechanism is focused on the right things.", img: "assets/affirmations/104.jpg" },
-            { text: "You're not just training models, you're shaping the future.", img: "assets/affirmations/105.jpg" },
-            { text: "Even transformers started with a single attention head.", img: "assets/affirmations/106.jpg" },
-            { text: "Your loss function is decreasing—keep iterating.", img: "assets/affirmations/107.jpg" },
-            { text: "Behind every breakthrough is someone who refused to stop fine-tuning.", img: "assets/affirmations/108.jpg" },
-            { text: "Your embeddings capture more dimensions than you realize.", img: "assets/affirmations/109.jpg" },
-            { text: "Every epoch brings you closer to convergence.", img: "assets/affirmations/110.jpg" },
-            { text: "Your learning rate is perfectly tuned for this moment.", img: "assets/affirmations/111.jpg" },
-            { text: "Backpropagation taught us: growth comes from understanding our errors.", img: "assets/affirmations/112.jpg" },
-            { text: "Your knowledge graph expands with every connection you make.", img: "assets/affirmations/113.jpg" },
-            
-            // Career & Purpose
-            { text: "The world needs engineers who care about AI ethics. You matter.", img: "assets/affirmations/201.jpg" },
-            { text: "AGI might be uncertain, but your potential isn't.", img: "assets/affirmations/202.jpg" },
-            { text: "You're the human in human-AI collaboration.", img: "assets/affirmations/203.jpg" },
-            { text: "The best hyperparameter you have is persistence.", img: "assets/affirmations/204.jpg" },
-            { text: "Your career trajectory has the best optimizer: you.", img: "assets/affirmations/205.jpg" },
-            { text: "You're not just writing code—you're writing history.", img: "assets/affirmations/206.jpg" },
-            { text: "The AI revolution needs thoughtful builders. That's you.", img: "assets/affirmations/207.jpg" },
-            { text: "You belong at the frontier of technology.", img: "assets/affirmations/208.jpg" },
-            { text: "Your unique perspective is the secret sauce no model can replicate.", img: "assets/affirmations/209.jpg" },
-            { text: "Keep exploring—the best architectures haven't been invented yet.", img: "assets/affirmations/210.jpg" },
-            { text: "You're more than your GitHub contributions.", img: "assets/affirmations/211.jpg" },
-            { text: "The future of AI is as bright as the people building it.", img: "assets/affirmations/212.jpg" },
-            { text: "Your career is a long-horizon RL problem. Be patient with yourself.", img: "assets/affirmations/213.jpg" },
-            { text: "The best engineers debug their imposter syndrome too.", img: "assets/affirmations/214.jpg" },
-            
-            // Balance & Wellbeing
-            { text: "Your batch size for learning is just right.", img: "assets/affirmations/301.jpg" },
-            { text: "Regularization keeps models from overfitting. Rest keeps you from burning out.", img: "assets/affirmations/302.jpg" },
-            { text: "The most powerful compute is a well-rested mind.", img: "assets/affirmations/303.jpg" },
-            { text: "Even GPUs need cooling. Take a break.", img: "assets/affirmations/304.jpg" },
-            { text: "Your context window needs refresh time. Step outside.", img: "assets/affirmations/305.jpg" },
-            { text: "The best inference happens after a good night's sleep.", img: "assets/affirmations/306.jpg" },
-            { text: "You can't pour from an empty tensor.", img: "assets/affirmations/307.jpg" },
-            { text: "Self-care is not a vanishing gradient—prioritize it.", img: "assets/affirmations/308.jpg" },
-            
-            // Technical Inspiration
-            { text: "Dropout makes networks stronger. Setbacks make you resilient.", img: "assets/affirmations/401.jpg" },
-            { text: "Your feature extraction skills apply to life's patterns too.", img: "assets/affirmations/402.jpg" },
-            { text: "Like skip connections, your past experiences strengthen who you are today.", img: "assets/affirmations/403.jpg" },
-            { text: "Ensemble methods work because diversity is powerful. So are you.", img: "assets/affirmations/404.jpg" },
-            { text: "Your activation function is ReLU: always ready to let the positive through.", img: "assets/affirmations/405.jpg" },
-            { text: "Data augmentation teaches us: there are many valid ways to see the same thing.", img: "assets/affirmations/406.jpg" },
-            { text: "Like federated learning, your distributed experiences make you stronger.", img: "assets/affirmations/407.jpg" },
-            { text: "You're not stuck in a local minimum—you're gathering momentum.", img: "assets/affirmations/408.jpg" },
-            { text: "CUDA cores work together. So should we. Collaboration > competition.", img: "assets/affirmations/409.jpg" },
-            { text: "Your weights are initialized just right for this journey.", img: "assets/affirmations/410.jpg" },
-            
-            // Innovation & Creativity
-            { text: "The next big paper might have your name on it.", img: "assets/affirmations/501.jpg" },
-            { text: "Your ideas are worth more than their perplexity score.", img: "assets/affirmations/502.jpg" },
-            { text: "Innovation doesn't require permission. Keep building.", img: "assets/affirmations/503.jpg" },
-            { text: "The best prompts come from those who understand both sides.", img: "assets/affirmations/504.jpg" },
-            { text: "You're not just using AI tools—you're shaping how they evolve.", img: "assets/affirmations/505.jpg" },
-            { text: "Every commit is a step toward something meaningful.", img: "assets/affirmations/506.jpg" },
-            { text: "The intersection of your interests is where magic happens.", img: "assets/affirmations/507.jpg" },
-            { text: "Your side projects matter more than you think.", img: "assets/affirmations/508.jpg" },
-            { text: "Latent space is full of possibilities. So is your future.", img: "assets/affirmations/509.jpg" },
-            { text: "The model that changes everything might be training in your head right now.", img: "assets/affirmations/510.jpg" }
-        ];
-
-        const affirmationFloat = document.getElementById('affirmation-float');
-        const affirmationText = document.getElementById('affirmation-text');
-        const affirmationImage = document.getElementById('affirmation-image');
-        const affirmationClose = document.getElementById('affirmation-close');
-
-        let currentIndex = Math.floor(Math.random() * affirmations.length);
-
-        // Preload images for faster display
-        affirmations.forEach(aff => {
-            const img = new Image();
-            img.src = aff.img;
-        });
-
-        let isTransitioning = false;
-
-        function showAffirmation(animate = false) {
-            const aff = affirmations[currentIndex];
-            
-            if (animate) {
-                // Fade out current content
-                affirmationImage.classList.add('fade-out');
-                affirmationText.classList.add('fade-out');
-                
-                // After fade out, update content and fade in
-                setTimeout(() => {
-                    affirmationText.textContent = `"${aff.text}"`;
-                    affirmationImage.src = aff.img;
-                    
-                    // Remove fade-out, prepare for fade-in
-                    affirmationImage.classList.remove('fade-out');
-                    affirmationText.classList.remove('fade-out');
-                    
-                    // Trigger fade-in on image load
-                    affirmationImage.onload = () => {
-                        affirmationImage.classList.add('fade-in');
-                        affirmationText.classList.add('fade-in');
-                        
-                        // Clean up classes after animation
-                        setTimeout(() => {
-                            affirmationImage.classList.remove('fade-in');
-                            affirmationText.classList.remove('fade-in');
-                            isTransitioning = false;
-                        }, 500);
-                    };
-                }, 500);
-            } else {
-                // Initial load without animation
-                affirmationText.textContent = `"${aff.text}"`;
-                affirmationImage.src = aff.img;
-            }
-        }
-
-        function nextAffirmation() {
-            if (isTransitioning) return; // Prevent rapid clicks
-            isTransitioning = true;
-            currentIndex = (currentIndex + 1) % affirmations.length;
-            showAffirmation(true);
-        }
-
-        // Initialize without animation
-        showAffirmation(false);
-
-        // Click to get new affirmation
-        affirmationFloat.addEventListener('click', (e) => {
-            if (e.target !== affirmationClose) {
-                nextAffirmation();
-            }
-        });
-
-        // Restore button
-        const affirmationRestore = document.getElementById('affirmation-restore');
-
-        // Close button
-        affirmationClose.addEventListener('click', (e) => {
-            e.stopPropagation();
-            affirmationFloat.classList.add('hidden');
-            affirmationRestore.classList.add('visible');
-            sessionStorage.setItem('affirmationClosed', 'true');
-        });
-
-        // Restore button click
-        affirmationRestore.addEventListener('click', () => {
-            affirmationFloat.classList.remove('hidden');
-            affirmationRestore.classList.remove('visible');
-            sessionStorage.removeItem('affirmationClosed');
-        });
-
-        // Check if user closed it this session
-        if (sessionStorage.getItem('affirmationClosed') === 'true') {
-            affirmationFloat.classList.add('hidden');
-            affirmationRestore.classList.add('visible');
-        }
-
         // ==========================================
         // AI PLAYGROUND DEMOS
         // ==========================================
@@ -908,7 +629,7 @@
         }
 
         function nnDraw() {
-            const isDark = !document.documentElement.hasAttribute('data-theme');
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
             nnCtx.clearRect(0, 0, nnCanvas.width, nnCanvas.height);
             
             // Draw connections with weight-based thickness
@@ -1304,7 +1025,7 @@
         }
 
         function embedDraw() {
-            const isDark = !document.documentElement.hasAttribute('data-theme');
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
             embedCtx.clearRect(0, 0, embedCanvas.width, embedCanvas.height);
             
             // Draw grid
@@ -1414,7 +1135,7 @@
         }
 
         function attnDraw() {
-            const isDark = !document.documentElement.hasAttribute('data-theme');
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
             attnCtx.clearRect(0, 0, attnCanvas.width, attnCanvas.height);
             
             const sentence = attnSentences[attnSentenceIdx];
@@ -1580,7 +1301,7 @@
         }
         
         function gdDraw() {
-            const isDark = !document.documentElement.hasAttribute('data-theme');
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
             gdCtx.clearRect(0, 0, gdCanvas.width, gdCanvas.height);
             
             // Draw contour surface
@@ -2203,24 +1924,6 @@
                 chatbotContainer.classList.toggle('open');
                 if (chatbotContainer.classList.contains('open')) {
                     chatbotInput.focus();
-                }
-                
-                // On mobile, hide affirmation when chatbot is open
-                if (window.innerWidth <= 600) {
-                    const affirmationFloat = document.getElementById('affirmation-float');
-                    const affirmationRestore = document.getElementById('affirmation-restore');
-                    if (chatbotContainer.classList.contains('open')) {
-                        if (affirmationFloat) affirmationFloat.style.display = 'none';
-                        if (affirmationRestore) affirmationRestore.style.display = 'none';
-                    } else {
-                        // Restore visibility based on hidden state
-                        if (affirmationFloat && !affirmationFloat.classList.contains('hidden')) {
-                            affirmationFloat.style.display = '';
-                        }
-                        if (affirmationRestore && affirmationRestore.classList.contains('visible')) {
-                            affirmationRestore.style.display = '';
-                        }
-                    }
                 }
             });
         }

@@ -7,33 +7,533 @@
     <meta name="description" content="Machine Learning Engineer and AI Researcher specializing in LLMs, Federated Learning, and Distributed Systems.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=IBM+Plex+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <canvas id="particles-canvas"></canvas>
-    <div class="mouse-glow" id="mouse-glow"></div>
-    <div class="glow-orb"></div>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">Rajat Jaiswal</a>
+            <div class="nav-links">
+                <a href="#about" class="nav-link">About</a>
+                <a href="#experience" class="nav-link">Experience</a>
+                <a href="#skills" class="nav-link">Skills</a>
+                <a href="#playground" class="nav-link">AI Playground</a>
+                <a href="blog.html" class="nav-link">Blog</a>
+            </div>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                    <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                    <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                </button>
+            </div>
+        </div>
+    </nav>
 
-    <!-- Floating Affirmation -->
-    <div class="affirmation-float" id="affirmation-float">
-        <img class="affirmation-image" id="affirmation-image" alt="AI Inspiration" />
-        <div class="affirmation-header">
-            <span>✨ AI Wisdom</span>
+    <main class="main">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="profile-demo">
+                    <img src="assets/profile.jpg" alt="Rajat Jaiswal" class="profile-pic" id="profile-img" crossorigin="anonymous">
+                    <canvas id="profile-canvas" width="280" height="280"></canvas>
+                    <div class="cv-filter-container">
+                        <div class="cv-filter-header">
+                            <label>CV Filter Demo</label>
+                            <button class="cv-info-btn" id="cv-info-btn" title="Show kernel info">?</button>
+                        </div>
+                        <select id="cv-filter-select">
+                            <option value="original">Original</option>
+                            <option value="sobel">Sobel — Edge Detection</option>
+                            <option value="prewitt">Prewitt — Edge Detection</option>
+                            <option value="laplacian">Laplacian — 2nd Derivative</option>
+                            <option value="gaussian">Gaussian Blur</option>
+                            <option value="sharpen">Sharpen</option>
+                            <option value="emboss">Emboss — 3D Effect</option>
+                            <option value="grayscale">Grayscale</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="cv-tooltip" id="cv-tooltip">
+                    <div class="cv-tooltip-header">Computer Vision Kernel</div>
+                    <h4 id="tooltip-title">Original Image</h4>
+                    <p id="tooltip-desc">No kernel applied. The raw RGB image data.</p>
+                    <div class="kernel-display" id="tooltip-kernel"></div>
+                </div>
+
+                <span class="hero-badge">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                    Open to opportunities
+                </span>
+                <h1 class="hero-title">Machine Learning<br>Engineer & AI Researcher</h1>
+                <p class="hero-subtitle">
+                    Building and deploying AI models in production for trillion-dollar companies. 
+                    Specializing in LLMs, Federated Learning, and Distributed Systems.
+                </p>
+                <div class="hero-actions">
+                    <a href="https://calendly.com/onlinerj" target="_blank" class="btn btn-primary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/></svg>
+                        Schedule a Call
+                    </a>
+                    <a href="mailto:onlinerj@live.com" class="btn btn-secondary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
+                        Get in Touch
+                    </a>
+                </div>
+                <div class="social-links" style="margin-top: 32px;">
+                    <a href="https://github.com/onlinerj" target="_blank" class="social-link" aria-label="GitHub">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    </a>
+                    <a href="https://linkedin.com/in/rajatjw" target="_blank" class="social-link" aria-label="LinkedIn">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="section" id="about">
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-label">About</p>
+                    <h2 class="section-title">Building AI at Scale</h2>
+                </div>
+                <div class="about-content">
+                    <p class="about-text">
+                        Hi, I'm <strong>Rajat</strong>. My interests lie at the intersection of <strong>AI research and engineering</strong>. 
+                        I've built and deployed <strong>AI models in production</strong> for trillion-dollar companies including <strong>Aramco</strong>, 
+                        bringing cutting-edge machine learning solutions to enterprise scale.
+                    </p>
+                    <p class="about-text">
+                        I completed my <strong>MS in Applied AI</strong> with a Software Engineering specialization (CGPA 4/4) 
+                        in just 11 months — finishing a 2-year program ahead of schedule.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Research Areas -->
+        <section class="section">
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-label">Research</p>
+                    <h2 class="section-title">Areas of Focus</h2>
+                </div>
+                <div class="tags-grid">
+                    <span class="tag">Foundation Models</span>
+                    <span class="tag">LLM Privacy & Security</span>
+                    <span class="tag">Federated Learning</span>
+                    <span class="tag">RL / LLM Alignment</span>
+                    <span class="tag">GPU Acceleration</span>
+                    <span class="tag">Multi-Modal AI</span>
+                    <span class="tag">Distributed LLM Training</span>
+                    <span class="tag">LLM Architecture</span>
+                    <span class="tag">Computer Vision</span>
+                    <span class="tag">Natural Language Processing</span>
+                    <span class="tag">Multi Agent Systems</span>
+                    <span class="tag">RAG</span>
+                    <span class="tag">GraphML</span>
+                    <span class="tag">Prompt Engineering</span>
+                    <span class="tag">Neurosymbolic AI</span>
+                    <span class="tag">Scaling Laws</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience -->
+        <section class="section" id="experience">
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-label">Experience</p>
+                    <h2 class="section-title">Career Journey</h2>
+                </div>
+                <div class="experience-grid">
+                    <div class="experience-card">
+                        <div class="experience-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                        </div>
+                        <div class="experience-content">
+                            <h3 class="experience-title">AI Research Fellow</h3>
+                            <p class="experience-desc">Research on Foundation Models across various research areas including LLM architecture, distributed training, and alignment.</p>
+                        </div>
+                    </div>
+                    <div class="experience-card">
+                        <div class="experience-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        </div>
+                        <div class="experience-content">
+                            <h3 class="experience-title">Lead AI/ML Engineer</h3>
+                            <p class="experience-desc">Led a team of engineers building generative AI products and infrastructure at scale.</p>
+                        </div>
+                    </div>
+                    <div class="experience-card">
+                        <div class="experience-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
+                        </div>
+                        <div class="experience-content">
+                            <h3 class="experience-title">Machine Learning Engineer</h3>
+                            <p class="experience-desc">Developed and deployed production-level AI models for trillion-dollar companies including Aramco, delivering enterprise-scale ML solutions.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills -->
+        <section class="section" id="skills">
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-label">Tech Stack</p>
+                    <h2 class="section-title">Frameworks & Tools</h2>
+                </div>
+                <div class="skills-grid">
+                    <div class="skill-card">
+                        <h3 class="skill-card-title">Scalable AI & HPC</h3>
+                        <div class="skill-list">
+                            <span class="skill-item">PyTorch</span>
+                            <span class="skill-item">PyTorch Distributed</span>
+                            <span class="skill-item">TensorFlow</span>
+                            <span class="skill-item">JAX</span>
+                            <span class="skill-item">Flax</span>
+                            <span class="skill-item">DeepSpeed</span>
+                            <span class="skill-item">Megatron-LM</span>
+                            <span class="skill-item">Ray</span>
+                            <span class="skill-item">Flower</span>
+                            <span class="skill-item">CUDA</span>
+                            <span class="skill-item">TensorRT</span>
+                            <span class="skill-item">Triton</span>
+                            <span class="skill-item">NCCL</span>
+                            <span class="skill-item">OpenMPI</span>
+                            <span class="skill-item">C++</span>
+                            <span class="skill-item">Rust</span>
+                        </div>
+                    </div>
+                    <div class="skill-card">
+                        <h3 class="skill-card-title">Generative AI & Applied ML</h3>
+                        <div class="skill-list">
+                            <span class="skill-item">HuggingFace</span>
+                            <span class="skill-item">OpenAI API</span>
+                            <span class="skill-item">Claude API</span>
+                            <span class="skill-item">Gemini API</span>
+                            <span class="skill-item">vLLM</span>
+                            <span class="skill-item">TRLx</span>
+                            <span class="skill-item">NeMo</span>
+                            <span class="skill-item">AutoAWQ</span>
+                            <span class="skill-item">bitsandbytes</span>
+                            <span class="skill-item">Scikit-Learn</span>
+                            <span class="skill-item">LightGBM</span>
+                            <span class="skill-item">Stable Baselines3</span>
+                        </div>
+                    </div>
+                    <div class="skill-card">
+                        <h3 class="skill-card-title">Agentic AI & RAG</h3>
+                        <div class="skill-list">
+                            <span class="skill-item">LangChain</span>
+                            <span class="skill-item">LlamaIndex</span>
+                            <span class="skill-item">LangGraph</span>
+                            <span class="skill-item">GraphRAG</span>
+                            <span class="skill-item">CrewAI</span>
+                            <span class="skill-item">Autogen</span>
+                            <span class="skill-item">Qdrant</span>
+                            <span class="skill-item">ChromaDB</span>
+                            <span class="skill-item">Pinecone</span>
+                            <span class="skill-item">Weaviate</span>
+                            <span class="skill-item">Milvus</span>
+                            <span class="skill-item">pgvector</span>
+                            <span class="skill-item">FAISS</span>
+                        </div>
+                    </div>
+                    <div class="skill-card">
+                        <h3 class="skill-card-title">MLOps & Infrastructure</h3>
+                        <div class="skill-list">
+                            <span class="skill-item">AWS</span>
+                            <span class="skill-item">GCP</span>
+                            <span class="skill-item">Azure</span>
+                            <span class="skill-item">Cloudflare</span>
+                            <span class="skill-item">Docker</span>
+                            <span class="skill-item">Kubernetes</span>
+                            <span class="skill-item">MLflow</span>
+                            <span class="skill-item">Kubeflow</span>
+                            <span class="skill-item">Airflow</span>
+                            <span class="skill-item">DVC</span>
+                            <span class="skill-item">Git</span>
+                            <span class="skill-item">CI/CD</span>
+                        </div>
+                    </div>
+                    <div class="skill-card">
+                        <h3 class="skill-card-title">Data & Web</h3>
+                        <div class="skill-list">
+                            <span class="skill-item">Python</span>
+                            <span class="skill-item">TypeScript</span>
+                            <span class="skill-item">Node.js</span>
+                            <span class="skill-item">React</span>
+                            <span class="skill-item">Next.js</span>
+                            <span class="skill-item">FastAPI</span>
+                            <span class="skill-item">Express.js</span>
+                            <span class="skill-item">SQL</span>
+                            <span class="skill-item">NoSQL</span>
+                            <span class="skill-item">Kafka</span>
+                            <span class="skill-item">PySpark</span>
+                            <span class="skill-item">Pandas</span>
+                        </div>
+                    </div>
+                    <div class="skill-card">
+                        <h3 class="skill-card-title">Research & Publishing</h3>
+                        <div class="skill-list">
+                            <span class="skill-item">LaTeX</span>
+                            <span class="skill-item">Overleaf</span>
+                            <span class="skill-item">arXiv</span>
+                            <span class="skill-item">Jupyter</span>
+                            <span class="skill-item">W&B</span>
+                            <span class="skill-item">Grafana</span>
+                            <span class="skill-item">Prometheus</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Certifications -->
+        <section class="section">
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-label">Credentials</p>
+                    <h2 class="section-title">Certifications</h2>
+                </div>
+                <div class="cert-grid">
+                    <div class="cert-card">
+                        <h3 class="cert-title">Microsoft Azure (5x Certified)</h3>
+                        <div class="cert-badges">
+                            <span class="cert-badge">AI-900</span>
+                            <span class="cert-badge">AZ-900</span>
+                            <span class="cert-badge">DP-900</span>
+                            <span class="cert-badge">DP-100</span>
+                            <span class="cert-badge">PL-900</span>
+                        </div>
+                    </div>
+                    <div class="cert-card">
+                        <h3 class="cert-title">NVIDIA Deep Learning Institute</h3>
+                        <p class="cert-desc">Accelerated Computing with CUDA</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Open Source -->
+        <section class="section">
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-label">Open Source</p>
+                    <h2 class="section-title">Contributions</h2>
+                </div>
+                <div class="project-card">
+                    <div class="project-header">
+                        <div class="project-logo">🔥</div>
+                        <div class="project-info">
+                            <h3 class="project-title">PyTorch Playground</h3>
+                            <p class="project-tagline">A comprehensive ML/DL implementation library</p>
+                        </div>
+                    </div>
+                    <p class="project-desc">
+                        Production-ready PyTorch implementations covering modern AI architectures. 
+                        From CNNs to Transformers, LLMs to Federated Learning — each implementation 
+                        is well-documented, modular, and designed for both learning and production use.
+                    </p>
+                    <div class="project-categories">
+                        <div class="project-cat">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                            Computer Vision
+                        </div>
+                        <div class="project-cat">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                            NLP & LLMs
+                        </div>
+                        <div class="project-cat">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><path d="M12 8v4m-5 4l4-4m6 4l-4-4"/></svg>
+                            Federated Learning
+                        </div>
+                        <div class="project-cat">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></svg>
+                            Transformers
+                        </div>
+                        <div class="project-cat">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="9" height="9" rx="1"/><rect x="13" y="2" width="9" height="9" rx="1"/><rect x="2" y="13" width="9" height="9" rx="1"/><rect x="13" y="13" width="9" height="9" rx="1"/></svg>
+                            Distributed Training
+                        </div>
+                        <div class="project-cat">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 7h7l-5.5 4.5 2 7.5-6.5-4.5-6.5 4.5 2-7.5L2 9h7l3-7z"/></svg>
+                            Reinforcement Learning
+                        </div>
+                    </div>
+                    <div class="project-actions">
+                        <a href="https://github.com/onlinerj/pytorch-playground" target="_blank" class="btn btn-pytorch">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                            View on GitHub
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Playground -->
+        <section class="section" id="playground">
+            <div class="container">
+                <div class="section-header">
+                    <p class="section-label">Interactive</p>
+                    <h2 class="section-title">AI Playground</h2>
+                    <p class="section-desc">Interactive visualizations of core ML/AI concepts</p>
+                </div>
+                <div class="demos-grid">
+                    <!-- Neural Network Visualizer (Wide) -->
+                    <div class="demo-card wide">
+                        <h3>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/></svg>
+                            Neural Network Visualizer
+                        </h3>
+                        <p>Watch forward & backward propagation through a neural network. Hover nodes to see activation/gradient values.</p>
+                        <div class="demo-canvas-container">
+                            <canvas id="nn-canvas" class="demo-canvas"></canvas>
+                            <div id="nn-tooltip" class="nn-tooltip"></div>
+                        </div>
+                        <div class="demo-controls-row">
+                            <div class="demo-controls-group">
+                                <label>Layers:</label>
+                                <button class="demo-btn active" onclick="nnSetLayers(3)">3</button>
+                                <button class="demo-btn" onclick="nnSetLayers(4)">4</button>
+                                <button class="demo-btn" onclick="nnSetLayers(5)">5</button>
+                            </div>
+                            <div class="demo-controls-group">
+                                <label>Mode:</label>
+                                <button class="demo-btn active" onclick="nnSetMode('forward')">Forward</button>
+                                <button class="demo-btn" onclick="nnSetMode('backward')">Backprop</button>
+                            </div>
+                            <div class="demo-controls-group">
+                                <label>Activation:</label>
+                                <select id="nn-activation" class="demo-select" onchange="nnSetActivation(this.value)">
+                                    <option value="relu">ReLU</option>
+                                    <option value="sigmoid">Sigmoid</option>
+                                    <option value="tanh">Tanh</option>
+                                </select>
+                            </div>
+                            <button class="demo-btn" id="nn-dropout-btn" onclick="nnToggleDropout()">Dropout: Off</button>
+                        </div>
+                        <p class="demo-info">Click input nodes for forward pass, output nodes for backprop</p>
+                    </div>
+
+                    <!-- Embedding Space Explorer -->
+                    <div class="demo-card">
+                        <h3>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                            Vector Embedding Space
+                        </h3>
+                        <p>Explore word embeddings in 2D space. Drag to pan, scroll to zoom.</p>
+                        <div class="demo-canvas-container">
+                            <canvas id="embed-canvas" class="demo-canvas"></canvas>
+                        </div>
+                        <div class="demo-controls">
+                            <button class="demo-btn active" onclick="embedSetCategory('tech')">Tech</button>
+                            <button class="demo-btn" onclick="embedSetCategory('emotions')">Emotions</button>
+                            <button class="demo-btn" onclick="embedSetCategory('animals')">Animals</button>
+                            <button class="demo-btn" onclick="embedReset()">Reset</button>
+                        </div>
+                        <p class="demo-info">Similar words cluster together in embedding space</p>
+                    </div>
+
+                    <!-- Attention Heatmap -->
+                    <div class="demo-card">
+                        <h3>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg>
+                            Self-Attention Heatmap
+                        </h3>
+                        <p>Visualize transformer self-attention patterns between tokens.</p>
+                        <div class="demo-canvas-container">
+                            <canvas id="attn-canvas" class="demo-canvas"></canvas>
+                        </div>
+                        <div class="demo-controls">
+                            <button class="demo-btn active" onclick="attnSetSentence(0)">Sentence 1</button>
+                            <button class="demo-btn" onclick="attnSetSentence(1)">Sentence 2</button>
+                            <button class="demo-btn" onclick="attnSetSentence(2)">Sentence 3</button>
+                        </div>
+                        <p class="demo-info">Hover over cells to see attention weights</p>
+                    </div>
+
+                    <!-- Gradient Descent Visualizer (Wide) -->
+                    <div class="demo-card wide" id="gd-demo-card">
+                        <h3>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="3"/></svg>
+                            PyTorch AutoGrad: Gradient Descent
+                        </h3>
+                        <p>Watch how different optimizers navigate a 2D loss surface. Click to place starting point.</p>
+                        <div class="demo-canvas-container">
+                            <canvas id="gd-canvas" class="demo-canvas"></canvas>
+                        </div>
+                        <div class="demo-controls-row">
+                            <div class="demo-controls-group">
+                                <label>Surface:</label>
+                                <button class="demo-btn active" onclick="gdSetSurface('quadratic')">Quadratic</button>
+                                <button class="demo-btn" onclick="gdSetSurface('rosenbrock')">Rosenbrock</button>
+                                <button class="demo-btn" onclick="gdSetSurface('saddle')">Saddle</button>
+                                <button class="demo-btn" onclick="gdSetSurface('multimodal')">Multi-Modal</button>
+                            </div>
+                            <div class="demo-controls-group">
+                                <label>Optimizer:</label>
+                                <button class="demo-btn active" onclick="gdSetOptimizer('sgd')">SGD</button>
+                                <button class="demo-btn" onclick="gdSetOptimizer('momentum')">Momentum</button>
+                                <button class="demo-btn" onclick="gdSetOptimizer('adam')">Adam</button>
+                            </div>
+                            <div class="demo-controls-group">
+                                <label>LR:</label>
+                                <input type="range" id="gd-lr" class="demo-slider" min="1" max="100" value="20">
+                                <span class="demo-value" id="gd-lr-val">0.020</span>
+                            </div>
+                            <button class="demo-btn" onclick="gdReset()">Reset</button>
+                            <button class="demo-btn" id="gd-compare-btn" onclick="gdCompare()">Compare All</button>
+                        </div>
+                        <div class="gd-legend">
+                            <div class="gd-legend-item"><div class="gd-legend-dot" style="background: #ef4444;"></div>SGD</div>
+                            <div class="gd-legend-item"><div class="gd-legend-dot" style="background: #22c55e;"></div>Momentum</div>
+                            <div class="gd-legend-item"><div class="gd-legend-dot" style="background: #3b82f6;"></div>Adam</div>
+                            <div class="gd-legend-item"><div class="gd-legend-dot" style="background: #f59e0b;"></div>Gradient</div>
+                        </div>
+                        <p class="demo-info">Click anywhere on the surface to start optimization. "Compare All" runs all optimizers simultaneously.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="section">
+            <div class="container" style="text-align: center;">
+                <div class="hero-actions">
+                    <a href="blog.html" class="btn btn-secondary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                        Research Blog
+                    </a>
+                    <a href="travel.html" class="btn btn-secondary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                        Travel Blog
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="https://github.com/onlinerj" target="_blank" class="footer-link">GitHub</a>
+                <a href="https://linkedin.com/in/rajatjw" target="_blank" class="footer-link">LinkedIn</a>
+                <a href="mailto:onlinerj@live.com" class="footer-link">Email</a>
+            </div>
+            <p class="footer-text">© <span id="year"></span> Rajat Jaiswal</p>
         </div>
-        <p class="affirmation-text" id="affirmation-text"></p>
-        <div class="affirmation-footer">
-            <span class="affirmation-hint">Click for new inspiration</span>
-            <button class="affirmation-close" id="affirmation-close" title="Close">×</button>
-        </div>
-    </div>
-    
-    <!-- Restore Affirmation Button -->
-    <button class="affirmation-restore" id="affirmation-restore" title="Show AI Wisdom">✨</button>
-    
+    </footer>
+
     <!-- Chatbot Widget -->
     <div class="chatbot-container" id="chatbot-container">
-        <!-- Chat Toggle Button -->
         <button class="chatbot-toggle" id="chatbot-toggle" title="Chat with me">
             <svg class="chat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
@@ -43,13 +543,12 @@
             </svg>
         </button>
         
-        <!-- Chat Window -->
         <div class="chatbot-window" id="chatbot-window">
             <div class="chatbot-header">
                 <img src="assets/profile.jpg" alt="Rajat" class="chatbot-avatar">
                 <div class="chatbot-header-info">
                     <span class="chatbot-name">Chat with Rajat</span>
-                    <span class="chatbot-status">🎯 Grounded LLM via Gemini + Cloudflare</span>
+                    <span class="chatbot-status">Grounded LLM via Gemini + Cloudflare</span>
                 </div>
                 <div class="async-badge" id="async-badge">
                     ⚡ Async
@@ -64,7 +563,7 @@
             <div class="chatbot-messages" id="chatbot-messages">
                 <div class="chat-message bot">
                     <div class="message-content">
-                        Hi! 👋 I'm Rajat's AI assistant powered by <strong>Gemini</strong> with <strong>grounded responses</strong> — the LLM is constrained to answer only from Rajat's portfolio data, demonstrating deterministic AI techniques. Ask me anything about his experience, skills, or research!
+                        Hi! 👋 I'm Rajat's AI assistant powered by <strong>Gemini</strong> with <strong>grounded responses</strong>. Ask me anything about his experience, skills, or research!
                     </div>
                 </div>
             </div>
@@ -85,533 +584,6 @@
                 </button>
             </div>
         </div>
-    </div>
-    
-    <div class="container">
-        <header>
-            <div class="profile-container">
-                <img src="assets/profile.jpg" alt="Rajat Jaiswal" class="profile-pic" id="profile-img" crossorigin="anonymous">
-                <canvas id="profile-canvas" width="280" height="280"></canvas>
-                <span class="cv-badge">Feeling Lucky?</span>
-                <div class="cv-tooltip" id="cv-tooltip">
-                    <div class="cv-tooltip-header">Computer Vision Kernels</div>
-                    <h4 id="tooltip-title">Original Image</h4>
-                    <p id="tooltip-desc">No kernel applied. Select a computer vision kernel to see it in action.</p>
-                    <div class="kernel-display" id="tooltip-kernel"></div>
-                </div>
-                <div class="cv-filter-container">
-                    <div class="cv-filter-header">
-                        <label>Select a Computer Vision Kernel</label>
-                        <button class="cv-info-btn" id="cv-info-btn" title="Show kernel info">?</button>
-                    </div>
-                    <select id="cv-filter-select">
-                        <option value="original">Original</option>
-                        <option value="sobel">Sobel — Edge Detection</option>
-                        <option value="prewitt">Prewitt — Edge Detection</option>
-                        <option value="laplacian">Laplacian — 2nd Derivative</option>
-                        <option value="gaussian">Gaussian Blur — Smoothing</option>
-                        <option value="box">Box Blur — Mean Kernel</option>
-                        <option value="grayscale">Grayscale — Luminance</option>
-                        <option value="threshold">Threshold — Binary</option>
-                        <option value="sharpen">Sharpen — Enhancement</option>
-                        <option value="emboss">Emboss — 3D Effect</option>
-                        <option value="sepia">Sepia — Vintage Tone</option>
-                        <option value="invert">Invert — Negative</option>
-                    </select>
-                </div>
-            </div>
-            <p class="greeting">Welcome</p>
-            <h1>Rajat Jaiswal</h1>
-            <p class="tagline">Machine Learning Engineer & AI Researcher</p>
-            
-            <div class="social-links">
-                <a href="https://github.com/onlinerj" target="_blank" rel="noopener" aria-label="GitHub">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                </a>
-                <a href="https://linkedin.com/in/rajatjw" target="_blank" rel="noopener" aria-label="LinkedIn">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-                </a>
-                <a href="mailto:onlinerj@live.com" aria-label="Email">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M0 3v18h24v-18h-24zm21.518 2l-9.518 7.713-9.518-7.713h19.036zm-19.518 14v-11.817l10 8.104 10-8.104v11.817h-20z"/></svg>
-                </a>
-                <a href="https://calendly.com/onlinerj" target="_blank" rel="noopener" aria-label="Schedule a Meeting">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/></svg>
-                </a>
-                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark/light mode">
-                    <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-                    <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-                </button>
-            </div>
-
-            <div class="recruiter-cta">
-                <a href="https://calendly.com/onlinerj" target="_blank" rel="noopener" class="btn-recruiter">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                    Recruiters: Schedule an Intro Call
-                </a>
-                <p class="recruiter-note">Open to exciting AI/ML opportunities</p>
-            </div>
-        </header>
-
-        <section>
-            <h2>About</h2>
-            <p>
-                Hi, thank you for visiting! I'm <strong>Rajat</strong>, and my interests lie in the field of <strong>AI research and engineering</strong>.
-            </p>
-            <p>
-                I've built and deployed <strong>AI models in production</strong> for trillion-dollar companies including <strong>Aramco</strong>, bringing cutting-edge machine learning solutions to enterprise scale.
-            </p>
-        </section>
-
-        <section>
-            <h2>Research Areas</h2>
-            <div class="tags">
-                <span class="tag">Foundation Models</span>
-                <span class="tag">LLM Privacy & Security</span>
-                <span class="tag">Federated Learning</span>
-                <span class="tag">RL / LLM Alignment</span>
-                <span class="tag">GPU Acceleration</span>
-                <span class="tag">Multi-Modal AI</span>
-                <span class="tag">Distributed LLM Training</span>
-                <span class="tag">LLM Architecture</span>
-                <span class="tag">Computer Vision</span>
-                <span class="tag">Natural Language Processing</span>
-                <span class="tag">Multi Agent Systems</span>
-                <span class="tag">RAG</span>
-                <span class="tag">GraphML</span>
-                <span class="tag">Prompt Engineering</span>
-                <span class="tag">Neurosymbolic AI</span>
-                <span class="tag">Scaling Laws</span>
-            </div>
-        </section>
-
-        <section>
-            <h2>Frameworks & Tools</h2>
-            <div class="frameworks-grid">
-                <div class="framework-category">
-                    <h3>Scalable AI & High Performance Computing</h3>
-                    <div class="framework-list">
-                        <span>PyTorch</span>
-                        <span>PyTorch Distributed</span>
-                        <span>PyTorch Geometric</span>
-                        <span>TensorFlow</span>
-                        <span>TF Federated</span>
-                        <span>JAX</span>
-                        <span>Flax</span>
-                        <span>PySpark</span>
-                        <span>DeepSpeed</span>
-                        <span>Megatron-LM</span>
-                        <span>Ray</span>
-                        <span>Flower</span>
-                        <span>SLURM</span>
-                        <span>CUDA</span>
-                        <span>TensorRT</span>
-                        <span>Triton Inference Server</span>
-                        <span>C</span>
-                        <span>C++</span>
-                        <span>Rust</span>
-                        <span>OpenAI Triton</span>
-                        <span>NCCL</span>
-                        <span>OpenMPI</span>
-                        <span>ONNX</span>
-                        <span>Apache Beam</span>
-                        <span>Hadoop</span>
-                    </div>
-                </div>
-                <div class="framework-category">
-                    <h3>Generative AI & Applied ML</h3>
-                    <div class="framework-list">
-                        <span>Transformers</span>
-                        <span>HuggingFace</span>
-                        <span>OpenAI API</span>
-                        <span>Claude API</span>
-                        <span>Gemini API</span>
-                        <span>vLLM</span>
-                        <span>TRLx</span>
-                        <span>NeMo</span>
-                        <span>AutoAWQ</span>
-                        <span>AutoGPTQ</span>
-                        <span>bitsandbytes</span>
-                        <span>LightGBM</span>
-                        <span>Scikit-Learn</span>
-                        <span>PySpark</span>
-                        <span>NumPy</span>
-                        <span>SciPy</span>
-                        <span>Pandas</span>
-                        <span>Matplotlib</span>
-                        <span>Seaborn</span>
-                        <span>Streamlit</span>
-                        <span>Sagemaker</span>
-                        <span>W&B</span>
-                        <span>BeautifulSoup</span>
-                        <span>Scrapy</span>
-                        <span>Selenium</span>
-                        <span>Firecrawl</span>
-                        <span>comcrawl</span>
-                        <span>warcio</span>
-                        <span>Apache Nutch</span>
-                        <span>Apache Solr</span>
-                        <span>NLTK</span>
-                        <span>spaCy</span>
-                        <span>Dedupe</span>
-                        <span>datatrove</span>
-                        <span>fastText</span>
-                        <span>AutoML</span>
-                        <span>Optuna</span>
-                        <span>Stable Baselines3</span>
-                    </div>
-                </div>
-                <div class="framework-category">
-                    <h3>Agentic AI & RAG</h3>
-                    <div class="framework-list">
-                        <span>LangChain</span>
-                        <span>LlamaIndex</span>
-                        <span>LangGraph</span>
-                        <span>LangSmith</span>
-                        <span>ADK</span>
-                        <span>GraphRAG</span>
-                        <span>VectorDB</span>
-                        <span>Qdrant</span>
-                        <span>ChromaDB</span>
-                        <span>FAISS</span>
-                        <span>Pinecone</span>
-                        <span>Weaviate</span>
-                        <span>pgvector</span>
-                        <span>Milvus</span>
-                        <span>DiskANN</span>
-                        <span>FastMCP</span>
-                        <span>Unstructured.io</span>
-                        <span>Apache Beam</span>
-                        <span>CrewAI</span>
-                        <span>Autogen</span>
-                    </div>
-                </div>
-                <div class="framework-category">
-                    <h3>MLOps, Infra & Eval</h3>
-                    <div class="framework-list">
-                        <span>Azure</span>
-                        <span>AWS</span>
-                        <span>GCP</span>
-                        <span>Cloudflare</span>
-                        <span>Vertex AI</span>
-                        <span>Docker</span>
-                        <span>Kubernetes</span>
-                        <span>Kubeflow</span>
-                        <span>MLflow</span>
-                        <span>DVC</span>
-                        <span>Airflow</span>
-                        <span>Prefect</span>
-                        <span>Pentaho</span>
-                        <span>Kafka</span>
-                        <span>Git</span>
-                        <span>CI/CD</span>
-                        <span>Bash</span>
-                        <span>Linux</span>
-                        <span>FastAPI</span>
-                        <span>Flask</span>
-                        <span>REST API</span>
-                        <span>gRPC</span>
-                        <span>SQL</span>
-                        <span>NoSQL</span>
-                        <span>React</span>
-                        <span>Vue</span>
-                        <span>Angular</span>
-                        <span>Next.js</span>
-                        <span>Node.js</span>
-                        <span>Express.js</span>
-                        <span>Jasmine</span>
-                        <span>Java</span>
-                        <span>JavaScript</span>
-                        <span>TypeScript</span>
-                        <span>asyncio</span>
-                        <span>HTML</span>
-                        <span>CSS</span>
-                        <span>Tailwind</span>
-                        <span>HELM</span>
-                        <span>RAGAS</span>
-                        <span>DeepEval</span>
-                        <span>Grafana</span>
-                        <span>Prometheus</span>
-                        <span>PowerBI</span>
-                        <span>Spotfire</span>
-                    </div>
-                </div>
-                <div class="framework-category">
-                    <h3>Research & Publishing</h3>
-                    <div class="framework-list">
-                        <span>LaTeX</span>
-                        <span>BibTeX</span>
-                        <span>Overleaf</span>
-                        <span>arXiv</span>
-                        <span>Jupyter</span>
-                        <span>Markdown</span>
-                        <span>Cursor</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section>
-            <h2>Experience</h2>
-            <div class="experience-item">
-                <h3>AI Research Fellow</h3>
-                <p>Research on Foundation Models - Various Research Areas.</p>
-            </div>
-            <div class="experience-item">
-                <h3>Lead AI/ML Engineer</h3>
-                <p>Led a team of engineers building generative AI products and infrastructure.</p>
-            </div>
-            <div class="experience-item">
-                <h3>Machine Learning Engineer</h3>
-                <p>Developed and deployed production-level AI models for trillion-dollar companies including Aramco, delivering enterprise-scale machine learning solutions.</p>
-            </div>
-        </section>
-
-        <section>
-            <h2>Education</h2>
-            <div class="experience-item">
-                <h3>MS in Applied Artificial Intelligence with Software Engineering Specialization</h3>
-                <p>CGPA 4/4 · Completed 2-year program in 11 months</p>
-            </div>
-            <div class="experience-item">
-                <h3>B.Tech [Hons.] in Computer Science and Engineering</h3>
-            </div>
-        </section>
-
-        <section>
-            <h2>Certifications</h2>
-            <div class="experience-item">
-                <h3>Microsoft Azure (5x Certified)</h3>
-                <div class="framework-list" style="margin-top: 12px;">
-                    <span>AI-900</span>
-                    <span>AZ-900</span>
-                    <span>DP-900</span>
-                    <span>DP-100</span>
-                    <span>PL-900</span>
-                </div>
-            </div>
-            <div class="experience-item">
-                <h3>Nvidia Deep Learning Institute</h3>
-                <p>Accelerated Computing with CUDA</p>
-            </div>
-        </section>
-
-        <section>
-            <h2>Open Source contributions</h2>
-            <div class="playground-card">
-                <div class="playground-header">
-                    <div class="playground-logo">🔥</div>
-                    <div class="playground-title">
-                        <h3>PyTorch Playground</h3>
-                        <span>A comprehensive ML/DL implementation library</span>
-                    </div>
-                </div>
-                <p class="playground-desc">
-                    Production-ready PyTorch implementations covering modern AI architectures. 
-                    From CNNs to Transformers, LLMs to Federated Learning — each implementation 
-                    is well-documented, modular, and designed for both learning and production use.
-                </p>
-                <div class="playground-categories">
-                    <div class="playground-cat">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-                        Computer Vision
-                    </div>
-                    <div class="playground-cat">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                        NLP & LLMs
-                    </div>
-                    <div class="playground-cat">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4"/></svg>
-                        Multimodal AI
-                    </div>
-                    <div class="playground-cat">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><path d="M12 8v4m-5 4l4-4m6 4l-4-4"/></svg>
-                        Federated Learning
-                    </div>
-                    <div class="playground-cat">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></svg>
-                        Transformers
-                    </div>
-                    <div class="playground-cat">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                        CNN / RNN / LSTM
-                    </div>
-                    <div class="playground-cat">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
-                        Quantization
-                    </div>
-                    <div class="playground-cat">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="9" height="9" rx="1"/><rect x="13" y="2" width="9" height="9" rx="1"/><rect x="2" y="13" width="9" height="9" rx="1"/><rect x="13" y="13" width="9" height="9" rx="1"/></svg>
-                        Distributed Training
-                    </div>
-                    <div class="playground-cat">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="9"/></svg>
-                        Generative Models
-                    </div>
-                    <div class="playground-cat">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="18" r="3"/><path d="M6 9v6M18 9v6M9 6h6M9 18h6"/></svg>
-                        Graph Neural Networks
-                    </div>
-                    <div class="playground-cat">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 7h7l-5.5 4.5 2 7.5-6.5-4.5-6.5 4.5 2-7.5L2 9h7l3-7z"/></svg>
-                        Reinforcement Learning
-                    </div>
-                    <div class="playground-cat">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-                        Model Optimization
-                    </div>
-                </div>
-                <div class="playground-actions">
-                    <a href="https://github.com/onlinerj/pytorch-playground" target="_blank" class="btn btn-pytorch">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                        View on GitHub
-                    </a>
-                    <a href="pytorch-playground.html" class="btn btn-outline">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-                        Documentation
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <section>
-            <h2>AI Playground</h2>
-            <p style="color: var(--text-muted); margin-bottom: 8px;">Interactive visualizations of core ML/AI concepts</p>
-            <div class="ai-playground-grid">
-                <!-- Neural Network Visualizer (Wide) -->
-                <div class="demo-card wide">
-                    <h3>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/></svg>
-                        Neural Network Visualizer
-                    </h3>
-                    <p>Watch forward & backward propagation through a neural network. Hover nodes to see activation/gradient values. Click nodes to trigger animations.</p>
-                    <div class="demo-canvas-container">
-                        <canvas id="nn-canvas" class="demo-canvas"></canvas>
-                        <div id="nn-tooltip" class="nn-tooltip"></div>
-                    </div>
-                    <div class="demo-controls-row" style="margin-top: 12px;">
-                        <div class="demo-controls-group">
-                            <label>Layers:</label>
-                            <button class="demo-btn active" onclick="nnSetLayers(3)">3</button>
-                            <button class="demo-btn" onclick="nnSetLayers(4)">4</button>
-                            <button class="demo-btn" onclick="nnSetLayers(5)">5</button>
-                        </div>
-                        <div class="demo-controls-group">
-                            <label>Mode:</label>
-                            <button class="demo-btn active" onclick="nnSetMode('forward')">Forward</button>
-                            <button class="demo-btn" onclick="nnSetMode('backward')">Backprop</button>
-                        </div>
-                        <div class="demo-controls-group">
-                            <label>Activation:</label>
-                            <select id="nn-activation" class="demo-select" onchange="nnSetActivation(this.value)">
-                                <option value="relu">ReLU</option>
-                                <option value="sigmoid">Sigmoid</option>
-                                <option value="tanh">Tanh</option>
-                            </select>
-                        </div>
-                        <button class="demo-btn" id="nn-dropout-btn" onclick="nnToggleDropout()">Dropout: Off</button>
-                        <div class="demo-controls-group">
-                            <label>L2:</label>
-                            <input type="range" id="nn-l2" class="demo-slider" min="0" max="100" value="0" style="width: 80px;">
-                            <span class="demo-value" id="nn-l2-val">0.00</span>
-                        </div>
-                    </div>
-                    <p class="demo-info">Click input nodes for forward pass, output nodes for backprop</p>
-                </div>
-
-                <!-- Embedding Space Explorer -->
-                <div class="demo-card">
-                    <h3>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
-                        Vector Embedding Space Explorer
-                    </h3>
-                    <p>Explore word embeddings in 2D space. Drag to pan, scroll to zoom.</p>
-                    <div class="demo-canvas-container">
-                        <canvas id="embed-canvas" class="demo-canvas"></canvas>
-                    </div>
-                    <div class="demo-controls">
-                        <button class="demo-btn active" onclick="embedSetCategory('tech')">Tech</button>
-                        <button class="demo-btn" onclick="embedSetCategory('emotions')">Emotions</button>
-                        <button class="demo-btn" onclick="embedSetCategory('animals')">Animals</button>
-                        <button class="demo-btn" onclick="embedReset()">Reset View</button>
-                    </div>
-                    <p class="demo-info">Similar words cluster together in embedding space</p>
-                </div>
-
-                <!-- Attention Heatmap -->
-                <div class="demo-card">
-                    <h3>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg>
-                        Self-Attention Heatmap
-                    </h3>
-                    <p>Visualize transformer self-attention patterns between tokens.</p>
-                    <div class="demo-canvas-container">
-                        <canvas id="attn-canvas" class="demo-canvas"></canvas>
-                    </div>
-                    <div class="demo-controls">
-                        <button class="demo-btn active" onclick="attnSetSentence(0)">Sentence 1</button>
-                        <button class="demo-btn" onclick="attnSetSentence(1)">Sentence 2</button>
-                        <button class="demo-btn" onclick="attnSetSentence(2)">Sentence 3</button>
-                    </div>
-                    <p class="demo-info">Hover over cells to see attention weights</p>
-                </div>
-
-                <!-- Gradient Descent Visualizer (Wide) -->
-                <div class="demo-card wide" id="gd-demo-card">
-                    <h3>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="3"/><path d="M12 12l6-6M12 12l-4 8"/></svg>
-                        PyTorch AutoGrad: Gradient Descent Visualizer
-                    </h3>
-                    <p>Watch how different optimizers navigate a 2D loss surface. Click to place starting point, observe gradient vectors and optimization paths.</p>
-                    <div class="demo-canvas-container">
-                        <canvas id="gd-canvas" class="demo-canvas"></canvas>
-                    </div>
-                    <div class="demo-controls-row" style="margin-top: 12px;">
-                        <div class="demo-controls-group">
-                            <label>Surface:</label>
-                            <button class="demo-btn active" onclick="gdSetSurface('quadratic')">Quadratic</button>
-                            <button class="demo-btn" onclick="gdSetSurface('rosenbrock')">Rosenbrock</button>
-                            <button class="demo-btn" onclick="gdSetSurface('saddle')">Saddle Point</button>
-                            <button class="demo-btn" onclick="gdSetSurface('multimodal')">Multi-Modal</button>
-                        </div>
-                        <div class="demo-controls-group">
-                            <label>Optimizer:</label>
-                            <button class="demo-btn active" onclick="gdSetOptimizer('sgd')">SGD</button>
-                            <button class="demo-btn" onclick="gdSetOptimizer('momentum')">Momentum</button>
-                            <button class="demo-btn" onclick="gdSetOptimizer('adam')">Adam</button>
-                        </div>
-                        <div class="demo-controls-group">
-                            <label>LR:</label>
-                            <input type="range" id="gd-lr" class="demo-slider" min="1" max="100" value="20" style="width: 80px;">
-                            <span class="demo-value" id="gd-lr-val">0.020</span>
-                        </div>
-                        <button class="demo-btn" onclick="gdReset()">Reset</button>
-                        <button class="demo-btn" id="gd-compare-btn" onclick="gdCompare()">Compare All</button>
-                    </div>
-                    <div class="gd-legend">
-                        <div class="gd-legend-item"><div class="gd-legend-dot" style="background: #ef4444;"></div>SGD</div>
-                        <div class="gd-legend-item"><div class="gd-legend-dot" style="background: #22c55e;"></div>Momentum</div>
-                        <div class="gd-legend-item"><div class="gd-legend-dot" style="background: #3b82f6;"></div>Adam</div>
-                        <div class="gd-legend-item"><div class="gd-legend-dot" style="background: #f59e0b;"></div>Gradient Vector</div>
-                    </div>
-                    <p class="demo-info">Click anywhere on the surface to start optimization. "Compare All" runs all optimizers simultaneously from the same point.</p>
-                </div>
-            </div>
-        </section>
-
-        <div style="text-align: center; margin-top: 40px; display: flex; flex-wrap: wrap; justify-content: center; gap: 16px;">
-            <a href="blog.html" class="btn btn-amber">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
-                Research & Work Blog
-            </a>
-            <a href="travel.html" class="btn btn-green">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20"></path><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
-                Travel Blog
-            </a>
-        </div>
-
-        <footer>
-            <p>© <span id="year"></span> Rajat Jaiswal</p>
-        </footer>
     </div>
 
     <script src="js/main.js"></script>
