@@ -1266,7 +1266,6 @@ footer p {
     visibility: hidden;
     transform: translateY(20px) scale(0.95);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow: hidden;
 }
 
 .chatbot-container.open .chatbot-window {
@@ -1282,6 +1281,10 @@ footer p {
     padding: 16px 20px;
     background: linear-gradient(135deg, var(--accent) 0%, #818cf8 100%);
     color: white;
+    overflow: visible;
+    position: relative;
+    z-index: 10;
+    border-radius: 20px 20px 0 0;
 }
 
 .chatbot-avatar {
@@ -1329,15 +1332,15 @@ footer p {
 .async-tooltip {
     position: absolute;
     top: calc(100% + 12px);
-    left: 50%;
-    transform: translateX(-50%) translateY(-8px);
-    width: 240px;
+    right: -10px;
+    width: 220px;
     background: var(--bg-card);
     border: 1px solid var(--accent);
     border-radius: 12px;
-    padding: 14px;
+    padding: 12px;
     opacity: 0;
     visibility: hidden;
+    transform: translateY(-8px);
     transition: all 0.25s ease;
     z-index: 1000;
     box-shadow: 0 8px 32px rgba(99, 102, 241, 0.25);
@@ -1348,15 +1351,14 @@ footer p {
 .async-badge:hover .async-tooltip {
     opacity: 1;
     visibility: visible;
-    transform: translateX(-50%) translateY(0);
+    transform: translateY(0);
 }
 
 .async-tooltip::before {
     content: '';
     position: absolute;
     top: -8px;
-    left: 50%;
-    transform: translateX(-50%);
+    right: 20px;
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
     border-bottom: 8px solid var(--accent);
