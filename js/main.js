@@ -1769,7 +1769,8 @@
                 "RL / LLM Alignment", "GPU Acceleration", "Multi-Modal AI",
                 "Distributed LLM Training", "LLM Architecture", "Computer Vision",
                 "Natural Language Processing", "Multi Agent Systems", "RAG",
-                "GraphML", "Prompt Engineering", "Neurosymbolic AI", "Scaling Laws"
+                "GraphML", "Prompt Engineering", "Neurosymbolic AI", "Scaling Laws",
+                "Pre-Training", "Post-Training", "LLM Evaluations"
             ],
             
             skills: {
