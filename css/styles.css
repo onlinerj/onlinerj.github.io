@@ -51,6 +51,7 @@
 
 html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
 }
 
 body {
@@ -1449,6 +1450,12 @@ body {
     
     .demos-grid {
         grid-template-columns: 1fr;
+        max-width: 100%;
+    }
+    
+    .demo-card {
+        max-width: 100%;
+        overflow: hidden;
     }
     
     .demo-card.wide .demo-canvas-container {
@@ -1463,11 +1470,14 @@ body {
 @media (max-width: 600px) {
     .main {
         text-align: center;
+        overflow-x: hidden;
+        width: 100%;
     }
     
     .hero {
         padding: 80px 0 60px;
         text-align: center;
+        overflow-x: hidden;
     }
     
     .hero-title {
@@ -1481,6 +1491,7 @@ body {
     .section {
         padding: 60px 0;
         text-align: center;
+        overflow-x: hidden;
     }
     
     .section-title {
@@ -1563,10 +1574,23 @@ body {
         justify-items: center;
     }
     
+    .demos-grid {
+        display: block;
+        width: 100%;
+    }
+    
     .demo-card {
         padding: 16px;
+        width: 100%;
         max-width: 100%;
         text-align: center;
+        overflow: hidden;
+        box-sizing: border-box;
+        margin-bottom: 16px;
+    }
+    
+    .demo-card.wide {
+        grid-column: auto;
     }
     
     .demo-card h3 {
@@ -1577,8 +1601,23 @@ body {
         text-align: center;
     }
     
-    .demos-grid {
-        justify-items: center;
+    .demo-canvas-container {
+        width: 100%;
+        max-width: 100%;
+        aspect-ratio: 4/3;
+    }
+    
+    .demo-card.wide .demo-canvas-container {
+        aspect-ratio: 4/3;
+    }
+    
+    .demo-controls {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .demo-controls-row {
+        width: 100%;
     }
     
     .chatbot-container {
