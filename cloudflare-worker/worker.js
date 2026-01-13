@@ -31,7 +31,7 @@ PROFESSIONAL EXPERIENCE:
 
 EDUCATION:
 - MS in Applied Artificial Intelligence with Software Engineering Specialization (CGPA 4/4, completed 2-year program in 11 months)
-- B.Tech [Hons.] in Computer Science and Engineering
+- B.Tech [Hons.] in Computer Science and Engineering, Indian Institute of Technology (IIT)
 
 CERTIFICATIONS:
 - Microsoft Azure (5x Certified): AI-900, AZ-900, DP-900, DP-100, PL-900
