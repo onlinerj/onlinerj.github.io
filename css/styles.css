@@ -1134,6 +1134,26 @@ body {
     overflow-x: auto;
 }
 
+.chatbot-close-btn {
+    display: none;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    color: var(--text-muted);
+    transition: color var(--transition);
+    flex-shrink: 0;
+}
+
+.chatbot-close-btn:hover {
+    color: var(--text);
+}
+
+.chatbot-close-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
 .chatbot-messages {
     flex: 1;
     overflow-y: auto;
@@ -1495,6 +1515,32 @@ body {
         right: 16px;
         bottom: 80px;
         left: 16px;
+    }
+    
+    .chatbot-close-btn {
+        display: block;
+    }
+    
+    .chatbot-header {
+        padding: 16px;
+        gap: 10px;
+    }
+    
+    .chatbot-avatar {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .chatbot-name {
+        font-size: 14px;
+    }
+    
+    .chatbot-status {
+        font-size: 11px;
+    }
+    
+    .async-badge {
+        display: none;
     }
     
     .experience-card {

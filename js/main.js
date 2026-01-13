@@ -1722,8 +1722,8 @@
         const chatbotSend = document.getElementById('chatbot-send');
         const chatbotSuggestions = document.getElementById('chatbot-suggestions');
 
-        // Open chatbot by default
-        if (chatbotContainer) {
+        // Open chatbot by default on desktop only (>600px)
+        if (chatbotContainer && window.innerWidth > 600) {
             chatbotContainer.classList.add('open');
         }
 
@@ -2005,6 +2005,14 @@
                 if (chatbotContainer.classList.contains('open')) {
                     chatbotInput.focus();
                 }
+            });
+        }
+
+        // Close button (mobile)
+        const chatbotCloseBtn = document.getElementById('chatbot-close-btn');
+        if (chatbotCloseBtn) {
+            chatbotCloseBtn.addEventListener('click', () => {
+                chatbotContainer.classList.remove('open');
             });
         }
 
