@@ -579,9 +579,19 @@
             <span class="wisdom-close">×</span>
         </button>
         <div class="wisdom-card" id="wisdom-card">
-            <img class="wisdom-image" id="wisdom-image" alt="AI Inspiration" />
+            <div class="wisdom-image-container">
+                <img class="wisdom-image" id="wisdom-image" alt="AI Inspiration" />
+                <span class="multimodal-badge" title="Images generated via Multimodal AI">
+                    🎨 Text→Image
+                    <div class="multimodal-tooltip">
+                        <h4>Multimodal API Demo</h4>
+                        <p>These images are dynamically generated using <strong>Pollinations.ai</strong> Text-to-Image API.</p>
+                        <p>Each affirmation has a custom prompt that generates unique AI artwork, demonstrating multimodal AI integration skills.</p>
+                    </div>
+                </span>
+            </div>
             <p class="wisdom-text" id="wisdom-text"></p>
-            <span class="wisdom-hint">Click for more</span>
+            <span class="wisdom-hint">Click for more • Powered by Pollinations.ai</span>
         </div>
     </div>
 
