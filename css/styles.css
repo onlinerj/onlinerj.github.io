@@ -1581,34 +1581,31 @@ body {
     display: block;
 }
 
-.wisdom-image-container {
-    position: relative;
-}
-
 .multimodal-badge {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    background: rgba(0, 0, 0, 0.75);
-    backdrop-filter: blur(8px);
-    color: #fff;
+    position: relative;
+    display: inline-block;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
     font-size: 10px;
     font-weight: 600;
-    padding: 4px 8px;
-    border-radius: 6px;
+    padding: 4px 10px;
+    border-radius: 12px;
     cursor: help;
     transition: all 0.2s ease;
-    z-index: 2;
+    margin-bottom: 8px;
 }
 
 .multimodal-badge:hover {
-    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent);
 }
 
 .multimodal-tooltip {
     position: absolute;
     bottom: calc(100% + 10px);
-    right: 0;
+    left: 50%;
+    transform: translateX(-50%) translateY(8px);
     width: 220px;
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -1617,7 +1614,6 @@ body {
     box-shadow: var(--shadow-lg);
     opacity: 0;
     visibility: hidden;
-    transform: translateY(8px);
     transition: all 0.2s ease;
     z-index: 10;
     text-align: left;
@@ -1626,7 +1622,7 @@ body {
 .multimodal-badge:hover .multimodal-tooltip {
     opacity: 1;
     visibility: visible;
-    transform: translateY(0);
+    transform: translateX(-50%) translateY(0);
 }
 
 .multimodal-tooltip h4 {
