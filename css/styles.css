@@ -1614,9 +1614,6 @@ body {
     .demo-controls {
         flex-wrap: wrap;
         justify-content: center;
-    }
-    
-    .demo-controls-row {
         width: 100%;
     }
     
@@ -1676,6 +1673,29 @@ body {
         flex-direction: column;
         align-items: center;
         gap: 12px;
+        width: 100%;
+    }
+    
+    .demo-controls-group {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        gap: 8px;
+    }
+    
+    .demo-controls-group label {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .demo-btn {
+        width: auto;
+        min-width: 80px;
+    }
+    
+    .demo-slider {
+        width: 100%;
+        max-width: 200px;
     }
     
     .wisdom-widget {
