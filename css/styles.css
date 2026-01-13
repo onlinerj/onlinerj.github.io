@@ -1583,7 +1583,9 @@ body {
 
 .multimodal-badge {
     position: relative;
-    display: inline-block;
+    display: block;
+    width: fit-content;
+    margin: 0 auto 8px auto;
     background: var(--bg-tertiary);
     border: 1px solid var(--border);
     color: var(--text-muted);
@@ -1593,7 +1595,6 @@ body {
     border-radius: 12px;
     cursor: help;
     transition: all 0.2s ease;
-    margin-bottom: 8px;
 }
 
 .multimodal-badge:hover {
