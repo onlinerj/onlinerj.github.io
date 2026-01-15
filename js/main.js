@@ -1770,7 +1770,8 @@
                 "Distributed LLM Training", "LLM Architecture", "Computer Vision",
                 "Natural Language Processing", "Multi Agent Systems", "RAG",
                 "GraphML", "Prompt Engineering", "Neurosymbolic AI", "Scaling Laws",
-                "Pre-Training", "Post-Training", "LLM Evaluations", "Deep Agents", "Deep RL"
+                "Pre-Training", "Post-Training", "LLM Evaluations", "Deep Agents", "Deep RL",
+                "Model Threat & Defense", "Security Classification", "Adversarial ML"
             ],
             
             skills: {
