@@ -1775,10 +1775,12 @@
             ],
             
             skills: {
-                hpc: ["PyTorch", "PyTorch Distributed", "TensorFlow", "JAX", "CUDA", "DeepSpeed", "Megatron-LM", "Ray", "Triton Inference Server"],
-                genai: ["Transformers", "HuggingFace", "OpenAI API", "Claude API", "vLLM", "LangChain", "LlamaIndex"],
+                hpc: ["PyTorch", "PyTorch Distributed", "PyTorch Geometric", "TensorFlow", "JAX", "CUDA", "DeepSpeed", "Megatron-LM", "Ray", "Triton", "SLURM", "ONNX", "NCCL"],
+                genai: ["Transformers", "HuggingFace", "OpenAI API", "Claude API", "vLLM", "NumPy", "Matplotlib"],
+                agentic: ["LangChain", "LangGraph", "ADK", "FastMCP", "LangSmith", "TauBench"],
                 vectordb: ["Qdrant", "ChromaDB", "FAISS", "Pinecone", "Weaviate", "pgvector", "Milvus", "DiskANN"],
-                mlops: ["Docker", "Kubernetes", "MLflow", "AWS", "Azure", "GCP", "FastAPI", "Express.js", "CI/CD"],
+                mlops: ["Docker", "Kubernetes", "MLflow", "Kubeflow", "TFX", "AWS", "Azure", "GCP", "HELM", "DeepEval"],
+                production: ["TF Serving", "Vertex AI", "SageMaker", "TensorBoard", "TFDV", "TFMA", "Prometheus", "Grafana", "W&B"],
                 web: ["React", "Vue", "Angular", "Next.js", "Node.js", "Express.js"],
                 data: ["BeautifulSoup", "Scrapy", "Selenium", "Firecrawl", "comcrawl", "datatrove"],
                 languages: ["Python", "C++", "Java", "JavaScript", "TypeScript", "Node.js", "SQL"]

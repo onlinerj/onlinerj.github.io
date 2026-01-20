@@ -41,14 +41,16 @@ RESEARCH AREAS:
 Foundation Models, LLM Privacy & Security, Federated Learning, RL/LLM Alignment, GPU Acceleration, Multi-Modal AI, Distributed LLM Training, LLM Architecture, Computer Vision, Natural Language Processing, Multi Agent Systems, RAG, GraphML, Prompt Engineering, Neurosymbolic AI, Scaling Laws, Pre-Training, Post-Training, LLM Evaluations, Deep Agents, Deep RL, Model Threat & Defense, Security Classification, Adversarial ML, Differential Privacy
 
 TECHNICAL SKILLS:
-- HPC & Deep Learning: PyTorch, PyTorch Distributed, TensorFlow, JAX, Flax, CUDA, DeepSpeed, Megatron-LM, Ray, Triton Inference Server, OpenMPI
-- GenAI & LLMs: Transformers, HuggingFace, OpenAI API, Claude API, Gemini API, vLLM, LangChain, LlamaIndex, CrewAI, Autogen, Qdrant, Pinecone, Weaviate, pgvector, FAISS, Milvus, DiskANN
-- MLOps & Infrastructure: Docker, Kubernetes, MLflow, AWS, Azure, GCP, Cloudflare, FastAPI, Express.js, Airflow, Prefect, DVC, CI/CD
+- HPC & Deep Learning: PyTorch, PyTorch Distributed, PyTorch Geometric, TensorFlow, JAX, Flax, CUDA, DeepSpeed, Megatron-LM, Ray, Triton Inference Server, OpenMPI, SLURM, ONNX, NCCL
+- GenAI & LLMs: Transformers, HuggingFace, OpenAI API, Claude API, Gemini API, vLLM, LangChain, LlamaIndex, CrewAI, Autogen, NumPy, Matplotlib
+- Agentic AI & RAG: LangChain, LangGraph, ADK, FastMCP, LangSmith, TauBench, Qdrant, ChromaDB, Pinecone, Weaviate, Milvus, pgvector, FAISS, DiskANN
+- MLOps & Infrastructure: Docker, Kubernetes, MLflow, Kubeflow, TFX, AWS, Azure, GCP, Cloudflare, FastAPI, Express.js, Airflow, DVC, CI/CD, HELM, DeepEval
+- Production & Serving: TF Serving, Vertex AI, SageMaker, TensorBoard, TFDV, TFMA, Prometheus, Grafana, W&B
 - Web Frameworks: React, Vue, Angular, Next.js, Node.js, Express.js
 - Data Collection & Scraping: BeautifulSoup, Scrapy, Selenium, Firecrawl, comcrawl, datatrove
 - Languages: Python, C, C++, Rust, Java, JavaScript, TypeScript, Node.js, SQL, Bash
 - Testing: Jasmine
-- Data & Analytics: PySpark, Hadoop, Apache Beam, Pandas, Grafana, Prometheus, PowerBI, Spotfire
+- Data & Analytics: PySpark, Hadoop, Apache Beam, Pandas, PowerBI, Spotfire
 
 OPEN SOURCE:
 PyTorch Playground - A comprehensive ML/DL implementation library with production-ready PyTorch implementations covering CNNs, Transformers, LLMs, Federated Learning, and more.
