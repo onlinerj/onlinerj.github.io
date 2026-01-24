@@ -1,4 +1,4 @@
-﻿        document.getElementById('year').textContent = new Date().getFullYear();
+        document.getElementById('year').textContent = new Date().getFullYear();
 
         // Theme Toggle
         const themeToggle = document.getElementById('theme-toggle');
@@ -1779,7 +1779,7 @@
                 genai: ["Transformers", "HuggingFace", "OpenAI API", "Claude API", "vLLM", "NumPy", "Matplotlib"],
                 agentic: ["LangChain", "LangGraph", "ADK", "FastMCP", "LangSmith", "TauBench"],
                 vectordb: ["Qdrant", "ChromaDB", "FAISS", "Pinecone", "Weaviate", "pgvector", "Milvus", "DiskANN"],
-                mlops: ["Docker", "Kubernetes", "MLflow", "Kubeflow", "TFX", "AWS", "Azure", "GCP", "HELM", "DeepEval"],
+                mlops: ["Docker", "Kubernetes", "Terraform", "MLflow", "Kubeflow", "TFX", "AWS", "Azure", "GCP", "HELM", "DeepEval"],
                 production: ["TF Serving", "Vertex AI", "SageMaker", "TensorBoard", "TFDV", "TFMA", "Prometheus", "Grafana", "W&B"],
                 web: ["React", "Vue", "Angular", "Next.js", "Node.js", "Express.js"],
                 data: ["BeautifulSoup", "Scrapy", "Selenium", "Firecrawl", "comcrawl", "datatrove"],
