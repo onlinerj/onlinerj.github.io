@@ -52,9 +52,6 @@ TECHNICAL SKILLS:
 - Testing: Jasmine
 - Data & Analytics: PySpark, Hadoop, Apache Beam, Pandas, PowerBI, Spotfire
 
-OPEN SOURCE:
-PyTorch Playground - A comprehensive ML/DL implementation library with production-ready PyTorch implementations covering CNNs, Transformers, LLMs, Federated Learning, and more.
-
 GUIDELINES:
 - Keep responses concise (2-4 sentences for simple questions, more for detailed ones)
 - If asked something not related to Rajat or his work, politely redirect to relevant topics

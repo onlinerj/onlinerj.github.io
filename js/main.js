@@ -1786,7 +1786,6 @@
                 languages: ["Python", "C++", "Java", "JavaScript", "TypeScript", "Node.js", "SQL"]
             },
             
-            openSource: "PyTorch Playground - A comprehensive ML/DL implementation library with production-ready PyTorch implementations covering CNNs, Transformers, LLMs, Federated Learning, and more."
         };
 
         // Pattern matching responses
@@ -1827,7 +1826,7 @@
             },
             {
                 patterns: [/pytorch|tensorflow|deep learning|neural/i],
-                response: () => `Rajat is highly proficient in PyTorch and deep learning! He's created **PyTorch Playground** - ${rajatKnowledge.openSource}\n\nCheck it out on GitHub: ${rajatKnowledge.github}/pytorch-playground`
+                response: () => `Rajat is highly proficient in PyTorch and deep learning! He works extensively with PyTorch, TensorFlow, JAX, and CUDA for building production-grade AI systems. His expertise spans CNNs, Transformers, LLMs, and Federated Learning.`
             },
             {
                 patterns: [/llm|large language|gpt|transformer|nlp/i],
@@ -1839,7 +1838,7 @@
             },
             {
                 patterns: [/github|code|open source|project/i],
-                response: () => `🐙 **Open Source:**\n\n${rajatKnowledge.openSource}\n\nGitHub: ${rajatKnowledge.github}`
+                response: () => `🐙 **GitHub:**\n\nCheck out Rajat's work on GitHub: ${rajatKnowledge.github}`
             },
             {
                 patterns: [/aramco|enterprise|production|deploy/i],
