@@ -1771,7 +1771,8 @@
                 "Natural Language Processing", "Multi Agent Systems", "RAG",
                 "GraphML", "Prompt Engineering", "Neurosymbolic AI", "Scaling Laws",
                 "Pre-Training", "Post-Training", "LLM Evaluations", "Deep Agents", "Deep RL",
-                "Model Threat & Defense", "Security Classification", "Adversarial ML", "Differential Privacy"
+                "Model Threat & Defense", "Security Classification", "Adversarial ML", "Differential Privacy",
+                "World Models", "Robotics", "Vision Language Action Models"
             ],
             
             skills: {

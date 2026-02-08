@@ -38,7 +38,7 @@ CERTIFICATIONS:
 - Nvidia Deep Learning Institute: Accelerated Computing with CUDA
 
 RESEARCH AREAS:
-Foundation Models, LLM Privacy & Security, Federated Learning, RL/LLM Alignment, GPU Acceleration, Multi-Modal AI, Distributed LLM Training, LLM Architecture, Computer Vision, Natural Language Processing, Multi Agent Systems, RAG, GraphML, Prompt Engineering, Neurosymbolic AI, Scaling Laws, Pre-Training, Post-Training, LLM Evaluations, Deep Agents, Deep RL, Model Threat & Defense, Security Classification, Adversarial ML, Differential Privacy
+Foundation Models, LLM Privacy & Security, Federated Learning, RL/LLM Alignment, GPU Acceleration, Multi-Modal AI, Distributed LLM Training, LLM Architecture, Computer Vision, Natural Language Processing, Multi Agent Systems, RAG, GraphML, Prompt Engineering, Neurosymbolic AI, Scaling Laws, Pre-Training, Post-Training, LLM Evaluations, Deep Agents, Deep RL, Model Threat & Defense, Security Classification, Adversarial ML, Differential Privacy, World Models, Robotics, Vision Language Action Models
 
 TECHNICAL SKILLS:
 - HPC & Deep Learning: PyTorch, PyTorch Distributed, PyTorch Geometric, TensorFlow, JAX, Flax, CUDA, DeepSpeed, Megatron-LM, Ray, Triton Inference Server, OpenMPI, SLURM, ONNX, NCCL
