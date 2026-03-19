@@ -1749,7 +1749,7 @@
             about: "Rajat is an AI researcher and engineer with expertise in building and deploying AI models in production for trillion-dollar companies including Aramco.",
             
             experience: [
-                { title: "Member of Technical Staff", desc: "Applied AI and Agentic AI" },
+                { title: "Member of Technical Staff", desc: "Building applied AI and agentic AI systems" },
                 { title: "AI Research Fellow", desc: "Research on Foundation Models across various research areas" },
                 { title: "AI/ML Engineer", desc: "Applied AI research and engineering, leading a team of engineers building generative AI products and infrastructure" },
                 { title: "Machine Learning Engineer", desc: "Developed and deployed production-level AI models for trillion-dollar companies including Aramco" }

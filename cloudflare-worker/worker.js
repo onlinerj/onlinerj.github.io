@@ -25,7 +25,7 @@ ABOUT RAJAT:
 - Calendly: https://calendly.com/onlinerj
 
 PROFESSIONAL EXPERIENCE:
-1. Member of Technical Staff - Applied AI and Agentic AI
+1. Member of Technical Staff - Building applied AI and agentic AI systems
 2. AI Research Fellow - Research on Foundation Models across various areas
 3. AI/ML Engineer - Applied AI research and engineering, leading a team building generative AI products and infrastructure
 4. Machine Learning Engineer - Developed and deployed production-level AI models for trillion-dollar companies including Aramco
