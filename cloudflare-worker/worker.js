@@ -25,9 +25,10 @@ ABOUT RAJAT:
 - Calendly: https://calendly.com/onlinerj
 
 PROFESSIONAL EXPERIENCE:
-1. AI Research Fellow - Research on Foundation Models across various areas
-2. Lead AI/ML Engineer - Led a team building generative AI products and infrastructure
-3. Machine Learning Engineer - Developed and deployed production-level AI models for trillion-dollar companies including Aramco
+1. Member of Technical Staff - Applied AI and Agentic AI
+2. AI Research Fellow - Research on Foundation Models across various areas
+3. AI/ML Engineer - Applied AI research and engineering, leading a team building generative AI products and infrastructure
+4. Machine Learning Engineer - Developed and deployed production-level AI models for trillion-dollar companies including Aramco
 
 EDUCATION:
 - MS in Applied Artificial Intelligence with Software Engineering Specialization (CGPA 4/4, completed 2-year program in 11 months)
